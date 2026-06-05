@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { formData } from '@/types/userType'
+import type { loginFormData } from '@/types/userType'
 
 export const useCounterStore = defineStore('counter', () => {
   const userData = ref({
@@ -8,7 +8,7 @@ export const useCounterStore = defineStore('counter', () => {
     password: '',
   })
 
-  const setUserData = (data: formData) => {
+  const setUserData = (data: loginFormData) => {
     userData.value.username = data.username
     userData.value.password = data.password
   }

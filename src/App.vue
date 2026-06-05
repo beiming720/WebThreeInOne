@@ -17,8 +17,8 @@
         <RouterLink to="/echarts" class="nav-item">数据大屏</RouterLink>
         <RouterLink to="/recognition" class="nav-item">花卉识别</RouterLink>
         <RouterLink to="/data" class="nav-item">花卉知识库</RouterLink>
-        <RouterLink to="/help" class="nav-item">帮助</RouterLink>
         <RouterLink to="/login" class="nav-item">登录</RouterLink>
+        <RouterLink to="/register" class="nav-item">注册</RouterLink>
       </nav>
     </header>
 
