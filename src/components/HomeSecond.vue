@@ -272,16 +272,6 @@ const activeCity = computed(() => cities[activeIndex.value])
   overflow: hidden;
 }
 
-.stack-emoji {
-  font-size: 28px;
-  transition: transform 0.3s;
-}
-
-.stack-card.active .stack-emoji {
-  transform: scale(1.2);
-  filter: drop-shadow(0 0 8px rgba(233, 30, 140, 0.5));
-}
-
 .stack-name {
   font-weight: 700;
   writing-mode: vertical-rl;
@@ -293,16 +283,5 @@ const activeCity = computed(() => cities[activeIndex.value])
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
   pointer-events: none;
   z-index: 1;
-}
-
-/* .stack-card.active .stack-name {
-  color: #f5a0c0;
-} */
-
-.stack-city {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.3);
-  writing-mode: vertical-rl;
-  letter-spacing: 2px;
 }
 </style>

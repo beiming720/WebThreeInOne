@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const sections = ['封面', '介绍', '页脚']
+const sections = ['欢迎', '花', '城']
 const activeIndex = ref(0)
 const hidden = ref(false)
 let timer: ReturnType<typeof setTimeout> | null = null
