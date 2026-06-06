@@ -26,6 +26,7 @@
                 size="large"
                 round
                 class="slide-btn"
+                @click="goCity(slide.routeName)"
               >
                 {{ slide.btnText }}
               </el-button>
@@ -39,7 +40,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import type { CarouselInstance } from 'element-plus'
+
+const router = useRouter()
 
 // ===== 轮播图数据（按需修改） =====
 interface Slide {
@@ -48,6 +52,11 @@ interface Slide {
   description: string   // 描述文案
   btnText?: string      // 按钮文字（不写则不显示按钮）
   btnColor?: string     // 按钮颜色
+  routeName: string     // 跳转路由名称
+}
+
+function goCity(routeName: string) {
+  router.push({ name: routeName })
 }
 
 // 导入图片
@@ -67,6 +76,7 @@ const slides: Slide[] = [
     description: '八朝古都，以《清明上河图》为蓝本再现北宋东京梦华，是一座"城摞城"的水中古城。',
     btnText: '了解更多',
     btnColor: '#2196f3',
+    routeName: 'kaifeng',
   },
   {
     bgImage: luoyang,
@@ -74,6 +84,7 @@ const slides: Slide[] = [
     description: '十三朝古都，拥有世界文化遗产龙门石窟与盛唐气象的隋唐洛阳城，是华夏文明的重要发祥地。',
     btnText: '了解更多',
     btnColor: '#2196f3',
+    routeName: 'luoyang',
   },
   {
     bgImage: anyang,
@@ -81,6 +92,7 @@ const slides: Slide[] = [
     description: '七朝古都，甲骨文的发现地与殷墟所在地，是探索商文明与汉字起源的文字之都。',
     btnText: '了解更多',
     btnColor: '#2196f3',
+    routeName: 'anyang',
   },
   {
     bgImage: shangqiu,
@@ -88,6 +100,7 @@ const slides: Slide[] = [
     description: '三商之源，拥有外圆内方、形似古钱币的明清归德府城，其下叠压着"城摞城"的千年奇观。',
     btnText: '了解更多',
     btnColor: '#2196f3',
+    routeName: 'shangqiu',
   },
 ]
 </script>

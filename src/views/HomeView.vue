@@ -18,9 +18,22 @@ const homeRef = ref<HTMLElement>()
 const currentScreen = ref(0)
 let isScrolling = false
 
+const SCREEN_KEY = 'home_current_screen'
+
 import HomeFirst from '@/components/HomeFirst.vue'
 import HomeSecond from '@/components/HomeSecond.vue'
 import HomeThird from '@/components/HomeThird.vue'
+
+function saveScreen(index: number) {
+  currentScreen.value = index
+  sessionStorage.setItem(SCREEN_KEY, String(index))
+}
+
+function scrollToScreen(index: number) {
+  const screens = homeRef.value?.querySelectorAll('.screen')
+  if (!screens || !screens[index]) return
+  ;(screens[index] as Element).scrollIntoView({ behavior: 'auto' })
+}
 
 function onWheel(e: WheelEvent) {
   if (isScrolling) return
@@ -31,14 +44,37 @@ function onWheel(e: WheelEvent) {
     : Math.max(currentScreen.value - 1, 0)
   if (next === currentScreen.value) return
   isScrolling = true
-  currentScreen.value = next
+  saveScreen(next)
   window.dispatchEvent(new CustomEvent('screen-change', { detail: next }))
     ; (screens[next] as Element).scrollIntoView({ behavior: 'smooth' })
   setTimeout(() => { isScrolling = false }, 800)
 }
 
-onMounted(() => homeRef.value?.addEventListener('wheel', onWheel, { passive: true }))
-onUnmounted(() => homeRef.value?.removeEventListener('wheel', onWheel))
+function onScreenChange(e: Event) {
+  const index = (e as CustomEvent).detail
+  saveScreen(index)
+}
+
+onMounted(() => {
+  // 恢复上次停留的页面
+  const saved = sessionStorage.getItem(SCREEN_KEY)
+  if (saved !== null) {
+    const index = Number(saved)
+    currentScreen.value = index
+    // 等 DOM 就绪后滚动
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => scrollToScreen(index))
+    })
+  }
+
+  homeRef.value?.addEventListener('wheel', onWheel, { passive: true })
+  window.addEventListener('screen-change', onScreenChange)
+})
+
+onUnmounted(() => {
+  homeRef.value?.removeEventListener('wheel', onWheel)
+  window.removeEventListener('screen-change', onScreenChange)
+})
 </script>
 
 <style scoped>
