@@ -2,7 +2,7 @@
 export interface loginFormData {
   username: string
   password: string
-  agree: boolean
+  agree?: boolean
 }
 //定义注册数据类型
 export interface regFormData {

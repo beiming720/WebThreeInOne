@@ -3,14 +3,15 @@ import { defineStore } from 'pinia'
 import type { loginFormData } from '@/types/userType'
 
 export const useCounterStore = defineStore('counter', () => {
-  const userData = ref({
-    username: '',
-    password: '',
-  })
+  const userData = ref([
+    {
+      username: '',
+      password: '',
+    },
+  ])
 
   const setUserData = (data: loginFormData) => {
-    userData.value.username = data.username
-    userData.value.password = data.password
+    userData.value.push(data)
   }
 
   return { userData, setUserData }
