@@ -10,7 +10,7 @@
 
       </div>
       <video autoplay muted loop playsinline class="bg-video">
-        <source src="./assets/audio/列车.mp4" type="video/mp4" />
+        <source src="/audio/列车.mp4" type="video/mp4" />
       </video>
       <nav class="nav-links">
         <RouterLink to="/" class="nav-item">主页</RouterLink>

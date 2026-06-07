@@ -19,10 +19,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import * as echarts from 'echarts';
 
-// 1. 移除了 world.json，仅引入国内三级数据
-import chinaJson from '@/assets/china.json';
-import henanJson from '@/assets/henan.json';
-import kaifengJson from '@/assets/kaifeng.json';
+// 1. 地图 JSON 数据（通过 fetch 异步加载）
 
 // ===== 滚轮切屏 =====
 const homeRef = ref<HTMLElement>()
@@ -74,8 +71,15 @@ const mapLabel = computed(() => {
   }
 });
 
-onMounted(() => {
+onMounted(async () => {
   if (!mapRef.value) return;
+
+  // 异步加载地图 JSON 数据
+  const [chinaJson, henanJson, kaifengJson] = await Promise.all([
+    fetch('/map/china.json').then(r => r.json()),
+    fetch('/map/henan.json').then(r => r.json()),
+    fetch('/map/kaifeng.json').then(r => r.json()),
+  ]);
 
   myChart = echarts.init(mapRef.value);
 

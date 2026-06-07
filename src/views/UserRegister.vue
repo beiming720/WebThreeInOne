@@ -1,7 +1,7 @@
 <template>
   <div id="UserRegister">
     <video autoplay muted loop playsinline class="bg-video">
-      <source src="../assets/audio/login.mp4" type="video/mp4" />
+      <source src="/audio/login.mp4" type="video/mp4" />
     </video>
     <el-row>
       <el-col :span="14">
@@ -10,7 +10,7 @@
         <el-form ref="formRef" :model="form" :rules="rules" label-width="auto" class="regForm">
           <div class="form_box">
             <video autoplay muted loop playsinline class="bg-video" style="border-radius: 15px;">
-              <source src="../assets/audio/loginform.mp4" type="video/mp4" />
+              <source src="/audio/loginform.mp4" type="video/mp4" />
             </video>
             <p class="title">Hello~ 欢迎注册 专属于你 的账号</p>
             <el-form-item prop="username" class="input">

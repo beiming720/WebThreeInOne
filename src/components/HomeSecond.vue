@@ -1,8 +1,8 @@
 <template>
   <div ref="homeRef">
     <section class="screen screen-showcase">
-      <video autoplay muted loop playsinline poster="../assets/images/meihua.png" class="bg-video">
-        <source src="../assets/audio/meihua.mp4" type="video/mp4" />
+      <video autoplay muted loop playsinline poster="../../public/images/meihua.png" class="bg-video">
+        <source src="/audio/meihua.mp4" type="video/mp4" />
       </video>
       <div class="overlay"></div>
       <!-- 左侧展示区 -->

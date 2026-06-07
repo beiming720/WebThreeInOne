@@ -1,8 +1,8 @@
 <template>
   <div ref="homeRef">
     <section class="screen screen-cover">
-      <video autoplay muted loop playsinline poster="../assets/images/hua.png" class="bg-video">
-        <source src="../assets/audio/hua.mp4" type="video/mp4" />
+      <video autoplay muted loop playsinline poster="../../public/images/hua.png" class="bg-video">
+        <source src="/audio/hua.mp4" type="video/mp4" />
       </video>
       <div class="overlay"></div>
       <div class="cover-content">
