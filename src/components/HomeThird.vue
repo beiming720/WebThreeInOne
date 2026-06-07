@@ -1,33 +1,16 @@
 <template>
   <div>
-    <section
-      class="screen screen-carousel"
-      :style="{ backgroundImage: `url(${bgShuye})` }"
-    >
-      <el-carousel
-        ref="carouselRef"
-        :interval="isHovering ? 0 : 3000"
-        arrow="always"
-        height="100%"
-        class="carousel-container"
-        @mouseenter="isHovering = true"
-        @mouseleave="isHovering = false"
-      >
+    <section class="screen screen-carousel" :style="{ backgroundImage: `url(${bgShuye})` }">
+      <el-carousel ref="carouselRef" :interval="isHovering ? 0 : 3000" arrow="always" height="100%"
+        class="carousel-container" @mouseenter="isHovering = true" @mouseleave="isHovering = false">
         <el-carousel-item v-for="(slide, i) in slides" :key="i">
           <div class="slide-inner" :style="{ backgroundImage: `url(${slide.bgImage})` }">
             <div class="slide-overlay"></div>
             <div class="slide-content">
               <h2 class="slide-title">{{ slide.title }}</h2>
               <p class="slide-desc">{{ slide.description }}</p>
-              <el-button
-                v-if="slide.btnText"
-                type="primary"
-                :color="slide.btnColor"
-                size="large"
-                round
-                class="slide-btn"
-                @click="goCity(slide.routeName)"
-              >
+              <el-button v-if="slide.btnText" type="primary" :color="slide.btnColor" size="large" round
+                class="slide-btn" @click="goCity(slide.routeName)">
                 {{ slide.btnText }}
               </el-button>
             </div>

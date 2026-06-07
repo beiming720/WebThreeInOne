@@ -32,7 +32,7 @@ function saveScreen(index: number) {
 function scrollToScreen(index: number) {
   const screens = homeRef.value?.querySelectorAll('.screen')
   if (!screens || !screens[index]) return
-  ;(screens[index] as Element).scrollIntoView({ behavior: 'auto' })
+    ; (screens[index] as Element).scrollIntoView({ behavior: 'auto' })
 }
 
 function onWheel(e: WheelEvent) {

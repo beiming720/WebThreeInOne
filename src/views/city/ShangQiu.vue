@@ -1,11 +1,308 @@
 <template>
-  <div>
-    商丘
+  <div class="home" ref="homeRef">
+    <section class="screen screen-cover">
+      <!-- 一 -->
+      <div class="map-container">
+        <button v-if="currentMap !== 'china'" class="back-btn" @click="handleBack">
+          返回上一级 (当前: {{ mapLabel }})
+        </button>
+        <div ref="mapRef" style="width: 100%; height: 100%"></div>
+      </div>
+    </section>
+    <section class="screen screen-cover">
+      <div>风景介绍</div>
+    </section>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import * as echarts from 'echarts';
 
+// 1. 移除了 world.json，仅引入国内三级数据
+import chinaJson from '@/assets/china.json';
+import henanJson from '@/assets/henan.json';
+import shangqiuJson from '@/assets/shangqiu.json';
+
+// ===== 滚轮切屏 =====
+const homeRef = ref<HTMLElement>()
+const currentScreen = ref(0)
+let isScrolling = false
+const SCREEN_KEY = 'shangqiu_current_screen'
+
+function saveScreen(index: number) {
+  currentScreen.value = index
+  sessionStorage.setItem(SCREEN_KEY, String(index))
+}
+
+function scrollToScreen(index: number) {
+  const screens = homeRef.value?.querySelectorAll('.screen')
+  if (!screens || !screens[index]) return
+  saveScreen(index)
+  ;(screens[index] as Element).scrollIntoView({ behavior: 'smooth' })
+}
+
+function onWheel(e: WheelEvent) {
+  if (isScrolling) return
+  const screens = homeRef.value?.querySelectorAll('.screen')
+  if (!screens) return
+  const next = e.deltaY > 0
+    ? Math.min(currentScreen.value + 1, screens.length - 1)
+    : Math.max(currentScreen.value - 1, 0)
+  if (next === currentScreen.value) return
+  isScrolling = true
+  saveScreen(next)
+  ;(screens[next] as Element).scrollIntoView({ behavior: 'smooth' })
+  setTimeout(() => { isScrolling = false }, 800)
+}
+
+const mapRef = ref<HTMLElement | null>(null);
+let myChart: echarts.ECharts | null = null;
+
+// 2. 调整层级类型，初始设为 'china'
+type MapLevel = 'china' | 'henan' | 'shangqiu';
+const currentMap = ref<MapLevel>('china');
+
+const SHANGQIU_COORD: [number, number] = [115.656, 34.414];
+
+// 动态计算面包屑标签
+const mapLabel = computed(() => {
+  switch (currentMap.value) {
+    case 'henan': return '河南省地图';
+    case 'shangqiu': return '商丘市地图';
+    default: return '中国地图';
+  }
+});
+
+onMounted(() => {
+  if (!mapRef.value) return;
+
+  myChart = echarts.init(mapRef.value);
+
+  // 3. 注册三级地图
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  echarts.registerMap('china', chinaJson as any);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  echarts.registerMap('henan', henanJson as any);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  echarts.registerMap('shangqiu', shangqiuJson as any);
+
+  // 默认直接渲染中国地图
+  renderChinaMap();
+
+  // 4. 点击事件路由
+  myChart.on('click', (params: echarts.ECElementEvent) => {
+    const name = params.name;
+
+    if (currentMap.value === 'china') {
+      if (name === '河南' || name === '河南省') {
+        renderHenanMap();
+      }
+    }
+    else if (currentMap.value === 'henan') {
+      if (name === '商丘' || name === '商丘市') {
+        renderShangqiuMap();
+        scrollToScreen(1)  // 同时跳转到第二屏
+      }
+    }
+    else if (currentMap.value === 'shangqiu') {
+      // 点击商丘市内区县 → 也可跳转第二屏
+      scrollToScreen(1)
+    }
+  });
+
+  window.addEventListener('resize', handleResize);
+  homeRef.value?.addEventListener('wheel', onWheel, { passive: true });
+
+  // 恢复上次停留的页面
+  const saved = sessionStorage.getItem(SCREEN_KEY)
+  if (saved !== null) {
+    const index = Number(saved)
+    currentScreen.value = index
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const screens = homeRef.value?.querySelectorAll('.screen')
+        if (screens && screens[index]) {
+          ;(screens[index] as Element).scrollIntoView({ behavior: 'auto' })
+        }
+      })
+    })
+  }
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize);
+  homeRef.value?.removeEventListener('wheel', onWheel);
+  if (myChart) myChart.dispose();
+});
+
+const handleResize = () => {
+  if (myChart) myChart.resize();
+};
+
+// 5. 简化的逐级返回逻辑
+const handleBack = () => {
+  if (currentMap.value === 'shangqiu') {
+    renderHenanMap();
+  } else if (currentMap.value === 'henan') {
+    renderChinaMap();
+  }
+};
+
+// ==================== 1. 中国地图 ====================
+const renderChinaMap = () => {
+  if (!myChart) return;
+  currentMap.value = 'china';
+
+  const option: echarts.EChartsOption = {
+    title: { text: '中国地图 - 点击河南省下钻', left: 'center', top: 20 },
+    tooltip: { trigger: 'item' },
+    series: [
+      {
+        name: '中国地图',
+        type: 'map',
+        map: 'china',
+        roam: true,
+        label: { show: true, fontSize: 10, color: '#333' },
+        itemStyle: { areaColor: '#e2e8f0', borderColor: '#ffffff' },
+        emphasis: { itemStyle: { areaColor: '#93c5fd' } },
+        // 高亮河南省
+        data: [
+          {
+            name: '河南省',
+            itemStyle: {
+              areaColor: '#f59e0b',
+              shadowBlur: 8,
+              shadowColor: 'rgba(0,0,0,0.3)'
+            }
+          }
+        ]
+      }
+    ]
+  };
+  myChart.setOption(option, true);
+};
+
+// ==================== 2. 河南省地图 ====================
+const renderHenanMap = () => {
+  if (!myChart) return;
+  currentMap.value = 'henan';
+
+  const option: echarts.EChartsOption = {
+    title: { text: '河南省地图 - 点击商丘市查看详情', left: 'center', top: 20 },
+    tooltip: { trigger: 'item' },
+    series: [
+      {
+        name: '河南省地图',
+        type: 'map',
+        map: 'henan',
+        roam: true,
+        label: { show: true, color: '#334155', fontSize: 11 },
+        itemStyle: { areaColor: '#f1f5f9', borderColor: '#cbd5e1' },
+        emphasis: { itemStyle: { areaColor: '#e2e8f0' } },
+        data: [
+          {
+            name: '商丘市',
+            itemStyle: { areaColor: '#fecaca' }
+          }
+        ]
+      },
+      {
+        name: '商丘市标点',
+        type: 'effectScatter',
+        coordinateSystem: 'geo',
+        geoIndex: 0,
+        data: [{ name: '商丘市', value: [...SHANGQIU_COORD, 100] }],
+        symbolSize: 16,
+        itemStyle: { color: '#ef4444', shadowBlur: 8, shadowColor: '#333' },
+        label: {
+          show: true,
+          formatter: '{b} (点击进入)',
+          position: 'right',
+          color: '#ef4444',
+          fontSize: 12,
+          fontWeight: 'bold'
+        },
+        zlevel: 2
+      }
+    ]
+  };
+  myChart.setOption(option, true);
+};
+
+// ==================== 3. 商丘市地图 ====================
+const renderShangqiuMap = () => {
+  if (!myChart) return;
+  currentMap.value = 'shangqiu';
+
+  const option: echarts.EChartsOption = {
+    title: { text: '商丘市细分区县地图', left: 'center', top: 20 },
+    tooltip: { trigger: 'item', formatter: '{b}' },
+    series: [
+      {
+        name: '商丘市地图',
+        type: 'map',
+        map: 'shangqiu',
+        roam: true,
+        label: { show: true, color: '#0f172a', fontSize: 12 },
+        itemStyle: {
+          areaColor: '#fca5a5',
+          borderColor: '#ffffff',
+          borderWidth: 1.5
+        },
+        emphasis: {
+          itemStyle: { areaColor: '#f87171' },
+          label: { color: '#fff', fontWeight: 'bold' }
+        }
+      }
+    ]
+  };
+  myChart.setOption(option, true);
+};
 </script>
 
-<style scoped></style>
+<style scoped>
+.home {
+  height: calc(100vh - 3.75rem);
+  overflow: hidden;
+}
+
+.screen {
+  height: calc(100vh - 3.75rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+
+.map-container {
+  position: relative;
+  background-color: #015a26af;
+  overflow: hidden;
+  width: 100%;
+  height: calc(100vh - 3.75rem);
+}
+
+.back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  padding: 8px 14px;
+  background-color: #0f172a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.back-btn:hover {
+  background-color: #1e293b;
+  transform: translateY(-1px);
+}
+</style>
