@@ -63,8 +63,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import * as echarts from 'echarts';
-
-// 1. 地图 JSON 数据（通过 fetch 异步加载）
+import { fetchMapData } from '@/api/map';
 
 // 导入商丘风景图片
 import shangqiuImg from '@/assets/images/cheng/商丘/商丘.jpg';
@@ -179,11 +178,7 @@ onMounted(async () => {
   if (!mapRef.value) return;
 
   // 异步加载地图 JSON 数据
-  const [chinaJson, henanJson, shangqiuJson] = await Promise.all([
-    fetch('/map/china.json').then(r => r.json()),
-    fetch('/map/henan.json').then(r => r.json()),
-    fetch('/map/shangqiu.json').then(r => r.json()),
-  ]);
+  const [chinaJson, henanJson, shangqiuJson] = await fetchMapData('shangqiu');
 
   myChart = echarts.init(mapRef.value);
 

@@ -63,14 +63,15 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { identifyFlower } from '@/api/flower'
+import type { FlowerIdentifyResult } from '@/api/flower'
 
-const API_BASE = 'http://localhost:5000'
 const fileInput = ref<HTMLInputElement>()
 const previewUrl = ref('')
 const selectedFile = ref<File | null>(null)
 const loading = ref(false)
 const dragging = ref(false)
-const result = ref<{ name: string; latin: string; confidence: number; desc: string } | null>(null)
+const result = ref<FlowerIdentifyResult | null>(null)
 
 function onFileChange(e: Event) {
   const file = (e.target as HTMLInputElement).files?.[0]
@@ -104,23 +105,9 @@ async function identify() {
   result.value = null
 
   try {
-    const formData = new FormData()
-    formData.append('image', selectedFile.value)
-
-    const response = await fetch(`${API_BASE}/api/flower/identify`, {
-      method: 'POST',
-      body: formData,
-    })
-
-    const json = await response.json()
-
-    if (json.code === 0) {
-      result.value = json.data
-    } else {
-      alert(json.message || '识别失败，请重试')
-    }
-  } catch {
-    alert('网络请求失败，请检查后端服务是否启动')
+    result.value = await identifyFlower(selectedFile.value)
+  } catch (err: any) {
+    alert(err?.message || '网络请求失败，请检查后端服务是否启动')
   } finally {
     loading.value = false
   }

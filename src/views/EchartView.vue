@@ -87,6 +87,7 @@
 
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import * as echarts from 'echarts'
+import { fetchAllTourismData } from '@/api/data'
 
 // ==================== 数据状态 ====================
 const highlightProvince = ref('河南')
@@ -207,17 +208,12 @@ function linearRegression(x: number[], y: number[]): { slope: number; intercept:
 
 // ==================== 数据加载 ====================
 async function loadData() {
-  const [sr, ta, sb, cf] = await Promise.all([
-    fetch('/data/scenic_rank.json').then(r => r.json()),
-    fetch('/data/travel_agency.json').then(r => r.json()),
-    fetch('/data/scenic_basic.json').then(r => r.json()),
-    fetch('/data/culture_funding.json').then(r => r.json()),
-  ])
-  scenicRankData = sr
-  travelAgencyData = ta
-  scenicBasicData = sb
-  cultureFundingData = cf
-  provinces.value = sr.filter((d: any) => d.region !== '全国').map((d: any) => d.region).sort()
+  const { scenicRank, travelAgency, scenicBasic, cultureFunding } = await fetchAllTourismData()
+  scenicRankData = scenicRank
+  travelAgencyData = travelAgency
+  scenicBasicData = scenicBasic
+  cultureFundingData = cultureFunding
+  provinces.value = scenicRank.filter((d: any) => d.region !== '全国').map((d: any) => d.region).sort()
   refreshProvinceStats()
   updateProvinceInsights()
 }

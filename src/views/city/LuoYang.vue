@@ -71,8 +71,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import * as echarts from 'echarts';
-
-// 1. 地图 JSON 数据（通过 fetch 异步加载）
+import { fetchMapData } from '@/api/map';
 
 // 导入洛阳风景图片
 import luoyangImg from '@/assets/images/cheng/洛阳/洛阳.png';
@@ -192,11 +191,7 @@ onMounted(async () => {
   if (!mapRef.value) return;
 
   // 异步加载地图 JSON 数据
-  const [chinaJson, henanJson, luoyangJson] = await Promise.all([
-    fetch('/map/china.json').then(r => r.json()),
-    fetch('/map/henan.json').then(r => r.json()),
-    fetch('/map/luoyang.json').then(r => r.json()),
-  ]);
+  const [chinaJson, henanJson, luoyangJson] = await fetchMapData('luoyang');
 
   myChart = echarts.init(mapRef.value);
 
