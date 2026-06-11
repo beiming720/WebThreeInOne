@@ -9,8 +9,53 @@
         <div ref="mapRef" style="width: 100%; height: 100%"></div>
       </div>
     </section>
-    <section class="screen screen-cover">
-      <div>风景介绍</div>
+    <section class="screen screen-scenic">
+      <div class="scenic-wrapper">
+        <div class="scenic-header">
+          <h1 class="scenic-title">🏯 安阳 · 七朝古都</h1>
+          <p class="scenic-subtitle">洹水安阳名不虚，三千年前是帝都</p>
+        </div>
+        <div class="scenic-content">
+          <div class="hero-card">
+            <div class="hero-img-box">
+              <img :src="anyangImg" alt="安阳古城" />
+              <div class="hero-overlay"></div>
+              <div class="hero-text">
+                <span class="hero-tag">安阳古城</span>
+                <h2>殷商故都 · 甲骨之乡</h2>
+              </div>
+            </div>
+            <p class="hero-desc">
+              安阳，古称殷、邺城、相州，是河南省地级市，中国八大古都之一。
+              这里是甲骨文的故乡、周易的发源地，拥有3300多年的建城史。
+              世界文化遗产殷墟坐落于此，红旗渠精神更是闻名全国，太行大峡谷雄奇壮美。
+            </p>
+          </div>
+          <div class="scenic-grid">
+            <div v-for="spot in scenicSpots" :key="spot.name" class="scenic-card" @click="activeSpot = spot"
+              :class="{ expanded: activeSpot?.name === spot.name }">
+              <div class="card-img-box">
+                <img :src="spot.image" :alt="spot.name" />
+                <div class="card-img-shade"></div>
+                <span class="card-name">{{ spot.name }}</span>
+              </div>
+              <div class="card-body">
+                <p class="card-desc">{{ spot.description }}</p>
+                <div class="card-meta">
+                  <span class="meta-item">📍 {{ spot.location }}</span>
+                  <span class="meta-item">🏷 {{ spot.tag }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="culture-footer">
+            <div class="poem-box">
+              <p class="poem-text">"洹水东流绕故城，殷墟甲骨记文明。青铜礼器三千载，犹向人间诉旧情。"</p>
+              <p class="poem-author">—— 咏安阳</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </div>
 </template>
@@ -20,6 +65,55 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import * as echarts from 'echarts';
 
 // 1. 地图 JSON 数据（通过 fetch 异步加载）
+
+// 导入安阳风景图片
+import anyangImg from '@/assets/images/cheng/安阳/安阳.png';
+import yinxu from '@/assets/images/cheng/安阳/殷墟.png';
+import hongqiqu from '@/assets/images/cheng/安阳/红旗渠.jpg';
+import daxiagu from '@/assets/images/cheng/安阳/太行大峡谷.jpg';
+import xianlicheng from '@/assets/images/cheng/安阳/羑里城.jpg';
+
+// 风景点数据
+interface ScenicSpot {
+  name: string
+  image: string
+  description: string
+  location: string
+  tag: string
+}
+
+const scenicSpots: ScenicSpot[] = [
+  {
+    name: '殷墟',
+    image: yinxu,
+    description: '世界文化遗产，中国商代后期都城遗址，距今已有3300多年历史。这里出土了数量惊人的甲骨文、青铜器，其中司母戊鼎（后母戊鼎）是世界最大的青铜器。殷墟的发掘证实了中国商代的存在，被誉为中国考古学的摇篮。',
+    location: '殷都区殷墟路1号',
+    tag: '世界文化遗产',
+  },
+  {
+    name: '红旗渠',
+    image: hongqiqu,
+    description: '被誉为"人工天河""世界第八大奇迹"。20世纪60年代，林县人民在极其艰难的条件下，历时近十年，削平1250座山头，架设151座渡槽，开凿211个隧洞，在太行山悬崖峭壁上修建了全长1500公里的红旗渠。',
+    location: '林州市红旗渠大道',
+    tag: '全国重点文保',
+  },
+  {
+    name: '太行大峡谷',
+    image: daxiagu,
+    description: '国家级风景名胜区，位于太行山南麓，峡谷内断崖高起，群峰峥嵘，苍溪水湍，流瀑四挂。桃花谷、王相岩、太极冰山等景点各具特色，四季景色分明，是北方山水的典型代表。',
+    location: '林州市石板岩乡',
+    tag: 'AAAAA级景区',
+  },
+  {
+    name: '羑里城',
+    image: xianlicheng,
+    description: '中国历史上第一座有文字记载的国家监狱，也是《周易》的发祥地。"文王拘而演周易"的历史典故就发生于此。景区内有文王庙、演易台、八卦阵迷宫等景点，是探索中华文化源头的重要遗址。',
+    location: '汤阴县城北4公里',
+    tag: '全国重点文保',
+  },
+]
+
+const activeSpot = ref<ScenicSpot | null>(null)
 
 // ===== 滚轮切屏 =====
 const homeRef = ref<HTMLElement>()
@@ -36,11 +130,21 @@ function scrollToScreen(index: number) {
   const screens = homeRef.value?.querySelectorAll('.screen')
   if (!screens || !screens[index]) return
   saveScreen(index)
-  ;(screens[index] as Element).scrollIntoView({ behavior: 'smooth' })
+    ; (screens[index] as Element).scrollIntoView({ behavior: 'smooth' })
 }
 
 function onWheel(e: WheelEvent) {
   if (isScrolling) return
+
+  const scrollable = (e.target as HTMLElement)?.closest('.scenic-content') as HTMLElement | null
+  if (scrollable) {
+    const { scrollTop, scrollHeight, clientHeight } = scrollable
+    const atTop = scrollTop <= 1
+    const atBottom = scrollTop + clientHeight >= scrollHeight - 1
+    if (e.deltaY > 0 && !atBottom) return
+    if (e.deltaY < 0 && !atTop) return
+  }
+
   const screens = homeRef.value?.querySelectorAll('.screen')
   if (!screens) return
   const next = e.deltaY > 0
@@ -49,7 +153,7 @@ function onWheel(e: WheelEvent) {
   if (next === currentScreen.value) return
   isScrolling = true
   saveScreen(next)
-  ;(screens[next] as Element).scrollIntoView({ behavior: 'smooth' })
+    ; (screens[next] as Element).scrollIntoView({ behavior: 'smooth' })
   setTimeout(() => { isScrolling = false }, 800)
 }
 
@@ -127,7 +231,7 @@ onMounted(async () => {
       requestAnimationFrame(() => {
         const screens = homeRef.value?.querySelectorAll('.screen')
         if (screens && screens[index]) {
-          ;(screens[index] as Element).scrollIntoView({ behavior: 'auto' })
+          ; (screens[index] as Element).scrollIntoView({ behavior: 'auto' })
         }
       })
     })
@@ -283,7 +387,7 @@ const renderAnyangMap = () => {
 
 .map-container {
   position: relative;
-  background-color: #015a26af;
+  background-image: linear-gradient(to right, #92FE9D, #00C9FF);
   overflow: hidden;
   width: 100%;
   height: calc(100vh - 3.75rem);
@@ -308,5 +412,275 @@ const renderAnyangMap = () => {
 .back-btn:hover {
   background-color: #1e293b;
   transform: translateY(-1px);
+}
+
+/* ==================== 风景介绍页 ==================== */
+.screen-scenic {
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.scenic-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.scenic-header {
+  text-align: center;
+  padding: 24px 20px 16px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.4), transparent);
+}
+
+.scenic-title {
+  font-size: clamp(20px, 1.8rem, 40px);
+  font-weight: 900;
+  color: #f5d1f2;
+  text-shadow: 0 0 30px rgba(233, 150, 122, 0.5);
+  letter-spacing: 4px;
+  margin-bottom: 6px;
+}
+
+.scenic-subtitle {
+  font-size: clamp(12px, 0.875rem, 17px);
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 3px;
+  font-style: italic;
+}
+
+.scenic-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 28px 32px;
+  scroll-behavior: smooth;
+}
+
+.screen-scenic {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(233, 150, 122, 0.7) rgba(255, 255, 255, 0.06);
+}
+
+.screen-scenic::-webkit-scrollbar {
+  width: 8px;
+}
+
+.screen-scenic::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+}
+
+.screen-scenic::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #853e3e, #db01c9);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.screen-scenic::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #a04e4e, #e830d8);
+}
+
+.hero-card {
+  margin-bottom: 24px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(19, 17, 17, 0.164);
+  backdrop-filter: blur(6px);
+}
+
+.hero-img-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 550px;
+  overflow: hidden;
+}
+
+.hero-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.hero-card:hover .hero-img-box img {
+  transform: scale(1.05);
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0%, transparent 60%);
+}
+
+.hero-text {
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
+  z-index: 2;
+}
+
+.hero-tag {
+  display: inline-block;
+  padding: 4px 14px;
+  background: linear-gradient(135deg, #853e3e, #db01c9);
+  color: #fff;
+  font-size: 12px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.hero-text h2 {
+  color: #fff;
+  font-size: clamp(18px, 1.5rem, 32px);
+  font-weight: 800;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  letter-spacing: 3px;
+}
+
+.hero-desc {
+  padding: 18px 20px;
+  color: rgba(7, 6, 6, 0.7);
+  font-size: clamp(12px, 0.8125rem, 15px);
+  line-height: 1.9;
+  text-indent: 2em;
+  letter-spacing: 0.5px;
+}
+
+.scenic-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 900px) {
+  .scenic-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.scenic-card {
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(4px);
+}
+
+.scenic-card:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(233, 150, 122, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(233, 30, 140, 0.2);
+}
+
+.scenic-card.expanded {
+  border-color: rgba(233, 150, 122, 0.6);
+  box-shadow: 0 8px 40px rgba(233, 30, 140, 0.3);
+}
+
+.card-img-box {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.card-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.scenic-card:hover .card-img-box img {
+  transform: scale(1.08);
+}
+
+.card-img-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.55) 0%, transparent 55%);
+}
+
+.card-name {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  color: #fff;
+  font-size: clamp(14px, 1rem, 20px);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+.card-body {
+  padding: 14px 16px;
+}
+
+.card-desc {
+  color: rgba(7, 6, 6, 0.7);
+  font-size: clamp(11px, 0.75rem, 14px);
+  line-height: 1.75;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 10px;
+  text-indent: 2em;
+}
+
+.scenic-card.expanded .card-desc {
+  -webkit-line-clamp: unset;
+}
+
+.card-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  font-size: 11px;
+  color: rgba(233, 150, 122, 0.8);
+  letter-spacing: 0.5px;
+}
+
+.culture-footer {
+  padding: 20px 0 10px;
+  text-align: center;
+}
+
+.poem-box {
+  display: inline-block;
+  padding: 20px 32px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.poem-text {
+  color: rgba(7, 6, 6, 0.7);
+  font-size: clamp(13px, 0.875rem, 17px);
+  font-style: italic;
+  letter-spacing: 2px;
+  line-height: 1.8;
+  margin-bottom: 8px;
+}
+
+.poem-author {
+  color: rgba(7, 6, 6, 0.7);
+  font-size: 12px;
+  letter-spacing: 1px;
 }
 </style>

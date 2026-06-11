@@ -12,11 +12,27 @@ const router = createRouter({
       component: () => import('../views/RecognitionView.vue'),
     },
     { path: '/data', name: 'data', component: () => import('../views/DataView.vue') },
-    { path: '/echarts', name: 'echarts', component: () => import('../views/HelpView.vue') },
-    { path: '/city/kaifeng', name: 'kaifeng', component: () => import('../views/city/KaiFeng.vue') },
-    { path: '/city/luoyang', name: 'luoyang', component: () => import('../views/city/LuoYang.vue') },
+    {
+      path: '/echarts',
+      name: 'echarts',
+      component: () => import('../views/EchartView.vue'),
+    },
+    {
+      path: '/city/kaifeng',
+      name: 'kaifeng',
+      component: () => import('../views/city/KaiFeng.vue'),
+    },
+    {
+      path: '/city/luoyang',
+      name: 'luoyang',
+      component: () => import('../views/city/LuoYang.vue'),
+    },
     { path: '/city/anyang', name: 'anyang', component: () => import('../views/city/AnYang.vue') },
-    { path: '/city/shangqiu', name: 'shangqiu', component: () => import('../views/city/ShangQiu.vue') },
+    {
+      path: '/city/shangqiu',
+      name: 'shangqiu',
+      component: () => import('../views/city/ShangQiu.vue'),
+    },
   ],
 })
 

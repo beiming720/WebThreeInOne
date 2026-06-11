@@ -1,0 +1,242 @@
+[
+  {
+    "region": "天津",
+    "total": 109,
+    "employees": 0.89,
+    "visitors": 0.93,
+    "revenue": 34.5,
+    "ticketRevenue": 6.34
+  },
+  {
+    "region": "河北",
+    "total": 542,
+    "employees": 5.8,
+    "visitors": 1.18,
+    "revenue": 51.02,
+    "ticketRevenue": 10.32
+  },
+  {
+    "region": "山西",
+    "total": 451,
+    "employees": 3.23,
+    "visitors": 1.03,
+    "revenue": 91.43,
+    "ticketRevenue": 28.93
+  },
+  {
+    "region": "内蒙古",
+    "total": 530,
+    "employees": 3.34,
+    "visitors": 0.56,
+    "revenue": 29.56,
+    "ticketRevenue": 9.97
+  },
+  {
+    "region": "辽宁",
+    "total": 584,
+    "employees": 6.74,
+    "visitors": 1.88,
+    "revenue": 47.99,
+    "ticketRevenue": 15.66
+  },
+  {
+    "region": "吉林",
+    "total": 311,
+    "employees": 2.04,
+    "visitors": 0.59,
+    "revenue": 25.72,
+    "ticketRevenue": 6.56
+  },
+  {
+    "region": "黑龙江",
+    "total": 424,
+    "employees": 3.35,
+    "visitors": 0.57,
+    "revenue": 43.6,
+    "ticketRevenue": 17.99
+  },
+  {
+    "region": "上海",
+    "total": 144,
+    "employees": 1.57,
+    "visitors": 1.51,
+    "revenue": 77.75,
+    "ticketRevenue": 22.54
+  },
+  {
+    "region": "江苏",
+    "total": 644,
+    "employees": 7.58,
+    "visitors": 6.41,
+    "revenue": 181.67,
+    "ticketRevenue": 54.66
+  },
+  {
+    "region": "浙江",
+    "total": 935,
+    "employees": 6.83,
+    "visitors": 5.75,
+    "revenue": 347.69,
+    "ticketRevenue": 77.47
+  },
+  {
+    "region": "安徽",
+    "total": 691,
+    "employees": 4.14,
+    "visitors": 2.32,
+    "revenue": 214.13,
+    "ticketRevenue": 32.14
+  },
+  {
+    "region": "福建",
+    "total": 536,
+    "employees": 3.83,
+    "visitors": 2.19,
+    "revenue": 85.47,
+    "ticketRevenue": 23.6
+  },
+  {
+    "region": "江西",
+    "total": 560,
+    "employees": 4.75,
+    "visitors": 3.42,
+    "revenue": 691.34,
+    "ticketRevenue": 31.69
+  },
+  {
+    "region": "山东",
+    "total": 1254,
+    "employees": 10.66,
+    "visitors": 4.74,
+    "revenue": 228.61,
+    "ticketRevenue": 58.61
+  },
+  {
+    "region": "河南",
+    "total": 815,
+    "employees": 5.93,
+    "visitors": 2.62,
+    "revenue": 112.53,
+    "ticketRevenue": 42.75
+  },
+  {
+    "region": "湖北",
+    "total": 656,
+    "employees": 6.13,
+    "visitors": 2.14,
+    "revenue": 139.16,
+    "ticketRevenue": 35.65
+  },
+  {
+    "region": "湖南",
+    "total": 693,
+    "employees": 14,
+    "visitors": 3.28,
+    "revenue": 373.58,
+    "ticketRevenue": 33.42
+  },
+  {
+    "region": "广东",
+    "total": 721,
+    "employees": 10.5,
+    "visitors": 4.19,
+    "revenue": 198.56,
+    "ticketRevenue": 56.96
+  },
+  {
+    "region": "广西",
+    "total": 715,
+    "employees": 4.74,
+    "visitors": 2.75,
+    "revenue": 112.02,
+    "ticketRevenue": 17.2
+  },
+  {
+    "region": "海南",
+    "total": 90,
+    "employees": 2.62,
+    "visitors": 0.54,
+    "revenue": 39.23,
+    "ticketRevenue": 11.72
+  },
+  {
+    "region": "重庆",
+    "total": 314,
+    "employees": 2.56,
+    "visitors": 2.34,
+    "revenue": 160.23,
+    "ticketRevenue": 21.39
+  },
+  {
+    "region": "四川",
+    "total": 977,
+    "employees": 25,
+    "visitors": 4.98,
+    "revenue": 702.55,
+    "ticketRevenue": 51.56
+  },
+  {
+    "region": "贵州",
+    "total": 520,
+    "employees": 4.28,
+    "visitors": 1.76,
+    "revenue": 140.95,
+    "ticketRevenue": 14.01
+  },
+  {
+    "region": "云南",
+    "total": 671,
+    "employees": 4.6,
+    "visitors": 2.03,
+    "revenue": 205.9,
+    "ticketRevenue": 22.01
+  },
+  {
+    "region": "西藏",
+    "total": 167,
+    "employees": 0.73,
+    "visitors": 0.11,
+    "revenue": 5.64,
+    "ticketRevenue": 2.37
+  },
+  {
+    "region": "陕西",
+    "total": 598,
+    "employees": 5.32,
+    "visitors": 2.17,
+    "revenue": 144.67,
+    "ticketRevenue": 33.89
+  },
+  {
+    "region": "甘肃",
+    "total": 538,
+    "employees": 2.34,
+    "visitors": 1.09,
+    "revenue": 70.48,
+    "ticketRevenue": 7.8
+  },
+  {
+    "region": "青海",
+    "total": 225,
+    "employees": 0.9,
+    "visitors": 0.42,
+    "revenue": 26.38,
+    "ticketRevenue": 6.06
+  },
+  {
+    "region": "宁夏",
+    "total": 139,
+    "employees": 1.27,
+    "visitors": 0.29,
+    "revenue": 11.91,
+    "ticketRevenue": 2.77
+  },
+  {
+    "region": "新疆",
+    "total": 774,
+    "employees": 3.93,
+    "visitors": 1.29,
+    "revenue": 123.47,
+    "ticketRevenue": 11.19
+  }
+]

@@ -5,12 +5,7 @@
         <h2 class="search-title">🌼 花卉数据库</h2>
         <p class="search-sub">输入花卉名称，探索详细信息</p>
         <div class="search-box-wrap">
-          <input
-            v-model="query"
-            class="search-input"
-            placeholder="例如：向日葵、玫瑰、薰衣草..."
-            @keyup.enter="doSearch"
-          />
+          <input v-model="query" class="search-input" placeholder="例如：向日葵、玫瑰、薰衣草..." @keyup.enter="doSearch" />
           <button class="search-btn" @click="doSearch">搜索</button>
         </div>
       </div>
@@ -18,11 +13,7 @@
 
     <div v-if="searched" class="search-compact">
       <div class="search-box-wrap compact">
-        <input
-          v-model="query"
-          class="search-input"
-          @keyup.enter="doSearch"
-        />
+        <input v-model="query" class="search-input" @keyup.enter="doSearch" />
         <button class="search-btn" @click="doSearch">搜索</button>
       </div>
     </div>
@@ -65,8 +56,10 @@ import { ref } from 'vue'
 const query = ref('')
 const lastQuery = ref('')
 const searched = ref(false)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const flowerData = ref<any>(null)
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db: Record<string, any> = {
   '向日葵': {
     emoji: '🌻', name: '向日葵', latin: 'Helianthus annuus', family: '菊科',
@@ -112,57 +105,163 @@ function doSearch() {
 .data-page {
   min-height: calc(100vh - 3.75rem);
   background: linear-gradient(160deg, #fdf6f0 0%, #e8f5e9 100%);
-  display: flex; flex-direction: column; align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 60px 24px 40px;
 }
 
-.search-hero { text-align: center; width: 100%; max-width: min(600px, 90vw); }
-.search-title { font-size: clamp(22px, 2rem, 40px); font-weight: 700; color: #2e7d32; margin-bottom: 8px; }
-.search-sub { font-size: clamp(13px, 0.9375rem, 17px); color: #888; margin-bottom: 32px; }
+.search-hero {
+  text-align: center;
+  width: 100%;
+  max-width: min(600px, 90vw);
+}
+
+.search-title {
+  font-size: clamp(22px, 2rem, 40px);
+  font-weight: 700;
+  color: #2e7d32;
+  margin-bottom: 8px;
+}
+
+.search-sub {
+  font-size: clamp(13px, 0.9375rem, 17px);
+  color: #888;
+  margin-bottom: 32px;
+}
 
 .search-box-wrap {
-  display: flex; gap: 0; border-radius: 40px; overflow: hidden;
-  box-shadow: 0 8px 32px rgba(46,125,50,0.15);
+  display: flex;
+  gap: 0;
+  border-radius: 40px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(46, 125, 50, 0.15);
 }
-.search-box-wrap.compact { max-width: 480px; width: 100%; }
+
+.search-box-wrap.compact {
+  max-width: 480px;
+  width: 100%;
+}
 
 .search-input {
-  flex: 1; padding: 16px 24px; font-size: 15px; border: none; outline: none;
+  flex: 1;
+  padding: 16px 24px;
+  font-size: 15px;
+  border: none;
+  outline: none;
   background: #fff;
 }
+
 .search-btn {
-  padding: 16px 28px; background: linear-gradient(135deg, #43a047, #00897b);
-  color: #fff; border: none; cursor: pointer; font-size: 15px; font-weight: 600;
+  padding: 16px 28px;
+  background: linear-gradient(135deg, #43a047, #00897b);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
   transition: opacity 0.2s;
 }
-.search-btn:hover { opacity: 0.9; }
+
+.search-btn:hover {
+  opacity: 0.9;
+}
 
 .search-compact {
-  width: 100%; display: flex; justify-content: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
   padding: 20px 0 32px;
 }
 
-.result-wrap { width: 100%; max-width: min(600px, 90vw); }
-.flower-card {
-  background: #fff; border-radius: 20px; padding: clamp(16px, 1.75rem, 32px);
-  box-shadow: 0 8px 40px rgba(46,125,50,0.12);
+.result-wrap {
+  width: 100%;
+  max-width: min(600px, 90vw);
 }
-.flower-name { font-size: clamp(16px, 1.375rem, 26px); font-weight: 700; color: #1b5e20; }
-.flower-latin { font-size: 13px; color: #999; font-style: italic; }
-.flower-tag { margin-left: auto; }
 
-.flower-attrs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
-.attr-item { background: #f1f8e9; border-radius: 10px; padding: 10px 14px; }
-.attr-label { font-size: 11px; color: #888; display: block; margin-bottom: 2px; }
-.attr-value { font-size: 14px; font-weight: 600; color: #2e7d32; }
+.flower-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: clamp(16px, 1.75rem, 32px);
+  box-shadow: 0 8px 40px rgba(46, 125, 50, 0.12);
+}
 
-.flower-desc { font-size: 13px; color: #666; line-height: 1.8; }
+.flower-name {
+  font-size: clamp(16px, 1.375rem, 26px);
+  font-weight: 700;
+  color: #1b5e20;
+}
 
-.no-result { text-align: center; color: #aaa; font-size: 15px; margin-top: 40px; }
-.no-result span { font-size: 40px; display: block; margin-bottom: 12px; }
+.flower-latin {
+  font-size: 13px;
+  color: #999;
+  font-style: italic;
+}
 
-.search-shrink-leave-active { transition: all 0.5s ease; }
-.search-shrink-leave-to { opacity: 0; transform: scale(0.9) translateY(-20px); }
-.result-appear-enter-active { transition: all 0.5s ease 0.2s; }
-.result-appear-enter-from { opacity: 0; transform: translateY(24px); }
+.flower-tag {
+  margin-left: auto;
+}
+
+.flower-attrs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.attr-item {
+  background: #f1f8e9;
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.attr-label {
+  font-size: 11px;
+  color: #888;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.attr-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.flower-desc {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.8;
+}
+
+.no-result {
+  text-align: center;
+  color: #aaa;
+  font-size: 15px;
+  margin-top: 40px;
+}
+
+.no-result span {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.search-shrink-leave-active {
+  transition: all 0.5s ease;
+}
+
+.search-shrink-leave-to {
+  opacity: 0;
+  transform: scale(0.9) translateY(-20px);
+}
+
+.result-appear-enter-active {
+  transition: all 0.5s ease 0.2s;
+}
+
+.result-appear-enter-from {
+  opacity: 0;
+  transform: translateY(24px);
+}
 </style>

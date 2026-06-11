@@ -1,0 +1,292 @@
+[
+  {
+    "region": "河北",
+    "agencies": 1655,
+    "employees": 6580,
+    "revenue": 2802856,
+    "domestic": 1937937,
+    "inbound": 24857,
+    "outbound": 299338,
+    "profit": 31249
+  },
+  {
+    "region": "山西",
+    "agencies": 1084,
+    "employees": 6237,
+    "revenue": 3188943,
+    "domestic": 2136595,
+    "inbound": 144199,
+    "outbound": 471802,
+    "profit": 31127
+  },
+  {
+    "region": "内蒙古",
+    "agencies": 1263,
+    "employees": 5253,
+    "revenue": 1930599,
+    "domestic": 1385041,
+    "inbound": 75647,
+    "outbound": 90007,
+    "profit": 14660
+  },
+  {
+    "region": "辽宁",
+    "agencies": 1142,
+    "employees": 5504,
+    "revenue": 3260184,
+    "domestic": 2108583,
+    "inbound": 45986,
+    "outbound": 839179,
+    "profit": -48131
+  },
+  {
+    "region": "吉林",
+    "agencies": 569,
+    "employees": 3722,
+    "revenue": 1931604,
+    "domestic": 1332605,
+    "inbound": 176238,
+    "outbound": 244011,
+    "profit": 27795
+  },
+  {
+    "region": "黑龙江",
+    "agencies": 898,
+    "employees": 4238,
+    "revenue": 2687805,
+    "domestic": 2152574,
+    "inbound": 114885,
+    "outbound": 226843,
+    "profit": 13185
+  },
+  {
+    "region": "上海",
+    "agencies": 1504,
+    "employees": 23920,
+    "revenue": 59587161,
+    "domestic": 22097272,
+    "inbound": 539734,
+    "outbound": 10596789,
+    "profit": 1196409
+  },
+  {
+    "region": "江苏",
+    "agencies": 2839,
+    "employees": 20848,
+    "revenue": 107615089,
+    "domestic": 19331639,
+    "inbound": 282183,
+    "outbound": 3722080,
+    "profit": 114680
+  },
+  {
+    "region": "浙江",
+    "agencies": 3000,
+    "employees": 28089,
+    "revenue": 45300533,
+    "domestic": 33234949,
+    "inbound": 510324,
+    "outbound": 5859784,
+    "profit": 172152
+  },
+  {
+    "region": "安徽",
+    "agencies": 1695,
+    "employees": 9260,
+    "revenue": 6734074,
+    "domestic": 3966158,
+    "inbound": 110012,
+    "outbound": 808925,
+    "profit": 27231
+  },
+  {
+    "region": "福建",
+    "agencies": 1256,
+    "employees": 12815,
+    "revenue": 13334649,
+    "domestic": 8672607,
+    "inbound": 349714,
+    "outbound": 2051431,
+    "profit": 187125
+  },
+  {
+    "region": "江西",
+    "agencies": 1307,
+    "employees": 8144,
+    "revenue": 5216765,
+    "domestic": 4052685,
+    "inbound": 32432,
+    "outbound": 430189,
+    "profit": 94718
+  },
+  {
+    "region": "山东",
+    "agencies": 3192,
+    "employees": 16658,
+    "revenue": 9436367,
+    "domestic": 5190002,
+    "inbound": 193602,
+    "outbound": 1358551,
+    "profit": -57108
+  },
+  {
+    "region": "河南",
+    "agencies": 1248,
+    "employees": 9133,
+    "revenue": 4065535,
+    "domestic": 2388132,
+    "inbound": 200403,
+    "outbound": 666412,
+    "profit": -22009
+  },
+  {
+    "region": "湖北",
+    "agencies": 1319,
+    "employees": 13864,
+    "revenue": 22347721,
+    "domestic": 17720110,
+    "inbound": 724862,
+    "outbound": 1055059,
+    "profit": 283015
+  },
+  {
+    "region": "湖南",
+    "agencies": 1338,
+    "employees": 16054,
+    "revenue": 10925950,
+    "domestic": 7195406,
+    "inbound": 809243,
+    "outbound": 1184724,
+    "profit": 30037
+  },
+  {
+    "region": "广东",
+    "agencies": 3112,
+    "employees": 38133,
+    "revenue": 62605925,
+    "domestic": 38800423,
+    "inbound": 1795642,
+    "outbound": 12800679,
+    "profit": 1056087
+  },
+  {
+    "region": "广西",
+    "agencies": 964,
+    "employees": 9438,
+    "revenue": 6426248,
+    "domestic": 4397800,
+    "inbound": 527583,
+    "outbound": 556268,
+    "profit": 81296
+  },
+  {
+    "region": "海南",
+    "agencies": 890,
+    "employees": 6869,
+    "revenue": 7061600,
+    "domestic": 5531535,
+    "inbound": 840815,
+    "outbound": 241042,
+    "profit": -103253
+  },
+  {
+    "region": "重庆",
+    "agencies": 963,
+    "employees": 12971,
+    "revenue": 20426274,
+    "domestic": 14892825,
+    "inbound": 241293,
+    "outbound": 3373812,
+    "profit": 465175
+  },
+  {
+    "region": "四川",
+    "agencies": 1045,
+    "employees": 11328,
+    "revenue": 17013814,
+    "domestic": 9017920,
+    "inbound": 441747,
+    "outbound": 3237170,
+    "profit": 164397
+  },
+  {
+    "region": "贵州",
+    "agencies": 708,
+    "employees": 5183,
+    "revenue": 4657231,
+    "domestic": 4232892,
+    "inbound": 100630,
+    "outbound": 105119,
+    "profit": -46136
+  },
+  {
+    "region": "云南",
+    "agencies": 1578,
+    "employees": 12988,
+    "revenue": 11464711,
+    "domestic": 7795646,
+    "inbound": 765349,
+    "outbound": 1108480,
+    "profit": -104174
+  },
+  {
+    "region": "西藏",
+    "agencies": 174,
+    "employees": 1232,
+    "revenue": 698753,
+    "domestic": 516071,
+    "inbound": 40279,
+    "outbound": 9693,
+    "profit": -8077
+  },
+  {
+    "region": "陕西",
+    "agencies": 1467,
+    "employees": 11714,
+    "revenue": 14287886,
+    "domestic": 9494846,
+    "inbound": 421358,
+    "outbound": 2177464,
+    "profit": -18190
+  },
+  {
+    "region": "甘肃",
+    "agencies": 1375,
+    "employees": 6180,
+    "revenue": 3211981,
+    "domestic": 2435092,
+    "inbound": 117407,
+    "outbound": 57334,
+    "profit": -5604
+  },
+  {
+    "region": "青海",
+    "agencies": 518,
+    "employees": 3049,
+    "revenue": 1246134,
+    "domestic": 892708,
+    "inbound": 43298,
+    "outbound": 81784,
+    "profit": 12271
+  },
+  {
+    "region": "宁夏",
+    "agencies": 224,
+    "employees": 1343,
+    "revenue": 1044392,
+    "domestic": 718423,
+    "inbound": 24222,
+    "outbound": 123893,
+    "profit": -8617
+  },
+  {
+    "region": "新疆",
+    "agencies": 1004,
+    "employees": 5927,
+    "revenue": 5578176,
+    "domestic": 4612222,
+    "inbound": 240039,
+    "outbound": 144226,
+    "profit": 78291
+  }
+]

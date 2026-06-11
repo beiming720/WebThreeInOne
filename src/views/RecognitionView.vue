@@ -64,8 +64,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+const API_BASE = 'http://localhost:5000'
 const fileInput = ref<HTMLInputElement>()
 const previewUrl = ref('')
+const selectedFile = ref<File | null>(null)
 const loading = ref(false)
 const dragging = ref(false)
 const result = ref<{ name: string; latin: string; confidence: number; desc: string } | null>(null)
@@ -83,6 +85,7 @@ function onDrop(e: DragEvent) {
 
 function loadFile(file: File) {
   result.value = null
+  selectedFile.value = file
   const reader = new FileReader()
   reader.onload = (e) => { previewUrl.value = e.target?.result as string }
   reader.readAsDataURL(file)
@@ -90,23 +93,37 @@ function loadFile(file: File) {
 
 function reset() {
   previewUrl.value = ''
+  selectedFile.value = null
   result.value = null
   if (fileInput.value) fileInput.value.value = ''
 }
 
-function identify() {
+async function identify() {
+  if (!selectedFile.value) return
   loading.value = true
   result.value = null
-  // Simulate API call
-  setTimeout(() => {
-    loading.value = false
-    result.value = {
-      name: '向日葵',
-      latin: 'Helianthus annuus',
-      confidence: 96,
-      desc: '向日葵是菊科向日葵属的一年生草本植物，因花序随太阳转动而得名。原产北美洲，花期夏秋，种子可食用，富含不饱和脂肪酸。',
+
+  try {
+    const formData = new FormData()
+    formData.append('image', selectedFile.value)
+
+    const response = await fetch(`${API_BASE}/api/flower/identify`, {
+      method: 'POST',
+      body: formData,
+    })
+
+    const json = await response.json()
+
+    if (json.code === 0) {
+      result.value = json.data
+    } else {
+      alert(json.message || '识别失败，请重试')
     }
-  }, 2000)
+  } catch {
+    alert('网络请求失败，请检查后端服务是否启动')
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 
