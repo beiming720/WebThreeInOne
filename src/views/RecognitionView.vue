@@ -1,17 +1,11 @@
 <template>
   <div class="recognition-page">
     <div class="recognition-card">
-      <h2 class="page-title">🌸 花卉识别</h2>
+      <h2 class="page-title">花卉识别</h2>
 
       <!-- Upload zone -->
-      <div
-        class="upload-zone"
-        :class="{ 'has-image': previewUrl, dragging }"
-        @click="!previewUrl && fileInput?.click()"
-        @dragover.prevent="dragging = true"
-        @dragleave="dragging = false"
-        @drop.prevent="onDrop"
-      >
+      <div class="upload-zone" :class="{ 'has-image': previewUrl, dragging }" @click="!previewUrl && fileInput?.click()"
+        @dragover.prevent="dragging = true" @dragleave="dragging = false" @drop.prevent="onDrop">
         <template v-if="!previewUrl">
           <div class="upload-icon">📷</div>
           <p class="upload-text">点击或拖拽图片至此处</p>
@@ -106,6 +100,7 @@ async function identify() {
 
   try {
     result.value = await identifyFlower(selectedFile.value)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     alert(err?.message || '网络请求失败，请检查后端服务是否启动')
   } finally {
@@ -117,81 +112,241 @@ async function identify() {
 <style scoped>
 .recognition-page {
   min-height: calc(100vh - 3.75rem);
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 40px 24px;
-  background: linear-gradient(160deg, #fdf6f0 0%, #fce4ec 100%);
+  background-image: url('../../public/images/花卉识别页1.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .recognition-card {
-  background: #fff; border-radius: 24px; padding: clamp(24px, 2.5rem, 48px);
-  width: 90%; max-width: 560px;
-  box-shadow: 0 8px 48px rgba(233,150,122,0.15);
+  position: relative;
+  border-radius: 15px;
+  padding: clamp(24px, 2.5rem, 48px);
+  width: 90%;
+  max-width: 560px;
+  box-shadow: 0 8px 48px rgba(233, 150, 122, 0.15);
 }
 
-.page-title { font-size: clamp(18px, 1.5rem, 28px); font-weight: 700; color: #c0392b; margin-bottom: 28px; text-align: center; }
+.recognition-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('../../public/images/相机框.jpg');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
 
-.upload-icon { font-size: clamp(32px, 3rem, 56px); }
-.upload-text { font-size: clamp(13px, 0.9375rem, 17px); color: #555; font-weight: 500; }
-.upload-hint { font-size: clamp(11px, 0.75rem, 14px); color: #aaa; }
+.page-title {
+  font-size: clamp(18px, 1.5rem, 28px);
+  font-weight: 700;
+  color: black;
+  margin-bottom: 10px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.upload-icon {
+  font-size: clamp(32px, 3rem, 56px);
+}
+
+.upload-text {
+  font-size: clamp(13px, 0.9375rem, 14px);
+  color: #555;
+  font-weight: 500;
+}
+
+.upload-hint {
+  font-size: clamp(11px, 0.75rem, 14px);
+  color: #aaa;
+}
 
 .upload-zone {
-  border: 2px dashed #f4a0a0; border-radius: 16px;
-  min-height: 240px; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 8px;
-  cursor: pointer; transition: all 0.25s; background: #fff9f9;
-  position: relative; overflow: hidden;
+  border: 2px dashed #141414;
+  border-radius: 16px;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
 }
-.upload-zone:hover, .upload-zone.dragging { border-color: #e74c3c; background: #fff0f0; }
-.upload-zone.has-image { cursor: default; border-style: solid; }
 
-.preview-img { max-width: 100%; max-height: 320px; border-radius: 12px; object-fit: contain; }
+.upload-zone:hover,
+.upload-zone.dragging {
+  border-color: #00042b;
+  background: #c0149e36;
+}
+
+.upload-zone.has-image {
+  cursor: default;
+  border-style: solid;
+}
+
+.preview-img {
+  max-width: 100%;
+  max-height: 320px;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
 .btn-change {
-  position: absolute; bottom: 12px; right: 12px;
-  padding: 6px 14px; font-size: 12px; border-radius: 12px;
-  background: rgba(0,0,0,0.5); color: #fff; border: none; cursor: pointer;
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  padding: 6px 14px;
+  font-size: 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: none;
+  cursor: pointer;
 }
 
 .btn-identify {
-  width: 100%; margin-top: 20px; padding: 14px;
-  font-size: 16px; font-weight: 600; border: none; border-radius: 12px; cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
   background: linear-gradient(135deg, #e74c3c, #e91e8c);
-  color: #fff; box-shadow: 0 4px 20px rgba(233,30,140,0.3);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(233, 30, 140, 0.3);
   transition: transform 0.2s, box-shadow 0.2s;
 }
-.btn-identify:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(233,30,140,0.4); }
 
-.loading-wrap { text-align: center; padding: 24px 0; color: #e74c3c; font-size: 14px; }
-.petal-spinner { position: relative; width: 60px; height: 60px; margin: 0 auto 12px; }
+.btn-identify:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(233, 30, 140, 0.4);
+}
+
+.loading-wrap {
+  text-align: center;
+  padding: 24px 0;
+  color: #e74c3c;
+  font-size: 14px;
+}
+
+.petal-spinner {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 12px;
+}
+
 .petal-spinner span {
-  position: absolute; top: 50%; left: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
   font-size: 16px;
   transform-origin: 0 0;
   transform: rotate(calc(var(--i) * 45deg)) translateY(-24px);
   animation: spin 1.2s linear infinite;
   animation-delay: calc(var(--i) * -0.15s);
 }
-@keyframes spin { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+@keyframes spin {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
 
 .result-card {
-  margin-top: 24px; padding: 20px; border-radius: 16px;
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: 16px;
   background: linear-gradient(135deg, #fff9f9, #fce4ec);
   border: 1px solid #f4a0a0;
 }
-.result-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.result-emoji { font-size: 36px; }
-.result-name { font-size: 20px; font-weight: 700; color: #c0392b; }
-.result-latin { font-size: 12px; color: #999; font-style: italic; }
-.result-confidence { margin-left: auto; font-size: 28px; font-weight: 800; color: #e74c3c; }
-.result-desc { font-size: 13px; color: #666; line-height: 1.7; margin-bottom: 12px; }
-.confidence-bar { height: 6px; background: #f0d0d0; border-radius: 3px; overflow: hidden; }
+
+.result-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.result-emoji {
+  font-size: 36px;
+}
+
+.result-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #c0392b;
+}
+
+.result-latin {
+  font-size: 12px;
+  color: #999;
+  font-style: italic;
+}
+
+.result-confidence {
+  margin-left: auto;
+  font-size: 28px;
+  font-weight: 800;
+  color: #e74c3c;
+}
+
+.result-desc {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.confidence-bar {
+  height: 6px;
+  background: #f0d0d0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
 .confidence-fill {
-  height: 100%; border-radius: 3px;
+  height: 100%;
+  border-radius: 3px;
   background: linear-gradient(90deg, #e74c3c, #e91e8c);
   transition: width 1s ease;
 }
 
-.slide-up-enter-active { transition: all 0.4s ease; }
-.slide-up-enter-from { opacity: 0; transform: translateY(16px); }
-.fade-up-enter-active { transition: all 0.5s ease; }
-.fade-up-enter-from { opacity: 0; transform: translateY(20px); }
+.slide-up-enter-active {
+  transition: all 0.4s ease;
+}
+
+.slide-up-enter-from {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.fade-up-enter-active {
+  transition: all 0.5s ease;
+}
+
+.fade-up-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
 </style>

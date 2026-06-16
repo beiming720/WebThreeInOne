@@ -69,10 +69,35 @@
 import { computed, ref, watch, onBeforeUnmount, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import chunyinghuaImg from '@/assets/images/chunyinghua.jpg'
-import xiahehuaImg from '@/assets/images/xiahehua.png'
-import qiujiuhuaImg from '@/assets/images/qiujiuhua.png'
-import donglameiImg from '@/assets/images/donglamei.png'
+// 花卉图片映射（public/images/FlowerList/{season}/{花名}.jpg）
+const flowerImageMap: Record<string, Record<string, string>> = {
+  spring: {
+    '樱花': '/images/FlowerList/spring/樱花.jpg',
+    '桃花': '/images/FlowerList/spring/桃花.jpg',
+    '牡丹': '/images/FlowerList/spring/牡丹.jpg',
+    '海棠': '/images/FlowerList/spring/海棠.jpg',
+    '郁金香': '/images/FlowerList/spring/郁金香.jpg',
+  },
+  summer: {
+    '荷花': '/images/FlowerList/summer/荷花.jpg',
+    '紫薇': '/images/FlowerList/summer/紫薇.jpg',
+    '向日葵': '/images/FlowerList/summer/向日葵.jpg',
+    '月季': '/images/FlowerList/summer/月季.jpg',
+    '栀子花': '/images/FlowerList/summer/栀子花.jpg',
+  },
+  autumn: {
+    '菊花': '/images/FlowerList/autumn/菊花.jpg',
+    '桂花': '/images/FlowerList/autumn/桂花.jpg',
+    '银杏': '/images/FlowerList/autumn/银杏.jpg',
+    '粉黛乱子草': '/images/FlowerList/autumn/粉黛乱子草.jpg',
+  },
+  winter: {
+    '腊梅': '/images/FlowerList/winter/腊梅.jpg',
+    '梅花': '/images/FlowerList/winter/梅花.jpg',
+    '天竺葵': '/images/FlowerList/winter/天竺葵.jpg',
+    '冬月季': '/images/FlowerList/winter/冬月季.jpg',
+  },
+}
 
 const route = useRoute()
 const router = useRouter()
@@ -94,53 +119,50 @@ const seasons: Record<string, { data: SeasonData; flowers: Omit<FlowerItem, 'img
   spring: {
     data: { label: '春 · 花开时节动京城', icon: '🌸', subtitle: '春风十里，花开如许' },
     flowers: [
-      { name: '樱花', desc: '如云似霞，粉白交织，春日浪漫的象征。郑州绿博园、洛阳隋唐植物园是赏樱胜地。' },
-      { name: '桃花', desc: '桃之夭夭，灼灼其华。河南各地三月桃花盛开，太行山谷十里桃林最为壮观。' },
-      { name: '牡丹', desc: '唯有牡丹真国色，花开时节动京城。洛阳牡丹甲天下，四月花会万人空巷。' },
-      { name: '海棠', desc: '东风袅袅泛崇光，香雾空蒙月转廊。郑州碧沙岗公园海棠花海引人醉。' },
-      { name: '郁金香', desc: '亭亭玉立，色彩斑斓。郑州绿博园郁金香展每年春季如约而至。' },
+      { name: '樱花', desc: '粉雪缀枝，风过便落漫天花雨。荥阳古柏渡千亩樱林依黄河铺展，鹤壁十里樱花隧道如云垂地，洛阳瀍壑朱樱塔下，粉白繁花映洛水，藏尽中原春日温柔浪漫。' },
+      { name: '桃花', desc: '灼灼粉霞漫山野，一缕嫣红唤醒春山。济源桃都山、新野津湾千顷桃林连绵，巩义青龙山湖畔桃枝临水，开封长堤十里桃雾轻笼，豫地乡野尽藏桃源诗意' },
+      { name: '牡丹', desc: '一花压尽满城春，雍容为国色天香。洛阳一城遍植名品，隋唐遗址、王城公园姚黄魏紫竞放，花开时节整座神都沉醉，开封、郑州园圃亦栽满芳华，是河南春日当之无愧的花魁。' },
+      { name: '海棠', desc: '胭脂凝瓣，半含清愁半携柔。郑州碧沙岗海棠如云叠翠，开封朱红宫墙衬满垂丝海棠，宋苑亭台花影重重，豫东豫中园林皆植此花，自带婉约宋韵。' },
+      { name: '郁金香', desc: '彩盏铺原野，打翻春日调色盘。新乡宝泉、郑州绿博园成片盛放，南阳新野白河滩万顷郁金次第铺开，红黄紫白层层相间，为中原平原晕开鲜亮烂漫春色' },
     ],
   },
   summer: {
     data: { label: '夏 · 映日荷花别样红', icon: '🪷', subtitle: '荷风送香，竹露滴清' },
     flowers: [
-      { name: '荷花', desc: '接天莲叶无穷碧，映日荷花别样红。信阳南湾湖、开封清明上河园荷塘胜景。接天莲叶无穷碧，映日荷花别样红。信阳南湾湖、开封清明上河园荷塘胜景。接天莲叶无穷碧，映日荷花别样红。信阳南湾湖、开封清明上河园荷塘胜景。接天莲叶无穷碧，映日荷花别样红。信阳南湾湖、开封清明上河园荷塘胜景。接天莲叶无穷碧，映日荷花别样红。信阳南湾湖、开封清明上河园荷塘胜景。接天莲叶无穷碧，映日荷花别样红。信阳南湾湖、开封清明上河园荷塘胜景。接天莲叶无穷碧，映日荷花别样红。信阳南湾湖、开封清明上河园荷塘胜景。接天莲叶无穷碧，映日荷花别样红。信阳南湾湖、开封清明上河园荷塘胜景。接天莲叶无穷碧，映日荷花别样红。信阳南湾湖、开封清明上河园荷塘胜景。' },
-      { name: '紫薇', desc: '盛夏绿遮眼，此花红满堂。紫薇花期长达百日，为夏日增添一抹绚烂色彩。' },
-      { name: '向日葵', desc: '金黄灿烂，向阳而生。河南多地向日葵花海在七八月迎来最佳观赏期。' },
-      { name: '月季', desc: '花中皇后，四季常开。郑州为"中国月季之乡"，市区月季花开不断。' },
-      { name: '栀子花', desc: '色疑琼树倚，香似玉京来。洁白芬芳的栀子花是夏日最动人的气息。' },
+      { name: '荷花', desc: '碧盘承玉盏，清风送暗香。淮阳龙湖千顷荷莲连片，信阳南湾湖、开封水岸翠盖红妆相映，盛夏豫地河湖，尽是一池清雅风月。' },
+      { name: '紫薇', desc: '盛夏绽红霞，花开百日长。郑州街巷、开封大道遍植紫薇，南阳医圣祠古木繁花垂枝，酷暑之中独揽一城温婉霞光。' },
+      { name: '向日葵', desc: '金盘朝旭日，满目向阳明。唐河万亩葵田铺展原野，新乡平原示范区成片盛放，中原沃野之上，铺就一片热烈明媚的夏日光景。' },
+      { name: '月季', desc: '四时绽芳华，繁艳贯长夏。南阳为华夏月季名城，博览园万千品种次第开放，郑州月季公园繁花不断，豫西南大地常开锦绣。' },
+      { name: '栀子花', desc: '素瓣凝清雪，幽香沁晚风。豫南信阳、南阳乡间庭院多有栽种，白洁小花藏于翠叶之间，为中原盛夏添一缕干净柔和的清甜。' },
     ],
   },
   autumn: {
     data: { label: '秋 · 满城尽带黄金甲', icon: '🏵️', subtitle: '金风玉露，菊香满城' },
     flowers: [
-      { name: '菊花', desc: '不是花中偏爱菊，此花开尽更无花。开封菊花文化节闻名全国。' },
-      { name: '桂花', desc: '桂子月中落，天香云外飘。河南各地金秋时节桂香满城，沁人心脾。' },
-      { name: '木芙蓉', desc: '千林扫作一番黄，只有芙蓉独自芳。霜降时节木芙蓉傲然绽放。' },
-      { name: '美人蕉', desc: '叶满丛深殷似火，不唯夏艳亦秋光。花色艳丽，是秋日里的一抹暖色。' },
+      { name: '菊花', desc: '冷艳凝秋霜，风骨冠中原。开封满城遍植秋菊，龙亭湖畔、翰园碑林繁花叠锦，一年一度菊展名扬天下，中州秋韵皆藏此缕清傲芬芳。' },
+      { name: '桂花', desc: '碎金藏碧叶，十里溢柔香。郑州园博园、洛阳洛浦公园遍栽桂树，秋风掠过街巷庭园，清甜暗香漫卷豫地清秋，温柔绵长。' },
+      { name: '银杏', desc: '金叶铺云毯，一树染秋山。嵩山古寺、洛阳老城、许昌乡间遍布千年古银杏，霜降过后满树鎏金，落英铺地，勾勒中原古雅秋景。' },
+      { name: '粉黛乱子草', desc: '柔雾染平芜，烟霞覆浅滩。郑州古柏渡、洛阳伊滨河畔成片丛生，如云似雾的粉紫浪海随风起伏，为中原秋野晕开朦胧温柔画意。' },
     ],
   },
   winter: {
     data: { label: '冬 · 凌寒独自开', icon: '🌺', subtitle: '梅花香自苦寒来' },
     flowers: [
-      { name: '腊梅', desc: '枝横碧玉天然瘦，蕾破黄金分外香。许昌鄢陵"蜡梅之乡"，千年种植历史。' },
-      { name: '梅花', desc: '墙角数枝梅，凌寒独自开。郑州植物园冬季梅花展，暗香浮动。' },
-      { name: '山茶花', desc: '山茶花开春未归，冰雪林中著此身。河南南部山茶花在寒冬中绽放美丽。' },
-      { name: '水仙', desc: '借水开花自一奇，水沉为骨玉为肌。春节前后水仙花开，清香满室。' },
+      { name: '腊梅', desc: '寒蕊凝蜜香，踏雪觅清欢。许昌鄢陵素有蜡梅之乡美名，洛阳隋唐园、郑州黄河梅园隆冬绽金瓣，中州寒冬，一缕暗香漫遍亭台山野。' },
+      { name: '梅花', desc: '疏枝横冷雪，淡影报初春。郑州西流湖、开封龙亭梅苑红梅白梅错落，豫北太行山麓亦有野梅点点，料峭寒风里先送人间春意。' },
+      { name: '天竺葵', desc: '团簇凝妍色，晴冬绽小庭。河南各地居家、公园花坛广为栽种，不惧轻寒，红绿相间柔艳小巧，为清冷冬日添一抹鲜活暖意。' },
+      { name: '冬月季', desc: '艳色不随寒岁歇，繁花伴浅冬。南阳、郑州月季园耐寒品种冬日依旧盛放，中州城隅巷陌，纵使霜风轻落，仍留一季锦绣芳菲。' },
     ],
   },
 }
-
-// 为每个季节的花分配图片（循环使用现有图片）
-const flowerImages = [chunyinghuaImg, xiahehuaImg, qiujiuhuaImg, donglameiImg]
 
 const seasonKey = computed(() => (route.params.season as string) || 'spring')
 const seasonEntry = computed(() => seasons[seasonKey.value] ?? seasons.spring)
 const seasonData = computed(() => seasonEntry.value!.data)
 const flowers = computed(() =>
-  seasonEntry.value!.flowers.map((f, i): FlowerItem => ({
+  seasonEntry.value!.flowers.map((f): FlowerItem => ({
     ...f,
-    img: flowerImages[i % flowerImages.length]!,
+    img: flowerImageMap[seasonKey.value]?.[f.name] ?? '',
   }))
 )
 

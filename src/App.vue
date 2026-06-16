@@ -14,9 +14,9 @@
       </video>
       <nav class="nav-links">
         <RouterLink to="/" class="nav-item">主页</RouterLink>
-        <RouterLink to="/echarts" class="nav-item">数据大屏</RouterLink>
+        <RouterLink to="/echarts" class="nav-item">旅游数据</RouterLink>
+        <RouterLink to="/data" class="nav-item">花卉数据</RouterLink>
         <RouterLink to="/recognition" class="nav-item">花卉识别</RouterLink>
-        <RouterLink to="/data" class="nav-item">花卉知识库</RouterLink>
         <template v-if="userStore.isLoggedIn">
           <RouterLink to="/user" class="nav-item nav-user">
             <img :src="userStore.user?.avatar" class="nav-avatar" alt="" />
@@ -167,7 +167,7 @@ body {
   height: 22px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid rgba(255,255,255,0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .main-wrapper {

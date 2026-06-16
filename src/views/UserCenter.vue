@@ -36,11 +36,11 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const menuItems = [
-  { icon: '🏙️', label: '古城探索', desc: '浏览河南四大古城详情与风景', action: () => router.push('/city/kaifeng') },
+  { icon: '🏙️', label: '前往首页', desc: '浏览河南四大古城详情与风景', action: () => router.push('/') },
   { icon: '📊', label: '数据大屏', desc: '查看中国旅游数据可视化分析', action: () => router.push('/echarts') },
   { icon: '🌸', label: '花卉识别', desc: '上传花卉图片进行AI识别', action: () => router.push('/recognition') },
   { icon: '📚', label: '花卉知识库', desc: '了解各种花卉的详细信息', action: () => router.push('/data') },
-  { icon: '🔑', label: '修改密码', desc: '更改您的登录密码', action: () => ElMessage.info('功能开发中...') },
+  { icon: '🔑', label: '修改信息', desc: '更改您的用户信息', action: () => ElMessage.info('功能开发中...') },
   { icon: '📝', label: '识别记录', desc: '查看您的花卉识别历史记录', action: () => ElMessage.info('功能开发中...') },
 ]
 
@@ -53,7 +53,7 @@ function handleLogout() {
     userStore.logout()
     ElMessage.success('已退出登录')
     router.push({ path: '/', replace: true })
-  }).catch(() => {})
+  }).catch(() => { })
 }
 </script>
 
