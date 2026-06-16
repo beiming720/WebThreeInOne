@@ -693,9 +693,8 @@ const handleResize = () => {
 
 <style scoped lang="scss">
 .dashboard {
-  min-height: calc(100vh - 3.75rem);
+  height: calc(100vh - 3.75rem);
   max-width: 100vw;
-  // background: #0f172a;
   background-image: linear-gradient(to right, #355C7D, #6C5B7B, #C06C84);
   padding: 16px 20px 24px;
   overflow-x: hidden;
@@ -704,13 +703,17 @@ const handleResize = () => {
 }
 
 .dash-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
   padding: 12px 20px;
-  background: #040c38b2;
+  background: #040c38f2;
+  backdrop-filter: blur(8px);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.06);
   margin-bottom: 16px;

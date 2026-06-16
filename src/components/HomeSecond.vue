@@ -14,7 +14,7 @@
               <div class="display-attr" v-for="attr in activeCity?.attrs" :key="attr.label">
                 <span class="attr-lbl" :style="{ color: activeCity?.charColors[0] }">{{ attr.label }}</span>
                 <img :src="attr.imgSrc" style="width: 70%; display: block ">
-                <el-button type="primary" :color="activeCity?.charColors[0]" style="width: 120px">了解更多...</el-button>
+                <el-button type="primary" :color="activeCity?.charColors[0]" style="width: 120px" @click="goFlowerDetail">了解更多...</el-button>
               </div>
             </div>
           </div>
@@ -37,6 +37,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 import springImg from '../assets/images/春.png'
 import summerImg from '../assets/images/夏.png'
@@ -90,8 +91,24 @@ const cities: City[] = [
 ]
 
 
+const router = useRouter()
 const activeIndex = ref(0)
 const activeCity = computed(() => cities[activeIndex.value])
+
+// 四季 → 花卉页面路由映射
+const seasonToRoute: Record<string, string> = {
+  '春': '/flower/spring',
+  '夏': '/flower/summer',
+  '秋': '/flower/autumn',
+  '冬': '/flower/winter',
+}
+
+function goFlowerDetail() {
+  const name = activeCity.value?.name
+  if (name && seasonToRoute[name]) {
+    router.push(seasonToRoute[name])
+  }
+}
 </script>
 
 <style scoped>

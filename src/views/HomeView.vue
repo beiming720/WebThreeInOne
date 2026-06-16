@@ -32,7 +32,7 @@ function saveScreen(index: number) {
 function scrollToScreen(index: number) {
   const screens = homeRef.value?.querySelectorAll('.screen')
   if (!screens || !screens[index]) return
-    ; (screens[index] as Element).scrollIntoView({ behavior: 'auto' })
+  ;(screens[index] as Element).scrollIntoView({ behavior: 'smooth' })
 }
 
 function onWheel(e: WheelEvent) {
@@ -53,6 +53,7 @@ function onWheel(e: WheelEvent) {
 function onScreenChange(e: Event) {
   const index = (e as CustomEvent).detail
   saveScreen(index)
+  scrollToScreen(index)
 }
 
 onMounted(() => {

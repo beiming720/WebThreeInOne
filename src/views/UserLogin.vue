@@ -42,33 +42,32 @@
 import { Lock, User } from '@element-plus/icons-vue';
 import { reactive, ref } from 'vue';
 import { useRouter } from "vue-router";
+import { ElMessage } from 'element-plus';
 import type { loginFormData } from '@/types/userType';
 import type { FormInstance } from 'element-plus';
+import { loginAPI } from '@/api/user';
+import { useUserStore } from '@/stores/user';
 
-//路由实例
 const router = useRouter();
-//创建并获取 <el-form> 表单组件的实例引用
+const userStore = useUserStore();
 const formRef = ref<FormInstance>();
+const submitting = ref(false)
 
-//表单数据
 const form: loginFormData = reactive({
   username: '',
   password: '',
   agree: false
 })
 
-// 2. 自定义协议勾选的校验函数
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const validateAgree = (rule: any, value: any, callback: any) => {
   if (!value) {
-    // 如果用户没有勾选（value 为 false）
     callback(new Error('请阅读并勾选同意用户协议与隐私政策'));
   } else {
-    callback(); // 校验通过
+    callback();
   }
 };
 
-//表单校验规则
 const rules = reactive({
   username: [
     { required: true, min: 5, max: 10, message: '账号应在5-10位之间', trigger: 'change' },
@@ -81,22 +80,23 @@ const rules = reactive({
   ]
 })
 
-// 提交按钮回调函数
 const toLogin = async () => {
-  //如果存在每通过验证的字段，就返回
-  if (!formRef.value) return;
+  if (!formRef.value || submitting.value) return;
 
-  // 触发整表验证（包含账号、密码、协议勾选）
-  await formRef.value.validate((valid) => {
-    if (valid) {
-      // 只有全部校验通过（包括勾选了协议），才会执行到这里
-      console.log('全部校验通过，准备发起登录');
-      router.push({
-        path: '/',
-        replace: true
-      })
-    } else {
-      console.log('有项目未校验通过，无法提交');
+  await formRef.value.validate(async (valid) => {
+    if (!valid) return
+
+    submitting.value = true
+    try {
+      const res = await loginAPI(form)
+      userStore.login(res.username)
+      ElMessage.success(`欢迎回来，${res.username}！`)
+      router.push({ path: '/', replace: true })
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : '登录失败'
+      ElMessage.error(msg)
+    } finally {
+      submitting.value = false
     }
   })
 }

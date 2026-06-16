@@ -17,8 +17,16 @@
         <RouterLink to="/echarts" class="nav-item">数据大屏</RouterLink>
         <RouterLink to="/recognition" class="nav-item">花卉识别</RouterLink>
         <RouterLink to="/data" class="nav-item">花卉知识库</RouterLink>
-        <RouterLink to="/login" class="nav-item">登录</RouterLink>
-        <RouterLink to="/register" class="nav-item">注册</RouterLink>
+        <template v-if="userStore.isLoggedIn">
+          <RouterLink to="/user" class="nav-item nav-user">
+            <img :src="userStore.user?.avatar" class="nav-avatar" alt="" />
+            用户中心
+          </RouterLink>
+        </template>
+        <template v-else>
+          <RouterLink to="/login" class="nav-item">登录</RouterLink>
+          <RouterLink to="/register" class="nav-item">注册</RouterLink>
+        </template>
       </nav>
     </header>
 
@@ -39,9 +47,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useUserStore } from './stores/user'
 import Sidebar from './components/Sidebar.vue'
 
 const route = useRoute()
+const userStore = useUserStore()
 const isHome = computed(() => route.path === '/')
 
 
@@ -144,6 +154,20 @@ body {
 .nav-item.router-link-active {
   background: linear-gradient(135deg, #853e3e, #db01c9);
   color: #fff;
+}
+
+.nav-user {
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(255,255,255,0.3);
 }
 
 .main-wrapper {

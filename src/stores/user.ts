@@ -1,18 +1,34 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import type { loginFormData } from '@/types/userType'
 
-export const useCounterStore = defineStore('counter', () => {
-  const userData = ref([
-    {
-      username: '',
-      password: '',
-    },
-  ])
+export interface UserInfo {
+  username: string
+  avatar?: string
+  token: string
+}
 
-  const setUserData = (data: loginFormData) => {
-    userData.value.push(data)
+export const useUserStore = defineStore('user', () => {
+  // 从 localStorage 恢复登录状态
+  const saved = localStorage.getItem('user')
+  const initial: UserInfo | null = saved ? JSON.parse(saved) : null
+
+  const user = ref<UserInfo | null>(initial)
+  const isLoggedIn = computed(() => user.value !== null)
+
+  function login(username: string) {
+    const userInfo: UserInfo = {
+      username,
+      avatar: `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(username)}`,
+      token: 'mock-token-' + Date.now(),
+    }
+    user.value = userInfo
+    localStorage.setItem('user', JSON.stringify(userInfo))
   }
 
-  return { userData, setUserData }
+  function logout() {
+    user.value = null
+    localStorage.removeItem('user')
+  }
+
+  return { user, isLoggedIn, login, logout }
 })

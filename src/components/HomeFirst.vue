@@ -9,7 +9,7 @@
         <h1 class="cover-title">寻花问城，遇见时光里的河南</h1>
         <p class="cover-sub1">花·城·景</p>
         <p class="cover-sub">花开有时，古城无恙</p>
-        <button class="btn-start" @click="router.push('/recognition')">开始游览 →</button>
+        <button class="btn-start" @click="scrollTo(1)">开始游览 →</button>
       </div>
       <div class="scroll-hint" @click="scrollTo(1)">
         <span>向下探索</span>
@@ -21,17 +21,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
 const homeRef = ref<HTMLElement>()
 const currentScreen = ref(0)
 
 function scrollTo(index: number) {
-  const screens = homeRef.value?.querySelectorAll('.screen')
   currentScreen.value = index
+  // 跨组件查找所有 .screen 元素（它们分布在 HomeFirst / HomeSecond / HomeThird 中）
+  const screens = document.querySelectorAll('.screen')
   window.dispatchEvent(new CustomEvent('screen-change', { detail: index }))
-    ; (screens?.[index] as Element)?.scrollIntoView({ behavior: 'smooth' })
+    ; (screens[index] as Element)?.scrollIntoView({ behavior: 'smooth' })
 }
 </script>
 
