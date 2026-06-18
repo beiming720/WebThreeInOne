@@ -99,7 +99,7 @@ body {
   padding: 0 2rem;
   background: #101942;
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(233, 150, 122, 0.2);
+  border-bottom: 1px solid rgba(180, 180, 180, 0.623);
   box-shadow: 0 2px 16px rgba(233, 150, 122, 0.1);
 }
 

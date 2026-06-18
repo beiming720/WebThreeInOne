@@ -245,7 +245,7 @@ function renderMap() {
         scaleLimit: { min: 0.8, max: 5 },
         label: {
           show: true,
-          color: '#475569',
+          color: '#000',
           fontSize: 11,
           formatter: '{b}',
         },
