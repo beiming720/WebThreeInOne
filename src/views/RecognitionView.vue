@@ -127,8 +127,9 @@ async function identify() {
   border-radius: 15px;
   padding: clamp(24px, 2.5rem, 48px);
   width: 90%;
-  max-width: 560px;
+  max-width: 58vh;
   box-shadow: 0 8px 48px rgba(233, 150, 122, 0.15);
+
 }
 
 .recognition-card::before {
@@ -139,7 +140,7 @@ async function identify() {
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.9;
+  opacity: 0.8;
   z-index: 0;
   border-radius: inherit;
   pointer-events: none;
@@ -198,7 +199,7 @@ async function identify() {
 
 .preview-img {
   max-width: 100%;
-  max-height: 320px;
+  max-height: 260px;
   border-radius: 12px;
   object-fit: contain;
 }
@@ -225,10 +226,12 @@ async function identify() {
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  background: linear-gradient(135deg, #e74c3c, #e91e8c);
+  background: linear-gradient(135deg, #5022ad, #e03fd3);
   color: #fff;
   box-shadow: 0 4px 20px rgba(233, 30, 140, 0.3);
   transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  z-index: 1;
 }
 
 .btn-identify:hover {
@@ -279,6 +282,8 @@ async function identify() {
   border-radius: 16px;
   background: linear-gradient(135deg, #fff9f9, #fce4ec);
   border: 1px solid #f4a0a0;
+  position: relative;
+  z-index: 1;
 }
 
 .result-header {

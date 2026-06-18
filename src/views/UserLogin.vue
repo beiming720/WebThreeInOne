@@ -1,8 +1,5 @@
 <template>
   <div id="UserLogin">
-    <video autoplay muted loop playsinline class="bg-video">
-      <source src="/audio/login.mp4" type="video/mp4" />
-    </video>
     <el-row>
       <el-col :span="14">
       </el-col>
@@ -103,6 +100,18 @@ const toLogin = async () => {
 </script>
 
 <style scoped lang="scss">
+#UserLogin {
+  position: relative;
+  z-index: 0;
+  height: calc(100vh - 3.75rem);
+  overflow: hidden;
+  background-image: url(../../public/images/loginbg.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
 .loginForm {
   position: relative;
   top: 25vh;

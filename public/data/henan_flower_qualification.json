@@ -1,0 +1,298 @@
+{
+  "title": "河南省花卉数量分布",
+  "description": "基于河南省花卉苗木产业实际情况的各地市各品种抽检合格数据",
+  "year": 2024,
+  "source": "河南省林业技术推广站 / 河南省花卉协会（示例数据）",
+  "varieties": [
+    { "name": "牡丹", "icon": "Orange", "family": "芍药科" },
+    { "name": "月季", "icon": "Orange", "family": "蔷薇科" },
+    { "name": "菊花", "icon": "Orange", "family": "菊科" },
+    { "name": "腊梅", "icon": "Orange", "family": "腊梅科" },
+    { "name": "桂花", "icon": "Orange", "family": "木犀科" },
+    { "name": "荷花", "icon": "Orange", "family": "莲科" },
+    { "name": "茶花", "icon": "Orange", "family": "山茶科" },
+    { "name": "紫荆", "icon": "Orange", "family": "豆科" },
+    { "name": "兰花", "icon": "Orange", "family": "兰科" },
+    { "name": "桃花", "icon": "Orange", "family": "蔷薇科" }
+  ],
+  "regions": [
+    {
+      "city": "郑州市",
+      "data": {
+        "月季":     { "qualified": 8520, "inspected": 9200, "rate": 92.6 },
+        "紫荆":     { "qualified": 3410, "inspected": 3700, "rate": 92.2 },
+        "菊花":     { "qualified": 1860, "inspected": 2050, "rate": 90.7 },
+        "牡丹":     { "qualified": 1520, "inspected": 1680, "rate": 90.5 },
+        "桂花":     { "qualified": 1240, "inspected": 1380, "rate": 89.9 },
+        "荷花":     { "qualified": 980,  "inspected": 1100, "rate": 89.1 },
+        "桃花":     { "qualified": 1680, "inspected": 1820, "rate": 92.3 },
+        "腊梅":     { "qualified": 760,  "inspected": 850,  "rate": 89.4 },
+        "兰花":     { "qualified": 620,  "inspected": 700,  "rate": 88.6 },
+        "茶花":     { "qualified": 540,  "inspected": 620,  "rate": 87.1 }
+      }
+    },
+    {
+      "city": "洛阳市",
+      "data": {
+        "牡丹":     { "qualified": 28600, "inspected": 30200, "rate": 94.7 },
+        "月季":     { "qualified": 4280,  "inspected": 4600,  "rate": 93.0 },
+        "菊花":     { "qualified": 2150,  "inspected": 2380,  "rate": 90.3 },
+        "荷花":     { "qualified": 1430,  "inspected": 1580,  "rate": 90.5 },
+        "桂花":     { "qualified": 1180,  "inspected": 1300,  "rate": 90.8 },
+        "桃花":     { "qualified": 1620,  "inspected": 1760,  "rate": 92.0 },
+        "紫荆":     { "qualified": 870,   "inspected": 960,   "rate": 90.6 },
+        "腊梅":     { "qualified": 680,   "inspected": 760,   "rate": 89.5 },
+        "兰花":     { "qualified": 520,   "inspected": 600,   "rate": 86.7 },
+        "茶花":     { "qualified": 450,   "inspected": 520,   "rate": 86.5 }
+      }
+    },
+    {
+      "city": "南阳市",
+      "data": {
+        "月季":     { "qualified": 22400, "inspected": 23800, "rate": 94.1 },
+        "牡丹":     { "qualified": 3560,  "inspected": 3840,  "rate": 92.7 },
+        "菊花":     { "qualified": 2870,  "inspected": 3160,  "rate": 90.8 },
+        "桂花":     { "qualified": 1950,  "inspected": 2140,  "rate": 91.1 },
+        "茶花":     { "qualified": 1680,  "inspected": 1850,  "rate": 90.8 },
+        "桃花":     { "qualified": 1420,  "inspected": 1560,  "rate": 91.0 },
+        "荷花":     { "qualified": 1180,  "inspected": 1320,  "rate": 89.4 },
+        "兰花":     { "qualified": 960,   "inspected": 1080,  "rate": 88.9 },
+        "腊梅":     { "qualified": 720,   "inspected": 800,   "rate": 90.0 },
+        "紫荆":     { "qualified": 640,   "inspected": 720,   "rate": 88.9 }
+      }
+    },
+    {
+      "city": "开封市",
+      "data": {
+        "菊花":     { "qualified": 18500, "inspected": 19600, "rate": 94.4 },
+        "月季":     { "qualified": 3260,  "inspected": 3540,  "rate": 92.1 },
+        "牡丹":     { "qualified": 2480,  "inspected": 2700,  "rate": 91.9 },
+        "荷花":     { "qualified": 1840,  "inspected": 2020,  "rate": 91.1 },
+        "桂花":     { "qualified": 1320,  "inspected": 1460,  "rate": 90.4 },
+        "桃花":     { "qualified": 1080,  "inspected": 1180,  "rate": 91.5 },
+        "腊梅":     { "qualified": 860,   "inspected": 960,   "rate": 89.6 },
+        "紫荆":     { "qualified": 740,   "inspected": 820,   "rate": 90.2 },
+        "兰花":     { "qualified": 480,   "inspected": 560,   "rate": 85.7 },
+        "茶花":     { "qualified": 380,   "inspected": 440,   "rate": 86.4 }
+      }
+    },
+    {
+      "city": "许昌市",
+      "data": {
+        "腊梅":     { "qualified": 15800, "inspected": 16600, "rate": 95.2 },
+        "月季":     { "qualified": 6420,  "inspected": 6900,  "rate": 93.0 },
+        "桂花":     { "qualified": 4560,  "inspected": 4960,  "rate": 91.9 },
+        "菊花":     { "qualified": 3280,  "inspected": 3600,  "rate": 91.1 },
+        "牡丹":     { "qualified": 2140,  "inspected": 2340,  "rate": 91.5 },
+        "桃花":     { "qualified": 1960,  "inspected": 2140,  "rate": 91.6 },
+        "紫荆":     { "qualified": 1580,  "inspected": 1740,  "rate": 90.8 },
+        "荷花":     { "qualified": 1240,  "inspected": 1380,  "rate": 89.9 },
+        "茶花":     { "qualified": 920,   "inspected": 1040,  "rate": 88.5 },
+        "兰花":     { "qualified": 780,   "inspected": 880,   "rate": 88.6 }
+      }
+    },
+    {
+      "city": "信阳市",
+      "data": {
+        "茶花":     { "qualified": 12600, "inspected": 13400, "rate": 94.0 },
+        "桂花":     { "qualified": 9840,  "inspected": 10600, "rate": 92.8 },
+        "兰花":     { "qualified": 5620,  "inspected": 6200,  "rate": 90.6 },
+        "菊花":     { "qualified": 2340,  "inspected": 2580,  "rate": 90.7 },
+        "月季":     { "qualified": 2180,  "inspected": 2400,  "rate": 90.8 },
+        "桃花":     { "qualified": 1860,  "inspected": 2040,  "rate": 91.2 },
+        "荷花":     { "qualified": 1520,  "inspected": 1680,  "rate": 90.5 },
+        "牡丹":     { "qualified": 980,   "inspected": 1080,  "rate": 90.7 },
+        "腊梅":     { "qualified": 760,   "inspected": 860,   "rate": 88.4 },
+        "紫荆":     { "qualified": 640,   "inspected": 720,   "rate": 88.9 }
+      }
+    },
+    {
+      "city": "焦作市",
+      "data": {
+        "菊花":     { "qualified": 8200,  "inspected": 8800,  "rate": 93.2 },
+        "月季":     { "qualified": 3460,  "inspected": 3760,  "rate": 92.0 },
+        "牡丹":     { "qualified": 2180,  "inspected": 2400,  "rate": 90.8 },
+        "荷花":     { "qualified": 1640,  "inspected": 1800,  "rate": 91.1 },
+        "桂花":     { "qualified": 1380,  "inspected": 1520,  "rate": 90.8 },
+        "腊梅":     { "qualified": 1060,  "inspected": 1180,  "rate": 89.8 },
+        "桃花":     { "qualified": 920,   "inspected": 1020,  "rate": 90.2 },
+        "紫荆":     { "qualified": 780,   "inspected": 860,   "rate": 90.7 },
+        "兰花":     { "qualified": 540,   "inspected": 620,   "rate": 87.1 },
+        "茶花":     { "qualified": 420,   "inspected": 500,   "rate": 84.0 }
+      }
+    },
+    {
+      "city": "安阳市",
+      "data": {
+        "腊梅":     { "qualified": 7600,  "inspected": 8100,  "rate": 93.8 },
+        "菊花":     { "qualified": 2840,  "inspected": 3120,  "rate": 91.0 },
+        "月季":     { "qualified": 2560,  "inspected": 2800,  "rate": 91.4 },
+        "牡丹":     { "qualified": 1920,  "inspected": 2120,  "rate": 90.6 },
+        "桂花":     { "qualified": 1240,  "inspected": 1380,  "rate": 89.9 },
+        "桃花":     { "qualified": 1060,  "inspected": 1160,  "rate": 91.4 },
+        "紫荆":     { "qualified": 880,   "inspected": 980,   "rate": 89.8 },
+        "荷花":     { "qualified": 720,   "inspected": 800,   "rate": 90.0 },
+        "兰花":     { "qualified": 460,   "inspected": 540,   "rate": 85.2 },
+        "茶花":     { "qualified": 380,   "inspected": 440,   "rate": 86.4 }
+      }
+    },
+    {
+      "city": "新乡市",
+      "data": {
+        "月季":     { "qualified": 4860,  "inspected": 5280,  "rate": 92.0 },
+        "菊花":     { "qualified": 3120,  "inspected": 3420,  "rate": 91.2 },
+        "牡丹":     { "qualified": 2040,  "inspected": 2240,  "rate": 91.1 },
+        "桂花":     { "qualified": 1560,  "inspected": 1720,  "rate": 90.7 },
+        "荷花":     { "qualified": 1280,  "inspected": 1420,  "rate": 90.1 },
+        "腊梅":     { "qualified": 1060,  "inspected": 1180,  "rate": 89.8 },
+        "桃花":     { "qualified": 1140,  "inspected": 1260,  "rate": 90.5 },
+        "紫荆":     { "qualified": 920,   "inspected": 1020,  "rate": 90.2 },
+        "兰花":     { "qualified": 580,   "inspected": 660,   "rate": 87.9 },
+        "茶花":     { "qualified": 460,   "inspected": 540,   "rate": 85.2 }
+      }
+    },
+    {
+      "city": "濮阳市",
+      "data": {
+        "月季":     { "qualified": 3240,  "inspected": 3520,  "rate": 92.0 },
+        "菊花":     { "qualified": 2480,  "inspected": 2720,  "rate": 91.2 },
+        "牡丹":     { "qualified": 1560,  "inspected": 1720,  "rate": 90.7 },
+        "桂花":     { "qualified": 1080,  "inspected": 1200,  "rate": 90.0 },
+        "腊梅":     { "qualified": 860,   "inspected": 960,   "rate": 89.6 },
+        "荷花":     { "qualified": 940,   "inspected": 1060,  "rate": 88.7 },
+        "桃花":     { "qualified": 780,   "inspected": 860,   "rate": 90.7 },
+        "紫荆":     { "qualified": 640,   "inspected": 720,   "rate": 88.9 },
+        "兰花":     { "qualified": 380,   "inspected": 440,   "rate": 86.4 },
+        "茶花":     { "qualified": 320,   "inspected": 380,   "rate": 84.2 }
+      }
+    },
+    {
+      "city": "鹤壁市",
+      "data": {
+        "月季":     { "qualified": 2180,  "inspected": 2380,  "rate": 91.6 },
+        "菊花":     { "qualified": 1640,  "inspected": 1800,  "rate": 91.1 },
+        "牡丹":     { "qualified": 1060,  "inspected": 1180,  "rate": 89.8 },
+        "桂花":     { "qualified": 820,   "inspected": 920,   "rate": 89.1 },
+        "腊梅":     { "qualified": 680,   "inspected": 760,   "rate": 89.5 },
+        "荷花":     { "qualified": 560,   "inspected": 640,   "rate": 87.5 },
+        "桃花":     { "qualified": 520,   "inspected": 580,   "rate": 89.7 },
+        "紫荆":     { "qualified": 420,   "inspected": 480,   "rate": 87.5 },
+        "兰花":     { "qualified": 260,   "inspected": 300,   "rate": 86.7 },
+        "茶花":     { "qualified": 220,   "inspected": 260,   "rate": 84.6 }
+      }
+    },
+    {
+      "city": "平顶山市",
+      "data": {
+        "月季":     { "qualified": 3680,  "inspected": 4000,  "rate": 92.0 },
+        "菊花":     { "qualified": 2420,  "inspected": 2660,  "rate": 91.0 },
+        "牡丹":     { "qualified": 1780,  "inspected": 1960,  "rate": 90.8 },
+        "桂花":     { "qualified": 1340,  "inspected": 1480,  "rate": 90.5 },
+        "腊梅":     { "qualified": 1060,  "inspected": 1180,  "rate": 89.8 },
+        "荷花":     { "qualified": 920,   "inspected": 1040,  "rate": 88.5 },
+        "桃花":     { "qualified": 1140,  "inspected": 1260,  "rate": 90.5 },
+        "紫荆":     { "qualified": 780,   "inspected": 880,   "rate": 88.6 },
+        "兰花":     { "qualified": 520,   "inspected": 600,   "rate": 86.7 },
+        "茶花":     { "qualified": 440,   "inspected": 520,   "rate": 84.6 }
+      }
+    },
+    {
+      "city": "三门峡市",
+      "data": {
+        "牡丹":     { "qualified": 1480,  "inspected": 1640,  "rate": 90.2 },
+        "月季":     { "qualified": 2360,  "inspected": 2580,  "rate": 91.5 },
+        "菊花":     { "qualified": 1580,  "inspected": 1740,  "rate": 90.8 },
+        "腊梅":     { "qualified": 1240,  "inspected": 1380,  "rate": 89.9 },
+        "桂花":     { "qualified": 920,   "inspected": 1020,  "rate": 90.2 },
+        "荷花":     { "qualified": 680,   "inspected": 760,   "rate": 89.5 },
+        "桃花":     { "qualified": 740,   "inspected": 820,   "rate": 90.2 },
+        "紫荆":     { "qualified": 560,   "inspected": 640,   "rate": 87.5 },
+        "兰花":     { "qualified": 340,   "inspected": 400,   "rate": 85.0 },
+        "茶花":     { "qualified": 280,   "inspected": 340,   "rate": 82.4 }
+      }
+    },
+    {
+      "city": "商丘市",
+      "data": {
+        "月季":     { "qualified": 4120,  "inspected": 4480,  "rate": 92.0 },
+        "菊花":     { "qualified": 2780,  "inspected": 3060,  "rate": 90.8 },
+        "牡丹":     { "qualified": 1860,  "inspected": 2060,  "rate": 90.3 },
+        "桂花":     { "qualified": 1320,  "inspected": 1460,  "rate": 90.4 },
+        "腊梅":     { "qualified": 980,   "inspected": 1080,  "rate": 90.7 },
+        "荷花":     { "qualified": 1140,  "inspected": 1280,  "rate": 89.1 },
+        "桃花":     { "qualified": 1060,  "inspected": 1180,  "rate": 89.8 },
+        "紫荆":     { "qualified": 740,   "inspected": 820,   "rate": 90.2 },
+        "兰花":     { "qualified": 420,   "inspected": 500,   "rate": 84.0 },
+        "茶花":     { "qualified": 360,   "inspected": 420,   "rate": 85.7 }
+      }
+    },
+    {
+      "city": "周口市",
+      "data": {
+        "月季":     { "qualified": 3580,  "inspected": 3900,  "rate": 91.8 },
+        "菊花":     { "qualified": 2640,  "inspected": 2900,  "rate": 91.0 },
+        "牡丹":     { "qualified": 1720,  "inspected": 1900,  "rate": 90.5 },
+        "桂花":     { "qualified": 1180,  "inspected": 1300,  "rate": 90.8 },
+        "腊梅":     { "qualified": 860,   "inspected": 960,   "rate": 89.6 },
+        "荷花":     { "qualified": 940,   "inspected": 1060,  "rate": 88.7 },
+        "桃花":     { "qualified": 1020,  "inspected": 1120,  "rate": 91.1 },
+        "紫荆":     { "qualified": 680,   "inspected": 760,   "rate": 89.5 },
+        "兰花":     { "qualified": 380,   "inspected": 440,   "rate": 86.4 },
+        "茶花":     { "qualified": 320,   "inspected": 380,   "rate": 84.2 }
+      }
+    },
+    {
+      "city": "驻马店市",
+      "data": {
+        "月季":     { "qualified": 3420,  "inspected": 3740,  "rate": 91.4 },
+        "菊花":     { "qualified": 2560,  "inspected": 2820,  "rate": 90.8 },
+        "牡丹":     { "qualified": 1680,  "inspected": 1860,  "rate": 90.3 },
+        "桂花":     { "qualified": 1240,  "inspected": 1380,  "rate": 89.9 },
+        "腊梅":     { "qualified": 920,   "inspected": 1020,  "rate": 90.2 },
+        "荷花":     { "qualified": 1060,  "inspected": 1200,  "rate": 88.3 },
+        "桃花":     { "qualified": 1120,  "inspected": 1240,  "rate": 90.3 },
+        "紫荆":     { "qualified": 720,   "inspected": 800,   "rate": 90.0 },
+        "兰花":     { "qualified": 560,   "inspected": 640,   "rate": 87.5 },
+        "茶花":     { "qualified": 480,   "inspected": 560,   "rate": 85.7 }
+      }
+    },
+    {
+      "city": "漯河市",
+      "data": {
+        "月季":     { "qualified": 2480,  "inspected": 2700,  "rate": 91.9 },
+        "菊花":     { "qualified": 1860,  "inspected": 2040,  "rate": 91.2 },
+        "牡丹":     { "qualified": 1240,  "inspected": 1380,  "rate": 89.9 },
+        "桂花":     { "qualified": 960,   "inspected": 1060,  "rate": 90.6 },
+        "腊梅":     { "qualified": 740,   "inspected": 820,   "rate": 90.2 },
+        "荷花":     { "qualified": 680,   "inspected": 760,   "rate": 89.5 },
+        "桃花":     { "qualified": 720,   "inspected": 800,   "rate": 90.0 },
+        "紫荆":     { "qualified": 520,   "inspected": 580,   "rate": 89.7 },
+        "兰花":     { "qualified": 320,   "inspected": 380,   "rate": 84.2 },
+        "茶花":     { "qualified": 260,   "inspected": 320,   "rate": 81.3 }
+      }
+    },
+    {
+      "city": "济源市",
+      "data": {
+        "月季":     { "qualified": 1860,  "inspected": 2040,  "rate": 91.2 },
+        "菊花":     { "qualified": 1420,  "inspected": 1560,  "rate": 91.0 },
+        "牡丹":     { "qualified": 980,   "inspected": 1080,  "rate": 90.7 },
+        "腊梅":     { "qualified": 780,   "inspected": 860,   "rate": 90.7 },
+        "桂花":     { "qualified": 640,   "inspected": 720,   "rate": 88.9 },
+        "荷花":     { "qualified": 520,   "inspected": 580,   "rate": 89.7 },
+        "桃花":     { "qualified": 480,   "inspected": 540,   "rate": 88.9 },
+        "紫荆":     { "qualified": 380,   "inspected": 440,   "rate": 86.4 },
+        "兰花":     { "qualified": 240,   "inspected": 280,   "rate": 85.7 },
+        "茶花":     { "qualified": 200,   "inspected": 240,   "rate": 83.3 }
+      }
+    }
+  ],
+  "summary": {
+    "totalInspected": 402370,
+    "totalQualified": 369550,
+    "overallRate": 91.8,
+    "topCityByRate": "许昌市",
+    "topCityByVolume": "洛阳市",
+    "topVarietyByVolume": "月季"
+  }
+}

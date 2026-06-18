@@ -3,9 +3,12 @@
     <section class="screen screen-cover">
       <!-- 一 -->
       <div class="map-container">
-        <button v-if="currentMap !== 'china'" class="back-btn" @click="handleBack">
-          返回上一级 (当前: {{ mapLabel }})
-        </button>
+        <div class="top-buttons">
+          <button class="page-back-btn" @click="router.push('/')">← 返回首页</button>
+          <button v-if="currentMap !== 'china'" class="back-btn" @click="handleBack">
+            返回上一级 (当前: {{ mapLabel }})
+          </button>
+        </div>
         <div ref="mapRef" style="width: 100%; height: 100%"></div>
       </div>
     </section>
@@ -70,6 +73,9 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 import * as echarts from 'echarts';
 import { fetchMapData } from '@/api/map';
 
@@ -383,6 +389,32 @@ const renderLuoyangMap = () => {
   overflow: hidden;
 }
 
+.top-buttons {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  display: flex;
+  gap: 10px;
+}
+
+.page-back-btn {
+  padding: 8px 14px;
+  background-color: #0f172a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.page-back-btn:hover {
+  background-color: #1e293b;
+  transform: translateY(-1px);
+}
+
 .screen {
   height: calc(100vh - 3.75rem);
   display: flex;
@@ -402,10 +434,6 @@ const renderLuoyangMap = () => {
 }
 
 .back-btn {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 10;
   padding: 8px 14px;
   background-color: #0f172a;
   color: white;

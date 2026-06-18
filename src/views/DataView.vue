@@ -5,10 +5,14 @@
         <h2 class="search-title">🌼 花卉数据库</h2>
         <p class="search-sub">输入花卉名称，探索详细信息</p>
         <div class="search-box-wrap">
-          <input v-model="query" class="search-input" placeholder="例如：向日葵、玫瑰、薰衣草..." @keyup.enter="doSearch" />
+          <input v-model="query" class="search-input" placeholder="例如：牡丹、月季、菊花..." @keyup.enter="doSearch" />
           <button class="search-btn" @click="doSearch">搜索</button>
         </div>
       </div>
+    </Transition>
+
+    <Transition name="heatmap-fade">
+      <FlowerHeatmap v-if="!searched" />
     </Transition>
 
     <div v-if="searched" class="search-compact">
@@ -16,6 +20,7 @@
         <input v-model="query" class="search-input" @keyup.enter="doSearch" />
         <button class="search-btn" @click="doSearch">搜索</button>
       </div>
+      <button class="back-overview-btn" @click="goBackToOverview">← 返回总览</button>
     </div>
 
     <Transition name="result-appear">
@@ -52,6 +57,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import FlowerHeatmap from '@/components/FlowerHeatmap.vue'
 
 const query = ref('')
 const lastQuery = ref('')
@@ -99,16 +105,25 @@ function doSearch() {
   searched.value = true
   flowerData.value = db[lastQuery.value] ?? null
 }
+
+function goBackToOverview() {
+  searched.value = false
+  query.value = ''
+  flowerData.value = null
+}
 </script>
 
 <style scoped>
 .data-page {
   min-height: calc(100vh - 3.75rem);
-  background: linear-gradient(160deg, #fdf6f0 0%, #e8f5e9 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 60px 24px 40px;
+  background-image: url(../../public/images/flowerDataBg.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .search-hero {
@@ -120,13 +135,13 @@ function doSearch() {
 .search-title {
   font-size: clamp(22px, 2rem, 40px);
   font-weight: 700;
-  color: #2e7d32;
+  color: #0b8311;
   margin-bottom: 8px;
 }
 
 .search-sub {
   font-size: clamp(13px, 0.9375rem, 17px);
-  color: #888;
+  color: #dadada;
   margin-bottom: 32px;
 }
 
@@ -154,7 +169,7 @@ function doSearch() {
 
 .search-btn {
   padding: 16px 28px;
-  background: linear-gradient(135deg, #43a047, #00897b);
+  background-image: linear-gradient(to right, #00F260, #0575E6);
   color: #fff;
   border: none;
   cursor: pointer;
@@ -171,7 +186,27 @@ function doSearch() {
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 12px;
   padding: 20px 0 32px;
+}
+
+.back-overview-btn {
+  padding: 14px 20px;
+  background: transparent;
+  color: #2e7d32;
+  border: 1px solid rgba(46, 125, 50, 0.25);
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.back-overview-btn:hover {
+  background: rgba(46, 125, 50, 0.06);
+  border-color: rgba(46, 125, 50, 0.4);
 }
 
 .result-wrap {
@@ -263,5 +298,23 @@ function doSearch() {
 .result-appear-enter-from {
   opacity: 0;
   transform: translateY(24px);
+}
+
+.heatmap-fade-enter-active {
+  transition: all 0.6s ease 0.1s;
+}
+
+.heatmap-fade-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.heatmap-fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.heatmap-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 </style>

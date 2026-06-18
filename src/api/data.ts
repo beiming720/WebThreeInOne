@@ -82,3 +82,44 @@ export async function fetchAllTourismData(): Promise<AllTourismData> {
 
   return { scenicRank, travelAgency, scenicBasic, cultureFunding }
 }
+
+// ==================== 花卉合格数据 ====================
+
+export interface FlowerVariety {
+  name: string
+  icon: string
+  family: string
+}
+
+export interface FlowerQualifiedItem {
+  qualified: number
+  inspected: number
+  rate: number
+}
+
+export interface FlowerRegion {
+  city: string
+  data: Record<string, FlowerQualifiedItem> | null
+}
+
+export interface FlowerQualificationData {
+  title: string
+  description: string
+  year: number
+  source: string
+  varieties: FlowerVariety[]
+  regions: FlowerRegion[]
+  summary: {
+    totalInspected: number
+    totalQualified: number
+    overallRate: number
+    topCityByRate: string
+    topCityByVolume: string
+    topVarietyByVolume: string
+  }
+}
+
+/** 获取河南省花卉苗木合格数量分布数据 */
+export function fetchFlowerQualification(): Promise<FlowerQualificationData> {
+  return get<FlowerQualificationData>('/data/henan_flower_qualification.json')
+}
