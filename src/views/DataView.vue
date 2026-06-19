@@ -56,54 +56,88 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import FlowerHeatmap from '@/components/FlowerHeatmap.vue'
+
+interface FlowerRawEntry {
+  name: string
+  latin: string
+  desc: string
+  family: string
+  genus: string
+  bloom_season: string
+  origin: string
+  habitat: string
+  uses: string
+}
+
+interface FlowerDisplayData {
+  emoji: string
+  name: string
+  latin: string
+  family: string
+  attrs: { label: string; value: string }[]
+  desc: string
+}
 
 const query = ref('')
 const lastQuery = ref('')
 const searched = ref(false)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const flowerData = ref<any>(null)
+const flowerData = ref<FlowerDisplayData | null>(null)
+const flowerDb = ref<Record<string, FlowerRawEntry>>({})
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db: Record<string, any> = {
-  '向日葵': {
-    emoji: '🌻', name: '向日葵', latin: 'Helianthus annuus', family: '菊科',
+onMounted(async () => {
+  try {
+    const res = await fetch('/data/flower_data.json')
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    flowerDb.value = await res.json()
+  } catch (e) {
+    console.error('Failed to load flower data:', e)
+  }
+})
+
+function mapToDisplay(raw: FlowerRawEntry): FlowerDisplayData {
+  return {
+    emoji: '🌸',
+    name: raw.name,
+    latin: raw.latin,
+    family: raw.family,
     attrs: [
-      { label: '花期', value: '7 - 9 月' },
-      { label: '原产地', value: '北美洲' },
-      { label: '株高', value: '1 - 3 米' },
-      { label: '花色', value: '黄色' },
+      { label: '花期', value: raw.bloom_season },
+      { label: '原产地', value: raw.origin },
+      { label: '生境', value: raw.habitat },
+      { label: '用途', value: raw.uses },
     ],
-    desc: '向日葵是菊科向日葵属一年生草本植物，因花序随太阳转动而得名。种子富含不饱和脂肪酸，可榨油食用，也是重要的观赏植物。',
-  },
-  '玫瑰': {
-    emoji: '🌹', name: '玫瑰', latin: 'Rosa rugosa', family: '蔷薇科',
-    attrs: [
-      { label: '花期', value: '5 - 6 月' },
-      { label: '原产地', value: '中国' },
-      { label: '株高', value: '1 - 2 米' },
-      { label: '花色', value: '红、粉、白' },
-    ],
-    desc: '玫瑰是蔷薇科蔷薇属落叶灌木，花朵芳香浓郁，是重要的香料植物和观赏植物，也是爱情的象征。',
-  },
-  '薰衣草': {
-    emoji: '💜', name: '薰衣草', latin: 'Lavandula angustifolia', family: '唇形科',
-    attrs: [
-      { label: '花期', value: '6 - 8 月' },
-      { label: '原产地', value: '地中海地区' },
-      { label: '株高', value: '30 - 60 厘米' },
-      { label: '花色', value: '紫色' },
-    ],
-    desc: '薰衣草是唇形科薰衣草属多年生草本植物，以其独特的香气著称，广泛用于香料、精油和园艺观赏。',
-  },
+    desc: raw.desc,
+  }
 }
 
 function doSearch() {
   if (!query.value.trim()) return
   lastQuery.value = query.value.trim()
   searched.value = true
-  flowerData.value = db[lastQuery.value] ?? null
+
+  const db = flowerDb.value
+  if (!db || Object.keys(db).length === 0) {
+    flowerData.value = null
+    return
+  }
+
+  const q = lastQuery.value
+  const qLower = q.toLowerCase()
+
+  for (const [key, entry] of Object.entries(db)) {
+    if (
+      entry.name.includes(q) ||
+      key.toLowerCase().includes(qLower) ||
+      entry.latin.toLowerCase().includes(qLower)
+    ) {
+      flowerData.value = mapToDisplay(entry)
+      return
+    }
+  }
+
+  flowerData.value = null
 }
 
 function goBackToOverview() {
@@ -119,8 +153,8 @@ function goBackToOverview() {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 60px 24px 40px;
-  background-image: url(../../public/images/flowerDataBg.png);
+  padding: 20px 24px 40px;
+  background-image: url('@/assets/images/bg/flowerDataBg.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -142,7 +176,7 @@ function goBackToOverview() {
 .search-sub {
   font-size: clamp(13px, 0.9375rem, 17px);
   color: #dadada;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
 }
 
 .search-box-wrap {
@@ -193,7 +227,7 @@ function goBackToOverview() {
 
 .back-overview-btn {
   padding: 14px 20px;
-  background: transparent;
+  background-image: linear-gradient(to right, #00F260, #0575E6);
   color: #2e7d32;
   border: 1px solid rgba(46, 125, 50, 0.25);
   border-radius: 40px;
@@ -205,7 +239,7 @@ function goBackToOverview() {
 }
 
 .back-overview-btn:hover {
-  background: rgba(46, 125, 50, 0.06);
+  opacity: 0.9;
   border-color: rgba(46, 125, 50, 0.4);
 }
 
@@ -215,7 +249,7 @@ function goBackToOverview() {
 }
 
 .flower-card {
-  background: #fff;
+  background-image: linear-gradient(to right, #c2e59c, #64b3f4);
   border-radius: 20px;
   padding: clamp(16px, 1.75rem, 32px);
   box-shadow: 0 8px 40px rgba(46, 125, 50, 0.12);

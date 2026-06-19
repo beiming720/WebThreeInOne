@@ -30,5 +30,12 @@ export const useUserStore = defineStore('user', () => {
     localStorage.removeItem('user')
   }
 
-  return { user, isLoggedIn, login, logout }
+  function updateProfile(patch: { username?: string; avatar?: string }) {
+    if (!user.value) return
+    if (patch.username !== undefined) user.value.username = patch.username
+    if (patch.avatar !== undefined) user.value.avatar = patch.avatar
+    localStorage.setItem('user', JSON.stringify(user.value))
+  }
+
+  return { user, isLoggedIn, login, logout, updateProfile }
 })

@@ -6,7 +6,28 @@ const router = createRouter({
     { path: '/', name: 'home', component: () => import('../views/HomeView.vue') },
     { path: '/login', name: 'login', component: () => import('../views/UserLogin.vue') },
     { path: '/register', name: 'register', component: () => import('../views/UserRegister.vue') },
-    { path: '/user', name: 'user', component: () => import('../views/UserCenter.vue') },
+    {
+      path: '/user',
+      component: () => import('../views/UserCenter.vue'),
+      redirect: '/user/profile',
+      children: [
+        {
+          path: 'profile',
+          name: 'user-profile',
+          component: () => import('../views/user/UserProfile.vue'),
+        },
+        {
+          path: 'edit-info',
+          name: 'user-edit-info',
+          component: () => import('../views/user/UserEditInfo.vue'),
+        },
+        {
+          path: 'history',
+          name: 'user-history',
+          component: () => import('../views/user/UserRecognitionHistory.vue'),
+        },
+      ],
+    },
     { path: '/flower/:season', name: 'flower', component: () => import('../views/FlowerDetail.vue') },
     {
       path: '/recognition',

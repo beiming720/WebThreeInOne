@@ -128,7 +128,7 @@ const toLogin = async () => {
   z-index: 0;
   height: calc(100vh - 3.75rem);
   overflow: hidden;
-  background-image: url(../../public/images/loginbg.png);
+  background-image: url('@/assets/images/bg/loginbg.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

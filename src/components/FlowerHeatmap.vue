@@ -317,7 +317,6 @@ onBeforeUnmount(() => {
 .heatmap-card {
   width: 100%;
   max-width: 900px;
-  // background: #fff;
   background-image: linear-gradient(to right, #c2e59c, #64b3f4);
   border-radius: 20px;
   padding: clamp(16px, 1.75rem, 28px);

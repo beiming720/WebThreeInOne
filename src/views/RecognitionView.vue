@@ -116,7 +116,7 @@ async function identify() {
   align-items: center;
   justify-content: center;
   padding: 40px 24px;
-  background-image: url('../../public/images/花卉识别页1.png');
+  background-image: url('@/assets/images/bg/花卉识别页1.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -136,7 +136,7 @@ async function identify() {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url('../../public/images/相机框.jpg');
+  background-image: url('@/assets/images/bg/相机框.jpg');
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
