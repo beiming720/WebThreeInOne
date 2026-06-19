@@ -69,33 +69,33 @@
 import { computed, ref, watch, onBeforeUnmount, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-// 花卉图片映射（public/images/FlowerList/{season}/{花名}.jpg）
+// 花卉图片映射（src/assets/images/FlowerList/{season}/{花名}.jpg）
 const flowerImageMap: Record<string, Record<string, string>> = {
   spring: {
-    '樱花': '/images/FlowerList/spring/樱花.jpg',
-    '桃花': '/images/FlowerList/spring/桃花.jpg',
-    '牡丹': '/images/FlowerList/spring/牡丹.jpg',
-    '海棠': '/images/FlowerList/spring/海棠.jpg',
-    '郁金香': '/images/FlowerList/spring/郁金香.jpg',
+    '樱花': new URL('../assets/images/FlowerList/spring/樱花.jpg', import.meta.url).href,
+    '桃花': new URL('../assets/images/FlowerList/spring/桃花.jpg', import.meta.url).href,
+    '牡丹': new URL('../assets/images/FlowerList/spring/牡丹.jpg', import.meta.url).href,
+    '海棠': new URL('../assets/images/FlowerList/spring/海棠.jpg', import.meta.url).href,
+    '郁金香': new URL('../assets/images/FlowerList/spring/郁金香.jpg', import.meta.url).href,
   },
   summer: {
-    '荷花': '/images/FlowerList/summer/荷花.jpg',
-    '紫薇': '/images/FlowerList/summer/紫薇.jpg',
-    '向日葵': '/images/FlowerList/summer/向日葵.jpg',
-    '月季': '/images/FlowerList/summer/月季.jpg',
-    '栀子花': '/images/FlowerList/summer/栀子花.jpg',
+    '荷花': new URL('../assets/images/FlowerList/summer/荷花.jpg', import.meta.url).href,
+    '紫薇': new URL('../assets/images/FlowerList/summer/紫薇.jpg', import.meta.url).href,
+    '向日葵': new URL('../assets/images/FlowerList/summer/向日葵.jpg', import.meta.url).href,
+    '月季': new URL('../assets/images/FlowerList/summer/月季.jpg', import.meta.url).href,
+    '栀子花': new URL('../assets/images/FlowerList/summer/栀子花.jpg', import.meta.url).href,
   },
   autumn: {
-    '菊花': '/images/FlowerList/autumn/菊花.jpg',
-    '桂花': '/images/FlowerList/autumn/桂花.jpg',
-    '银杏': '/images/FlowerList/autumn/银杏.jpg',
-    '粉黛乱子草': '/images/FlowerList/autumn/粉黛乱子草.jpg',
+    '菊花': new URL('../assets/images/FlowerList/autumn/菊花.jpg', import.meta.url).href,
+    '桂花': new URL('../assets/images/FlowerList/autumn/桂花.jpg', import.meta.url).href,
+    '银杏': new URL('../assets/images/FlowerList/autumn/银杏.jpg', import.meta.url).href,
+    '粉黛乱子草': new URL('../assets/images/FlowerList/autumn/粉黛乱子草.jpg', import.meta.url).href,
   },
   winter: {
-    '腊梅': '/images/FlowerList/winter/腊梅.jpg',
-    '梅花': '/images/FlowerList/winter/梅花.jpg',
-    '天竺葵': '/images/FlowerList/winter/天竺葵.jpg',
-    '冬月季': '/images/FlowerList/winter/冬月季.jpg',
+    '腊梅': new URL('../assets/images/FlowerList/winter/腊梅.jpg', import.meta.url).href,
+    '梅花': new URL('../assets/images/FlowerList/winter/梅花.jpg', import.meta.url).href,
+    '天竺葵': new URL('../assets/images/FlowerList/winter/天竺葵.jpg', import.meta.url).href,
+    '冬月季': new URL('../assets/images/FlowerList/winter/冬月季.jpg', import.meta.url).href,
   },
 }
 
