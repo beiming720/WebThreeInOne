@@ -1,0 +1,279 @@
+(D:\Anaconda\envs\ENV\Pytorch) E:\vscode\python\pytorch\Flower102>python train.py 
+训练集: 5728  验证集: 1226
+类别数: 102
+总参数量: 24,714,662  可训练参数量: 1,206,630
+开始训练 [resnet50]...
+  知识蒸馏: ✗ 关闭
+  MixUp:    ✗ 关闭
+Epoch 0/99
+----------
+train Loss: 4.0449 Acc: 0.1266
+val Loss: 2.8019 Acc: 0.3711
+
+Epoch 1/99
+----------
+train Loss: 2.3734 Acc: 0.4143
+val Loss: 1.3396 Acc: 0.6843
+
+Epoch 2/99
+----------
+train Loss: 1.5395 Acc: 0.5824
+val Loss: 0.8474 Acc: 0.7806
+
+Epoch 3/99
+----------
+train Loss: 1.1613 Acc: 0.6803
+val Loss: 0.6205 Acc: 0.8499
+
+Epoch 4/99
+----------
+train Loss: 0.9340 Acc: 0.7378
+val Loss: 0.4975 Acc: 0.8728
+
+Epoch 5/99
+----------
+train Loss: 0.8090 Acc: 0.7711
+val Loss: 0.4221 Acc: 0.8956
+
+Epoch 6/99
+----------
+train Loss: 0.7144 Acc: 0.7926
+val Loss: 0.3592 Acc: 0.9054
+
+Epoch 7/99
+----------
+train Loss: 0.6279 Acc: 0.8176
+val Loss: 0.3173 Acc: 0.9192
+
+Epoch 8/99
+----------
+train Loss: 0.5675 Acc: 0.8359
+val Loss: 0.3045 Acc: 0.9127
+
+Epoch 9/99
+----------
+train Loss: 0.5378 Acc: 0.8464
+val Loss: 0.3016 Acc: 0.9176
+
+Epoch 10/99
+----------
+train Loss: 0.4922 Acc: 0.8574
+val Loss: 0.2589 Acc: 0.9323
+
+Epoch 11/99
+----------
+train Loss: 0.4686 Acc: 0.8687
+val Loss: 0.2465 Acc: 0.9331
+
+Epoch 12/99
+----------
+train Loss: 0.4325 Acc: 0.8792
+val Loss: 0.2456 Acc: 0.9266
+
+Epoch 13/99
+----------
+train Loss: 0.4254 Acc: 0.8799
+val Loss: 0.2335 Acc: 0.9258
+
+Epoch 14/99
+----------
+train Loss: 0.3881 Acc: 0.8879
+val Loss: 0.2231 Acc: 0.9372
+
+Epoch 15/99
+----------
+train Loss: 0.3627 Acc: 0.8946
+val Loss: 0.2178 Acc: 0.9372
+
+Epoch 16/99
+----------
+train Loss: 0.3406 Acc: 0.9000
+val Loss: 0.2257 Acc: 0.9323
+
+Epoch 17/99
+----------
+train Loss: 0.3483 Acc: 0.9000
+val Loss: 0.2245 Acc: 0.9388
+
+Epoch 18/99
+----------
+train Loss: 0.3147 Acc: 0.9080
+val Loss: 0.2194 Acc: 0.9429
+
+Epoch 19/99
+----------
+train Loss: 0.3197 Acc: 0.9010
+val Loss: 0.2368 Acc: 0.9282
+
+Epoch 20/99
+----------
+train Loss: 0.2986 Acc: 0.9141
+val Loss: 0.2007 Acc: 0.9380
+
+Epoch 21/99
+----------
+train Loss: 0.2733 Acc: 0.9186
+val Loss: 0.1991 Acc: 0.9454
+
+Epoch 22/99
+----------
+train Loss: 0.2692 Acc: 0.9195
+val Loss: 0.1907 Acc: 0.9437
+
+Epoch 23/99
+----------
+train Loss: 0.2668 Acc: 0.9235
+val Loss: 0.2008 Acc: 0.9421
+
+Epoch 24/99
+----------
+train Loss: 0.2461 Acc: 0.9249
+val Loss: 0.1601 Acc: 0.9592
+
+Epoch 25/99
+----------
+train Loss: 0.2451 Acc: 0.9267
+val Loss: 0.1899 Acc: 0.9445
+
+Epoch 26/99
+----------
+train Loss: 0.2481 Acc: 0.9275
+val Loss: 0.1836 Acc: 0.9429
+
+Epoch 27/99
+----------
+train Loss: 0.2410 Acc: 0.9267
+val Loss: 0.1904 Acc: 0.9429
+
+Epoch 28/99
+----------
+train Loss: 0.2326 Acc: 0.9309
+val Loss: 0.1761 Acc: 0.9494
+
+Epoch 29/99
+----------
+train Loss: 0.2272 Acc: 0.9279
+val Loss: 0.1741 Acc: 0.9519
+
+Epoch 30/99
+----------
+train Loss: 0.2118 Acc: 0.9403
+val Loss: 0.1846 Acc: 0.9429
+
+Epoch 31/99
+----------
+train Loss: 0.2283 Acc: 0.9349
+val Loss: 0.1654 Acc: 0.9560
+
+Epoch 32/99
+----------
+train Loss: 0.2137 Acc: 0.9358
+val Loss: 0.1663 Acc: 0.9445
+
+Epoch 33/99
+----------
+train Loss: 0.2087 Acc: 0.9375
+val Loss: 0.1798 Acc: 0.9502
+
+Epoch 34/99
+----------
+train Loss: 0.1993 Acc: 0.9408
+val Loss: 0.1741 Acc: 0.9551
+
+早停触发：val loss 连续10轮无显著下降
+保存的模型: val Loss=0.1601  val Acc=0.9592
+全局最高 val Acc: 0.9592
+第一阶段训练耗时: 790.0s
+开始微调阶段（解冻深层）...
+Epoch 0/29
+----------
+train Loss: 0.2277 Acc: 0.9317
+val Loss: 0.1573 Acc: 0.9576
+
+Epoch 1/29
+----------
+train Loss: 0.2307 Acc: 0.9316
+val Loss: 0.1570 Acc: 0.9576
+
+Epoch 2/29
+----------
+train Loss: 0.2432 Acc: 0.9298
+val Loss: 0.1566 Acc: 0.9535
+
+Epoch 3/29
+----------
+train Loss: 0.2142 Acc: 0.9356
+val Loss: 0.1532 Acc: 0.9568
+
+Epoch 4/29
+----------
+train Loss: 0.2025 Acc: 0.9387
+val Loss: 0.1528 Acc: 0.9527
+
+Epoch 5/29
+----------
+train Loss: 0.1974 Acc: 0.9438
+val Loss: 0.1509 Acc: 0.9568
+
+Epoch 6/29
+----------
+train Loss: 0.2014 Acc: 0.9403
+val Loss: 0.1456 Acc: 0.9576
+
+Epoch 7/29
+----------
+train Loss: 0.2063 Acc: 0.9422
+val Loss: 0.1449 Acc: 0.9592
+
+Epoch 8/29
+----------
+train Loss: 0.1826 Acc: 0.9452
+val Loss: 0.1403 Acc: 0.9608
+
+Epoch 9/29
+----------
+train Loss: 0.1805 Acc: 0.9485
+val Loss: 0.1443 Acc: 0.9576
+
+Epoch 10/29
+----------
+train Loss: 0.1785 Acc: 0.9509
+val Loss: 0.1446 Acc: 0.9551
+
+Epoch 11/29
+----------
+train Loss: 0.1754 Acc: 0.9471
+val Loss: 0.1358 Acc: 0.9608
+
+Epoch 12/29
+----------
+train Loss: 0.1788 Acc: 0.9478
+val Loss: 0.1428 Acc: 0.9600
+
+Epoch 13/29
+----------
+train Loss: 0.1752 Acc: 0.9487
+val Loss: 0.1425 Acc: 0.9600
+
+Epoch 14/29
+----------
+train Loss: 0.1669 Acc: 0.9494
+val Loss: 0.1371 Acc: 0.9592
+
+Epoch 15/29
+----------
+train Loss: 0.1739 Acc: 0.9492
+val Loss: 0.1398 Acc: 0.9584
+
+Epoch 16/29
+----------
+train Loss: 0.1736 Acc: 0.9511
+val Loss: 0.1376 Acc: 0.9592
+
+早停触发：val loss 连续5轮无显著下降
+保存的模型: val Loss=0.1358  val Acc=0.9608
+全局最高 val Acc: 0.9608
+微调阶段耗时: 538.0s
+总训练耗时: 1328.0s
+训练完成，模型已保存为 flower_model_resnet50.pth
+提示：运行 test.py 在测试集上做最终评估。

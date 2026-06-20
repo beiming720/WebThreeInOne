@@ -1,67 +1,96 @@
 <template>
-  <div class="recognition-page">
-    <div class="recognition-card">
-      <h2 class="page-title">花卉识别</h2>
+  <!-- 滚动容器：双屏 snap -->
+  <div ref="scrollContainer" class="scroll-container">
+    <!-- ========== 第 ① 屏：花卉识别（原有逻辑） ========== -->
+    <section class="snap-page recognition-screen" :style="{
+      opacity: 1 - scrollProgress,
+      transform: `scale(${1 - scrollProgress * 0.04}) translateY(${-scrollProgress * 20}px)`,
+      pointerEvents: scrollProgress > 0.5 ? 'none' : undefined,
+    }">
+      <div class="recognition-card">
+        <h2 class="page-title">花卉识别</h2>
 
-      <!-- Upload zone -->
-      <div class="upload-zone" :class="{ 'has-image': previewUrl, dragging }" @click="!previewUrl && fileInput?.click()"
-        @dragover.prevent="dragging = true" @dragleave="dragging = false" @drop.prevent="onDrop">
-        <template v-if="!previewUrl">
-          <div class="upload-icon">📷</div>
-          <p class="upload-text">点击或拖拽图片至此处</p>
-          <p class="upload-hint">支持 JPG、PNG、WEBP 格式</p>
-        </template>
-        <template v-else>
-          <img :src="previewUrl" class="preview-img" alt="预览" />
-          <button class="btn-change" @click.stop="reset">重新选择</button>
-        </template>
-      </div>
-
-      <input ref="fileInput" type="file" accept="image/*" style="display:none" @change="onFileChange" />
-
-      <!-- Identify button -->
-      <Transition name="slide-up">
-        <button v-if="previewUrl && !loading" class="btn-identify" @click="identify">
-          点击识别
-        </button>
-      </Transition>
-
-      <!-- Loading -->
-      <div v-if="loading" class="loading-wrap">
-        <div class="petal-spinner">
-          <span v-for="i in 8" :key="i" :style="{ '--i': i }">🌸</span>
+        <!-- Upload zone -->
+        <div class="upload-zone" :class="{ 'has-image': previewUrl, dragging }"
+          @click="!previewUrl && fileInput?.click()" @dragover.prevent="dragging = true" @dragleave="dragging = false"
+          @drop.prevent="onDrop">
+          <template v-if="!previewUrl">
+            <div class="upload-icon">📷</div>
+            <p class="upload-text">点击或拖拽图片至此处</p>
+            <p class="upload-hint">支持 JPG、PNG、WEBP 格式</p>
+          </template>
+          <template v-else>
+            <img :src="previewUrl" class="preview-img" alt="预览" />
+            <button class="btn-change" @click.stop="reset">重新选择</button>
+          </template>
         </div>
-        <p>识别中...</p>
-      </div>
 
-      <!-- Result -->
-      <Transition name="fade-up">
-        <div v-if="result" class="result-card">
-          <div class="result-header">
-            <span class="result-emoji">🌺</span>
-            <div>
-              <div class="result-name">{{ result.name }}</div>
-              <div class="result-latin">{{ result.latin }}</div>
+        <input ref="fileInput" type="file" accept="image/*" style="display:none" @change="onFileChange" />
+
+        <!-- Identify button -->
+        <Transition name="slide-up">
+          <button v-if="previewUrl && !loading" class="btn-identify" @click="identify">
+            点击识别
+          </button>
+        </Transition>
+
+        <!-- Loading -->
+        <div v-if="loading" class="loading-wrap">
+          <div class="petal-spinner">
+            <span v-for="i in 8" :key="i" :style="{ '--i': i }">🌸</span>
+          </div>
+          <p>识别中...</p>
+        </div>
+
+        <!-- Result -->
+        <Transition name="fade-up">
+          <div v-if="result" class="result-card">
+            <div class="result-header">
+              <span class="result-emoji">🌺</span>
+              <div>
+                <div class="result-name">{{ result.name }}</div>
+                <div class="result-latin">{{ result.latin }}</div>
+              </div>
+              <div class="result-confidence">{{ result.confidence }}%</div>
             </div>
-            <div class="result-confidence">{{ result.confidence }}%</div>
+            <p class="result-desc">{{ result.desc }}</p>
+            <div class="confidence-bar">
+              <div class="confidence-fill" :style="{ width: result.confidence + '%' }"></div>
+            </div>
           </div>
-          <p class="result-desc">{{ result.desc }}</p>
-          <div class="confidence-bar">
-            <div class="confidence-fill" :style="{ width: result.confidence + '%' }"></div>
-          </div>
+        </Transition>
+
+      </div>
+
+      <!-- ⬇️ 滚动指示器 -->
+      <Transition name="hint-fade">
+        <div v-if="showScrollHint" class="scroll-hint" @click="scrollToExplain">
+          <span>模型可解释性分析</span>
+          <span class="arrow-bounce">↓</span>
         </div>
       </Transition>
-    </div>
+    </section>
+
+    <!-- ========== 第 ② 屏：模型可解释性 ========== -->
+    <section class="snap-page explain-screen" :style="{
+      opacity: scrollProgress,
+      transform: `translateY(${(1 - scrollProgress) * 40}px)`,
+      pointerEvents: scrollProgress < 0.5 ? 'none' : undefined,
+    }">
+      <ModelExplainPanel />
+    </section>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { identifyFlower } from '@/api/flower'
 import type { FlowerIdentifyResult } from '@/api/flower'
 import { addRecord } from '@/utils/history'
 import type { RecognitionRecord } from '@/types/recognition'
+import ModelExplainPanel from '@/components/explain/ModelExplainPanel.vue'
 
+// ---------- 原有识别逻辑（不变） ----------
 const fileInput = ref<HTMLInputElement>()
 const previewUrl = ref('')
 const selectedFile = ref<File | null>(null)
@@ -103,16 +132,14 @@ async function identify() {
   try {
     result.value = await identifyFlower(selectedFile.value)
 
-    // 保存识别记录到 localStorage
     const record: RecognitionRecord = {
       id: crypto.randomUUID(),
       imageUrl: previewUrl.value,
       flowerName: result.value.name,
-      confidence: result.value.confidence / 100, // 后端 0-100 → 归一化 0-1
+      confidence: result.value.confidence / 100,
       createdAt: new Date().toISOString(),
     }
     addRecord(record)
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     alert(err?.message || '网络请求失败，请检查后端服务是否启动')
@@ -120,14 +147,88 @@ async function identify() {
     loading.value = false
   }
 }
+
+// ---------- 新增：滚动控制 ----------
+const scrollContainer = ref<HTMLElement>()
+const showScrollHint = ref(true)
+const scrollProgress = ref(0) // 0 = 第①屏, 1 = 第②屏
+let wheelCooldown = false
+
+function scrollToExplain() {
+  scrollContainer.value?.scrollTo({
+    top: scrollContainer.value.clientHeight,
+    behavior: 'smooth',
+  })
+}
+
+function scrollToTop() {
+  scrollContainer.value?.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  })
+}
+
+function onScroll() {
+  if (!scrollContainer.value) return
+  const st = scrollContainer.value.scrollTop
+  const h = scrollContainer.value.clientHeight
+  showScrollHint.value = st < 100
+  scrollProgress.value = Math.min(1, Math.max(0, st / h))
+}
+
+function onWheel(e: WheelEvent) {
+  // 只在触控板/鼠标滚轮明确上下滚动时拦截
+  if (Math.abs(e.deltaY) < 10) return
+  e.preventDefault()
+  if (wheelCooldown) return
+  wheelCooldown = true
+  setTimeout(() => { wheelCooldown = false }, 600)
+
+  if (e.deltaY > 0) {
+    scrollToExplain()
+  } else {
+    scrollToTop()
+  }
+}
+
+onMounted(() => {
+  scrollContainer.value?.addEventListener('scroll', onScroll, { passive: true })
+  scrollContainer.value?.addEventListener('wheel', onWheel, { passive: false })
+})
+onUnmounted(() => {
+  scrollContainer.value?.removeEventListener('scroll', onScroll)
+  scrollContainer.value?.removeEventListener('wheel', onWheel)
+})
 </script>
 
 <style scoped>
-.recognition-page {
-  min-height: calc(100vh - 3.75rem);
+/* ===== 滚动容器 ===== */
+.scroll-container {
+  height: calc(100vh - 3.75rem);
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== 每一屏 ===== */
+.snap-page {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  will-change: transform, opacity;
+}
+
+/* ===== 第一屏：花卉识别 ===== */
+.recognition-screen {
   padding: 40px 24px;
   background-image: url('@/assets/images/bg/花卉识别页1.png');
   background-size: cover;
@@ -142,7 +243,6 @@ async function identify() {
   width: 90%;
   max-width: 58vh;
   box-shadow: 0 8px 48px rgba(233, 150, 122, 0.15);
-
 }
 
 .recognition-card::before {
@@ -350,6 +450,74 @@ async function identify() {
   transition: width 1s ease;
 }
 
+/* ===== 滚动指示器 ===== */
+.scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 2;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hint-fade-enter-active {
+  transition: all 0.4s ease;
+}
+
+.hint-fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.hint-fade-enter-from {
+  opacity: 0;
+  transform: translateX(-50%) translateY(12px);
+}
+
+.hint-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-50%) translateY(12px);
+}
+
+.scroll-hint:hover {
+  color: #7F00FF;
+}
+
+.arrow-bounce {
+  font-size: 20px;
+  animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+/* ===== 第二屏：模型可解释性 ===== */
+.explain-screen {
+  padding: 24px;
+  background-image: url('@/assets/images/bg/AI可视化Bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  align-items: flex-start;
+}
+
+/* ===== 原有动画 ===== */
 .slide-up-enter-active {
   transition: all 0.4s ease;
 }
