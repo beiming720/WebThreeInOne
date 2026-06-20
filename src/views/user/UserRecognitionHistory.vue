@@ -35,7 +35,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .history {
-  background: #fff;
+  background-image: linear-gradient(to right, #E0EAFC, #CFDEF3);
   border-radius: 16px;
   padding: 32px;
   box-shadow: 0 2px 16px rgba(233, 150, 122, 0.1);

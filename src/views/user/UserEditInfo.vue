@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref } from 'vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { useUserStore } from '@/stores/user'
 
@@ -60,7 +60,7 @@ function handleSave() {
 
 <style scoped lang="scss">
 .edit-info {
-  background: #fff;
+  background-image: linear-gradient(to right, #E0EAFC, #CFDEF3);
   border-radius: 16px;
   padding: 32px;
   box-shadow: 0 2px 16px rgba(233, 150, 122, 0.1);
@@ -99,7 +99,7 @@ function handleSave() {
 }
 
 .ei-btn-save {
-  background: linear-gradient(135deg, #cf53aa, #e07a5f) !important;
+  background: linear-gradient(135deg, #56CCF2, #2F80ED) !important;
   border: none !important;
 
   &:hover {

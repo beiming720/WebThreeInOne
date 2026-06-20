@@ -293,8 +293,8 @@ async function identify() {
   margin-top: 24px;
   padding: 20px;
   border-radius: 16px;
-  background: linear-gradient(135deg, #fff9f9, #fce4ec);
-  border: 1px solid #f4a0a0;
+  background: linear-gradient(135deg, #f7f7f7, #f0acf7);
+  border: 1px solid #5f25b1a1;
   position: relative;
   z-index: 1;
 }
@@ -346,7 +346,7 @@ async function identify() {
 .confidence-fill {
   height: 100%;
   border-radius: 3px;
-  background: linear-gradient(90deg, #e74c3c, #e91e8c);
+  background: linear-gradient(90deg, #E100FF, #7F00FF);
   transition: width 1s ease;
 }
 

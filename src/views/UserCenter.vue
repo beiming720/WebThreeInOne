@@ -3,27 +3,31 @@
     <aside class="uc-sidebar">
       <nav class="uc-nav">
         <RouterLink to="/user/profile" class="uc-nav-item" active-class="uc-nav-active">
-          <span class="uc-nav-icon">📋</span>
+          <span class="uc-nav-icon">
+            <User />
+          </span>
           <span class="uc-nav-text">个人中心</span>
         </RouterLink>
         <RouterLink to="/user/edit-info" class="uc-nav-item" active-class="uc-nav-active">
-          <span class="uc-nav-icon">🔑</span>
+          <span class="uc-nav-icon">
+            <EditPen />
+          </span>
           <span class="uc-nav-text">修改信息</span>
         </RouterLink>
         <RouterLink to="/user/history" class="uc-nav-item" active-class="uc-nav-active">
-          <span class="uc-nav-icon">📝</span>
+          <span class="uc-nav-icon">
+            <Clock />
+          </span>
           <span class="uc-nav-text">识别记录</span>
         </RouterLink>
 
         <div class="uc-nav-divider" />
 
-        <div
-          v-for="item in externalLinks"
-          :key="item.label"
-          class="uc-nav-item uc-nav-external"
-          @click="router.push(item.path)"
-        >
-          <span class="uc-nav-icon">{{ item.icon }}</span>
+        <div v-for="item in externalLinks" :key="item.label" class="uc-nav-item uc-nav-external"
+          @click="router.push(item.path)">
+          <span class="uc-nav-icon">
+            <component :is="item.icon" />
+          </span>
           <span class="uc-nav-text">{{ item.label }}</span>
         </div>
       </nav>
@@ -46,10 +50,10 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const externalLinks = [
-  { icon: '🏙️', label: '前往首页', path: '/' },
-  { icon: '📊', label: '数据大屏', path: '/echarts' },
-  { icon: '🌸', label: '花卉识别', path: '/recognition' },
-  { icon: '📚', label: '花卉知识库', path: '/data' },
+  { icon: 'HomeFilled', label: '前往首页', path: '/' },
+  { icon: 'Histogram', label: '数据大屏', path: '/echarts' },
+  { icon: 'CameraFilled', label: '花卉识别', path: '/recognition' },
+  { icon: 'Collection', label: '花卉知识库', path: '/data' },
 ]
 
 function handleLogout() {
@@ -69,7 +73,11 @@ function handleLogout() {
 .user-center-layout {
   min-height: calc(100vh - 3.75rem);
   display: flex;
-  background: linear-gradient(160deg, #fdf6f0 0%, #fce4ec 50%, #f3e5f5 100%);
+  // background: linear-gradient(160deg, #fdf6f0 0%, #fce4ec 50%, #f3e5f5 100%);
+  background-image: url('@/assets/images/bg/userCenterBg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .uc-sidebar {
@@ -104,21 +112,29 @@ function handleLogout() {
   transition: all 0.2s;
 
   &:hover {
-    background: rgba(233, 150, 122, 0.08);
-    color: #c0392b;
+    background: #0f629d52;
+    color: #000000;
   }
 }
 
 .uc-nav-active {
-  background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(233, 30, 140, 0.06));
-  color: #c0392b;
+  background: linear-gradient(135deg, #2193b0, #6dd5ed);
+  color: #000000;
   font-weight: 600;
-  box-shadow: inset 3px 0 0 #c0392b;
+  box-shadow: inset 3px 0 0 #2193b0;
 }
 
 .uc-nav-icon {
   font-size: 18px;
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+
+  :deep(svg) {
+    width: 1em;
+    height: 1em;
+  }
 }
 
 .uc-nav-text {
@@ -141,16 +157,16 @@ function handleLogout() {
   margin: 16px 12px 0;
   padding: 12px;
   border-radius: 10px;
-  border: 1px solid rgba(224, 192, 192, 0.5);
-  background: rgba(255, 255, 255, 0.6);
-  color: #c0392b;
+  border: 1px solid rgba(54, 47, 47, 0.5);
+  background: #bfd7dd;
+  color: #000000;
   font-size: 13px;
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover {
-    background: #fce4ec;
-    border-color: #c0392b;
+    background: #0f629d52;
+    border-color: #2b2929;
   }
 }
 

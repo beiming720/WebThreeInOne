@@ -15,7 +15,9 @@
     <!-- 功能导航卡片 -->
     <div class="up-grid">
       <div class="up-card up-func" v-for="item in menuItems" :key="item.label" @click="item.action()">
-        <span class="up-func-icon">{{ item.icon }}</span>
+        <span class="up-func-icon">
+          <component :is="item.icon" />
+        </span>
         <div>
           <div class="up-func-label">{{ item.label }}</div>
           <div class="up-func-desc">{{ item.desc }}</div>
@@ -34,10 +36,10 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const menuItems = [
-  { icon: '🏙️', label: '前往首页', desc: '浏览河南四大古城详情与风景', action: () => router.push('/') },
-  { icon: '📊', label: '数据大屏', desc: '查看中国旅游数据可视化分析', action: () => router.push('/echarts') },
-  { icon: '🌸', label: '花卉识别', desc: '上传花卉图片进行AI识别', action: () => router.push('/recognition') },
-  { icon: '📚', label: '花卉知识库', desc: '了解各种花卉的详细信息', action: () => router.push('/data') },
+  { icon: 'HomeFilled', label: '前往首页', desc: '浏览河南四大古城详情与风景', action: () => router.push('/') },
+  { icon: 'Histogram', label: '数据大屏', desc: '查看中国旅游数据可视化分析', action: () => router.push('/echarts') },
+  { icon: 'CameraFilled', label: '花卉识别', desc: '上传花卉图片进行AI识别', action: () => router.push('/recognition') },
+  { icon: 'Collection', label: '花卉知识库', desc: '了解各种花卉的详细信息', action: () => router.push('/data') },
 ]
 
 function handleLogout() {
@@ -59,7 +61,7 @@ function handleLogout() {
 }
 
 .up-card {
-  background: #fff;
+  background-image: linear-gradient(to right, #C9D6FF, #E2E2E2);
   border-radius: 16px;
   box-shadow: 0 2px 16px rgba(233, 150, 122, 0.1);
 }
@@ -71,6 +73,7 @@ function handleLogout() {
   gap: 20px;
   margin-bottom: 20px;
   flex-wrap: wrap;
+
 }
 
 .up-avatar-box {
@@ -93,7 +96,7 @@ function handleLogout() {
 .up-username {
   font-size: 22px;
   font-weight: 700;
-  color: #c0392b;
+  color: #01affb;
   margin-bottom: 4px;
 }
 
@@ -105,17 +108,17 @@ function handleLogout() {
 .up-btn-logout {
   padding: 8px 20px;
   border-radius: 20px;
-  border: 1px solid #e0c0c0;
-  background: #fff;
-  color: #c0392b;
+  border: 1px solid rgba(54, 47, 47, 0.281);
+  background: rgba(230, 229, 229, 0.6);
+  color: #000000;
   font-size: 13px;
   cursor: pointer;
   transition: all 0.2s;
   flex-shrink: 0;
 
   &:hover {
-    background: #fce4ec;
-    border-color: #c0392b;
+    background: #0f629d52;
+    border-color: #2b29296e;
   }
 }
 
@@ -146,6 +149,14 @@ function handleLogout() {
 .up-func-icon {
   font-size: 28px;
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+
+  :deep(svg) {
+    width: 1em;
+    height: 1em;
+  }
 }
 
 .up-func-label {
