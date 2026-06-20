@@ -4,7 +4,7 @@
 
 为 `寻花问城` 前端项目的登录、注册、用户中心（修改密码、修改头像）功能提供后端接口。
 
-- **接口基地址**: `http://localhost:5000`
+- **接口基地址**: `http://localhost:5001`
 - **编码格式**: `application/json`（文件上传使用 `multipart/form-data`）
 - **认证方式**: 登录后返回 `token`，后续需要认证的接口在请求头携带 `Authorization: Bearer <token>`
 
@@ -22,27 +22,29 @@
 }
 ```
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| `code` | int | 0 = 成功，非 0 = 失败 |
-| `message` | string | 状态描述 |
-| `data` | object | 业务数据，失败时为 `null` |
+| 字段      | 类型   | 说明                      |
+| --------- | ------ | ------------------------- |
+| `code`    | int    | 0 = 成功，非 0 = 失败     |
+| `message` | string | 状态描述                  |
+| `data`    | object | 业务数据，失败时为 `null` |
 
 ---
 
 ## 2. 错误码总表
 
-| code | HTTP 状态码 | 说明 |
-|------|------------|------|
-| 0 | 200 | 成功 |
-| 3001 | 400 | 参数校验失败（缺少必填字段、格式错误） |
-| 3002 | 400 | 用户名已存在 |
-| 3003 | 401 | 账号或密码错误 |
-| 3004 | 401 | 未登录或 token 已过期 |
-| 3005 | 400 | 旧密码错误 |
-| 3006 | 400 | 文件格式不支持（仅允许 jpg/png/webp） |
-| 3007 | 400 | 文件大小超限（最大 2MB） |
-| 5000 | 500 | 服务器内部错误 |
+| code | HTTP 状态码 | 说明                                   |
+| ---- | ----------- | -------------------------------------- |
+| 0    | 200         | 成功                                   |
+| 3001 | 400         | 参数校验失败（缺少必填字段、格式错误） |
+| 3002 | 400         | 用户名已存在                           |
+| 3003 | 401         | 账号或密码错误                         |
+| 3004 | 401         | 未登录或 token 已过期                  |
+| 3005 | 400         | 旧密码错误                             |
+| 3006 | 400         | 文件格式不支持（仅允许 jpg/png/webp）  |
+| 3007 | 400         | 文件大小超限（最大 2MB）               |
+| 3008 | 400         | 识别图片缺失或格式不支持               |
+| 3009 | 404         | 识别记录不存在                         |
+| 5000 | 500         | 服务器内部错误                         |
 
 ---
 
@@ -56,11 +58,11 @@ POST /api/user/register
 
 **请求参数（JSON Body）**
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| `username` | string | 是 | 用户名，5-10 位 |
-| `password` | string | 是 | 密码，最少 6 位 |
-| `password1` | string | 是 | 确认密码，须与 password 一致 |
+| 参数        | 类型   | 必填 | 说明                         |
+| ----------- | ------ | ---- | ---------------------------- |
+| `username`  | string | 是   | 用户名，5-10 位              |
+| `password`  | string | 是   | 密码，最少 6 位              |
+| `password1` | string | 是   | 确认密码，须与 password 一致 |
 
 **请求示例**
 
@@ -86,11 +88,11 @@ POST /api/user/register
 }
 ```
 
-| data 字段 | 类型 | 说明 |
-|-----------|------|------|
-| `username` | string | 注册的用户名 |
-| `token` | string | JWT 认证令牌，前端存入 localStorage 并后续请求携带 |
-| `avatar` | string | 默认头像 URL 或相对路径 |
+| data 字段  | 类型   | 说明                                               |
+| ---------- | ------ | -------------------------------------------------- |
+| `username` | string | 注册的用户名                                       |
+| `token`    | string | JWT 认证令牌，前端存入 localStorage 并后续请求携带 |
+| `avatar`   | string | 默认头像 URL 或相对路径                            |
 
 **错误响应**
 
@@ -116,10 +118,10 @@ POST /api/user/login
 
 **请求参数（JSON Body）**
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| `username` | string | 是 | 用户名 |
-| `password` | string | 是 | 密码 |
+| 参数       | 类型   | 必填 | 说明   |
+| ---------- | ------ | ---- | ------ |
+| `username` | string | 是   | 用户名 |
+| `password` | string | 是   | 密码   |
 
 **请求示例**
 
@@ -144,11 +146,11 @@ POST /api/user/login
 }
 ```
 
-| data 字段 | 类型 | 说明 |
-|-----------|------|------|
-| `username` | string | 用户名 |
-| `token` | string | JWT 令牌 |
-| `avatar` | string | 用户当前头像 URL |
+| data 字段  | 类型   | 说明             |
+| ---------- | ------ | ---------------- |
+| `username` | string | 用户名           |
+| `token`    | string | JWT 令牌         |
+| `avatar`   | string | 用户当前头像 URL |
 
 **错误响应**
 
@@ -189,10 +191,10 @@ Authorization: Bearer <token>
 }
 ```
 
-| data 字段 | 类型 | 说明 |
-|-----------|------|------|
-| `username` | string | 用户名 |
-| `avatar` | string | 头像 URL |
+| data 字段    | 类型   | 说明                 |
+| ------------ | ------ | -------------------- |
+| `username`   | string | 用户名               |
+| `avatar`     | string | 头像 URL             |
 | `created_at` | string | 注册时间（ISO 8601） |
 
 **错误响应**
@@ -225,10 +227,10 @@ Authorization: Bearer <token>
 
 **请求参数（JSON Body）**
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| `old_password` | string | 是 | 当前密码 |
-| `new_password` | string | 是 | 新密码，最少 6 位 |
+| 参数           | 类型   | 必填 | 说明              |
+| -------------- | ------ | ---- | ----------------- |
+| `old_password` | string | 是   | 当前密码          |
+| `new_password` | string | 是   | 新密码，最少 6 位 |
 
 **请求示例**
 
@@ -283,9 +285,9 @@ Content-Type: multipart/form-data
 
 **请求参数（Form Data）**
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| `avatar` | File | 是 | 头像图片，支持 jpg / png / webp，大小 ≤ 2MB |
+| 参数     | 类型 | 必填 | 说明                                        |
+| -------- | ---- | ---- | ------------------------------------------- |
+| `avatar` | File | 是   | 头像图片，支持 jpg / png / webp，大小 ≤ 2MB |
 
 **成功响应**
 
@@ -299,9 +301,9 @@ Content-Type: multipart/form-data
 }
 ```
 
-| data 字段 | 类型 | 说明 |
-|-----------|------|------|
-| `avatar` | string | 新头像的 URL，前端直接替换显示 |
+| data 字段 | 类型   | 说明                           |
+| --------- | ------ | ------------------------------ |
+| `avatar`  | string | 新头像的 URL，前端直接替换显示 |
 
 **错误响应**
 
@@ -328,6 +330,219 @@ Content-Type: multipart/form-data
 
 ---
 
+### 3.6 保存识别记录
+
+```
+POST /api/user/history
+```
+
+**请求头**
+
+```
+Authorization: Bearer <token>
+Content-Type: multipart/form-data
+```
+
+**请求参数（Form Data）**
+
+| 参数          | 类型   | 必填 | 说明                                              |
+| ------------- | ------ | ---- | ------------------------------------------------- |
+| `image`       | File   | 是   | 识别的花卉原图，支持 jpg / png / webp，大小 ≤ 5MB |
+| `flower_name` | string | 是   | 花卉中文名（AI 识别结果）                         |
+| `latin_name`  | string | 否   | 拉丁学名                                          |
+| `confidence`  | number | 是   | 置信度，0-100 的浮点数（如 96.8）                 |
+| `description` | string | 否   | 花卉描述文本                                      |
+
+**请求示例**
+
+```bash
+curl -X POST http://localhost:5001/api/user/history \
+  -H "Authorization: Bearer <token>" \
+  -F "image=@/path/to/flower.jpg" \
+  -F "flower_name=牡丹" \
+  -F "latin_name=Paeonia suffruticosa" \
+  -F "confidence=96.8" \
+  -F "description=牡丹是毛茛科芍药属植物..."
+```
+
+**成功响应**
+
+```json
+{
+  "code": 0,
+  "message": "记录已保存",
+  "data": {
+    "id": 1,
+    "image_url": "/static/uploads/history/user_1_20260619143022.jpg",
+    "flower_name": "牡丹",
+    "latin_name": "Paeonia suffruticosa",
+    "confidence": 96.8,
+    "description": "牡丹是毛茛科芍药属植物...",
+    "created_at": "2026-06-19T14:30:22Z"
+  }
+}
+```
+
+| data 字段     | 类型   | 说明                 |
+| ------------- | ------ | -------------------- |
+| `id`          | int    | 记录 ID              |
+| `image_url`   | string | 图片访问路径         |
+| `flower_name` | string | 花卉中文名           |
+| `latin_name`  | string | 拉丁学名             |
+| `confidence`  | number | 置信度（0-100）      |
+| `description` | string | 花卉描述             |
+| `created_at`  | string | 识别时间（ISO 8601） |
+
+**错误响应**
+
+```json
+{ "code": 3006, "message": "仅支持 JPG、PNG、WEBP 格式的图片", "data": null }
+```
+
+```json
+{ "code": 3008, "message": "缺少识别图片", "data": null }
+```
+
+```json
+{ "code": 3004, "message": "未登录或 token 已过期", "data": null }
+```
+
+**后端实现要点**
+
+1. 验证 token → 获取 `user_id`
+2. 校验 image 文件存在、类型合法（jpg/jpeg/png/webp）、大小 ≤ 5MB
+3. 生成唯一文件名（如 `user_{id}_{timestamp}.jpg`），保存到 `static/uploads/history/` 目录
+4. 将记录写入数据库（user_id、图片路径、花名、拉丁名、置信度、描述）
+5. 返回完整的记录对象（含 id、image_url、created_at）
+
+---
+
+### 3.7 获取识别历史列表
+
+```
+GET /api/user/history
+```
+
+**请求头**
+
+```
+Authorization: Bearer <token>
+```
+
+**查询参数**
+
+| 参数        | 类型 | 必填 | 默认值 | 说明              |
+| ----------- | ---- | ---- | ------ | ----------------- |
+| `page`      | int  | 否   | 1      | 页码              |
+| `page_size` | int  | 否   | 10     | 每页条数，最大 50 |
+
+**请求示例**
+
+```bash
+curl "http://localhost:5001/api/user/history?page=1&page_size=10" \
+  -H "Authorization: Bearer <token>"
+```
+
+**成功响应**
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "id": 1,
+        "image_url": "/static/uploads/history/user_1_20260619143022.jpg",
+        "flower_name": "牡丹",
+        "latin_name": "Paeonia suffruticosa",
+        "confidence": 96.8,
+        "description": "牡丹是毛茛科芍药属植物...",
+        "created_at": "2026-06-19T14:30:22Z"
+      }
+    ],
+    "total": 25,
+    "page": 1,
+    "page_size": 10
+  }
+}
+```
+
+| data 字段   | 类型  | 说明                         |
+| ----------- | ----- | ---------------------------- |
+| `list`      | array | 记录列表，按 created_at 倒序 |
+| `total`     | int   | 总记录数                     |
+| `page`      | int   | 当前页码                     |
+| `page_size` | int   | 每页条数                     |
+
+**错误响应**
+
+```json
+{ "code": 3004, "message": "未登录或 token 已过期", "data": null }
+```
+
+**后端实现要点**
+
+1. 验证 token → 获取 `user_id`
+2. 按 `user_id` 查询数据库，分页返回，按 `created_at DESC` 排序
+3. 每条记录拼接完整的 `image_url`（基地址 + 存储路径）
+
+---
+
+### 3.8 删除识别记录
+
+```
+DELETE /api/user/history/<record_id>
+```
+
+**请求头**
+
+```
+Authorization: Bearer <token>
+```
+
+**路径参数**
+
+| 参数        | 类型 | 必填 | 说明    |
+| ----------- | ---- | ---- | ------- |
+| `record_id` | int  | 是   | 记录 ID |
+
+**请求示例**
+
+```bash
+curl -X DELETE http://localhost:5001/api/user/history/1 \
+  -H "Authorization: Bearer <token>"
+```
+
+**成功响应**
+
+```json
+{
+  "code": 0,
+  "message": "记录已删除",
+  "data": null
+}
+```
+
+**错误响应**
+
+```json
+{ "code": 3009, "message": "记录不存在", "data": null }
+```
+
+```json
+{ "code": 3004, "message": "未登录或 token 已过期", "data": null }
+```
+
+**后端实现要点**
+
+1. 验证 token → 获取 `user_id`
+2. 在校验 `record_id` 存在且属于当前用户（不允许删除他人记录）
+3. 删除数据库记录，同时删除对应的图片文件
+4. 记录不存在或不属于当前用户 → 统一返回 3009（不泄露他人记录存在性）
+
+---
+
 ## 4. 数据库设计参考
 
 ### users 表
@@ -344,77 +559,253 @@ CREATE TABLE users (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
+### recognition_history 表
+
+```sql
+CREATE TABLE recognition_history (
+  id          INT AUTO_INCREMENT PRIMARY KEY,
+  user_id     INT NOT NULL COMMENT '所属用户ID',
+  image_url   VARCHAR(255) NOT NULL COMMENT '识别图片路径',
+  flower_name VARCHAR(50) NOT NULL COMMENT '花卉中文名',
+  latin_name  VARCHAR(100) DEFAULT '' COMMENT '拉丁学名',
+  confidence  DECIMAL(5,2) NOT NULL COMMENT '置信度(0-100)',
+  description TEXT DEFAULT '' COMMENT '花卉描述',
+  created_at  DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '识别时间',
+  INDEX idx_user_id (user_id),
+  INDEX idx_user_created (user_id, created_at DESC),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
 ---
 
-## 5. 后端实现框架参考（Python Flask）
+## 5. 后端实现框架参考（ASP.NET Core）
+
+### 项目结构
 
 ```
 backend/
-├── app.py                    # Flask 主入口
-├── config.py                 # 配置文件（JWT密钥、数据库连接）
-├── models/
-│   └── user.py               # User 数据模型
-├── routes/
-│   └── user.py               # 用户路由（/api/user/*）
-├── middleware/
-│   └── auth.py               # JWT 认证中间件/装饰器
-├── utils/
-│   └── upload.py             # 文件上传工具
-├── requirements.txt
-└── static/
+├── Program.cs                     # 应用入口，DI 注册，中间件管线
+├── appsettings.json               # 配置文件（JWT密钥、数据库连接字符串）
+├── Controllers/
+│   ├── UserController.cs          # 用户控制器（/api/user/*）
+│   └── HistoryController.cs       # 识别记录控制器（/api/user/history/*）
+├── Models/
+│   ├── User.cs                    # User 实体
+│   ├── RecognitionHistory.cs      # RecognitionHistory 实体
+│   └── DTOs/                      # 请求/响应 DTO
+│       ├── LoginRequest.cs
+│       ├── RegisterRequest.cs
+│       ├── ChangePasswordRequest.cs
+│       └── HistorySaveRequest.cs
+├── Data/
+│   └── AppDbContext.cs            # EF Core DbContext
+├── Services/
+│   ├── UserService.cs             # 用户业务逻辑
+│   ├── HistoryService.cs          # 识别记录业务逻辑
+│   └── TokenService.cs            # JWT 生成与校验
+├── Middleware/
+│   └── JwtMiddleware.cs           # 可选：自定义 JWT 中间件（也可用 ASP.NET 内置）
+├── Filters/
+│   └── LoginRequiredAttribute.cs  # 认证过滤器 / ActionFilter
+└── wwwroot/
     ├── avatars/
     │   └── default.png
     └── uploads/
-        └── avatars/
+        ├── avatars/
+        └── history/               # 识别记录图片存储
 ```
 
-**核心依赖 (`requirements.txt`)**
+### NuGet 依赖
 
-```
-flask==3.1.0
-flask-cors==5.0.1
-pyjwt==2.10.1
-bcrypt==4.3.0
-Pillow==11.1.0           # 头像图片处理
-```
+| 包名                                                                          | 用途             |
+| ----------------------------------------------------------------------------- | ---------------- |
+| `Microsoft.AspNetCore.Authentication.JwtBearer`                               | JWT 认证         |
+| `Microsoft.EntityFrameworkCore`                                               | ORM              |
+| `Microsoft.EntityFrameworkCore.MySql` (或 `Pomelo.EntityFrameworkCore.MySql`) | MySQL 数据库驱动 |
+| `BCrypt.Net-Next`                                                             | bcrypt 密码哈希  |
+| `System.IdentityModel.Tokens.Jwt`                                             | JWT Token 生成   |
 
 ### JWT 认证中间件示例
 
-```python
-# middleware/auth.py
-import jwt
-from functools import wraps
-from flask import request, g
-from config import Config
+`Program.cs` 中注册：
 
-def login_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = request.headers.get('Authorization', '').replace('Bearer ', '')
-        if not token:
-            return { "code": 3004, "message": "未登录或 token 已过期", "data": None }, 401
-        try:
-            payload = jwt.decode(token, Config.JWT_SECRET, algorithms=['HS256'])
-            g.user_id = payload['user_id']
-            g.username = payload['username']
-        except jwt.ExpiredSignatureError:
-            return { "code": 3004, "message": "token 已过期，请重新登录", "data": None }, 401
-        except jwt.InvalidTokenError:
-            return { "code": 3004, "message": "token 无效", "data": None }, 401
-        return f(*args, **kwargs)
-    return decorated
+```csharp
+// Program.cs
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// JWT 配置
+var jwtSecret = builder.Configuration["Jwt:Secret"]!;
+var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = key,
+            ClockSkew = TimeSpan.Zero  // 无容差，严格过期判定
+        };
+    });
+```
+
+自定义 `LoginRequiredAttribute`（可选，ASP.NET 内置 `[Authorize]` 也能满足）：
+
+```csharp
+// Filters/LoginRequiredAttribute.cs
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using System.Security.Claims;
+
+public class LoginRequiredAttribute : ActionFilterAttribute
+{
+    public override void OnActionExecuting(ActionExecutingContext context)
+    {
+        var userId = context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+        {
+            context.Result = new UnauthorizedObjectResult(new
+            {
+                code = 3004,
+                message = "未登录或 token 已过期",
+                data = (object?)null
+            });
+        }
+        base.OnActionExecuting(context);
+    }
+}
+```
+
+> **建议**：直接用 ASP.NET 内置 `[Authorize]` 特性，配合 JwtBearer 中间件即可自动返回 401，无需自定义 Filter。
+
+### JWT Token 生成服务
+
+```csharp
+// Services/TokenService.cs
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
+public class TokenService
+{
+    private readonly IConfiguration _config;
+
+    public TokenService(IConfiguration config)
+    {
+        _config = config;
+    }
+
+    public string GenerateToken(int userId, string username)
+    {
+        var secret = _config["Jwt:Secret"]!;
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            new Claim(ClaimTypes.Name, username)
+        };
+
+        var token = new JwtSecurityToken(
+            issuer: _config["Jwt:Issuer"],
+            audience: _config["Jwt:Audience"],
+            claims: claims,
+            expires: DateTime.UtcNow.AddDays(7),  // 7 天过期
+            signingCredentials: credentials
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+}
+```
+
+### `appsettings.json` 配置参考
+
+```json
+{
+  "Jwt": {
+    "Secret": "your-256-bit-secret-key-here-min-32-chars!!",
+    "Issuer": "xunhuawencheng",
+    "Audience": "xunhuawencheng-app"
+  },
+  "ConnectionStrings": {
+    "Default": "Server=localhost;Database=xunhuawencheng;User=root;Password=your_password;"
+  }
+}
 ```
 
 ### bcrypt 密码处理示例
 
-```python
-import bcrypt
+```csharp
+// 使用 BCrypt.Net-Next 包
+using BCrypt.Net;
 
-def hash_password(password: str) -> str:
-    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+// 哈希密码
+string hashed = BCrypt.HashPassword(password);
 
-def check_password(password: str, hashed: str) -> bool:
-    return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
+// 验证密码
+bool valid = BCrypt.Verify(password, hashed);
+```
+
+### 控制器示例（用户注册）
+
+```csharp
+// Controllers/UserController.cs
+[ApiController]
+[Route("api/user")]
+public class UserController : ControllerBase
+{
+    private readonly UserService _userService;
+    private readonly TokenService _tokenService;
+
+    public UserController(UserService userService, TokenService tokenService)
+    {
+        _userService = userService;
+        _tokenService = tokenService;
+    }
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterRequest req)
+    {
+        // 1. 校验 password == password1
+        if (req.Password != req.Password1)
+            return Ok(new { code = 3001, message = "两次输入的密码不一致", data = (object?)null });
+
+        // 2. 校验用户名唯一性
+        if (await _userService.UsernameExists(req.Username))
+            return Ok(new { code = 3002, message = "该用户名已被注册", data = (object?)null });
+
+        // 3. 创建用户
+        var user = await _userService.CreateUser(req.Username, req.Password);
+
+        // 4. 生成 token
+        var token = _tokenService.GenerateToken(user.Id, user.Username);
+
+        return Ok(new
+        {
+            code = 0,
+            message = "注册成功",
+            data = new
+            {
+                username = user.Username,
+                token,
+                avatar = user.Avatar
+            }
+        });
+    }
+}
 ```
 
 ---
@@ -462,7 +853,7 @@ http.interceptors.response.use(
       window.location.href = '/login'
     }
     return Promise.reject(err)
-  }
+  },
 )
 ```
 
@@ -470,15 +861,18 @@ http.interceptors.response.use(
 
 ## 7. 前后端对接映射
 
-| 前端功能 | 前端文件 | 后端接口 | 认证 |
-|----------|----------|----------|------|
-| 注册 | `UserRegister.vue` | `POST /api/user/register` | 否 |
-| 登录 | `UserLogin.vue` | `POST /api/user/login` | 否 |
-| 恢复登录态 | `App.vue onMounted` | `GET /api/user/info` | 是 |
-| 用户中心展示 | `UserCenter.vue` | `GET /api/user/info` | 是 |
-| 修改密码 | `UserCenter.vue` | `PUT /api/user/password` | 是 |
-| 修改头像 | `UserCenter.vue` | `POST /api/user/avatar` | 是 |
-| 退出 | `UserCenter.vue` | 纯前端清除 localStorage | - |
+| 前端功能     | 前端文件                     | 后端接口                        | 认证 |
+| ------------ | ---------------------------- | ------------------------------- | ---- |
+| 注册         | `UserRegister.vue`           | `POST /api/user/register`       | 否   |
+| 登录         | `UserLogin.vue`              | `POST /api/user/login`          | 否   |
+| 恢复登录态   | `App.vue onMounted`          | `GET /api/user/info`            | 是   |
+| 用户中心展示 | `UserCenter.vue`             | `GET /api/user/info`            | 是   |
+| 修改密码     | `UserCenter.vue`             | `PUT /api/user/password`        | 是   |
+| 修改头像     | `UserCenter.vue`             | `POST /api/user/avatar`         | 是   |
+| 退出         | `UserCenter.vue`             | 纯前端清除 localStorage         | -    |
+| 保存识别记录 | `RecognitionView.vue`        | `POST /api/user/history`        | 是   |
+| 查看识别历史 | `UserRecognitionHistory.vue` | `GET /api/user/history`         | 是   |
+| 删除识别记录 | `UserRecognitionHistory.vue` | `DELETE /api/user/history/<id>` | 是   |
 
 ---
 
@@ -486,27 +880,44 @@ http.interceptors.response.use(
 
 ```bash
 # 1. 注册
-curl -X POST http://localhost:5000/api/user/register \
+curl -X POST http://localhost:5001/api/user/register \
   -H "Content-Type: application/json" \
   -d '{"username":"testuser","password":"123456","password1":"123456"}'
 
 # 2. 登录（保存返回的 token）
-curl -X POST http://localhost:5000/api/user/login \
+curl -X POST http://localhost:5001/api/user/login \
   -H "Content-Type: application/json" \
   -d '{"username":"testuser","password":"123456"}'
 
 # 3. 获取用户信息
-curl http://localhost:5000/api/user/info \
+curl http://localhost:5001/api/user/info \
   -H "Authorization: Bearer <token>"
 
 # 4. 修改密码
-curl -X PUT http://localhost:5000/api/user/password \
+curl -X PUT http://localhost:5001/api/user/password \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
   -d '{"old_password":"123456","new_password":"654321"}'
 
 # 5. 上传头像
-curl -X POST http://localhost:5000/api/user/avatar \
+curl -X POST http://localhost:5001/api/user/avatar \
   -H "Authorization: Bearer <token>" \
   -F "avatar=@/path/to/avatar.jpg"
+
+# 6. 保存识别记录
+curl -X POST http://localhost:5001/api/user/history \
+  -H "Authorization: Bearer <token>" \
+  -F "image=@/path/to/flower.jpg" \
+  -F "flower_name=牡丹" \
+  -F "latin_name=Paeonia suffruticosa" \
+  -F "confidence=96.8" \
+  -F "description=牡丹是毛茛科芍药属植物..."
+
+# 7. 获取识别历史（第1页）
+curl "http://localhost:5001/api/user/history?page=1&page_size=10" \
+  -H "Authorization: Bearer <token>"
+
+# 8. 删除识别记录
+curl -X DELETE http://localhost:5001/api/user/history/1 \
+  -H "Authorization: Bearer <token>"
 ```

@@ -59,6 +59,8 @@
 import { ref } from 'vue'
 import { identifyFlower } from '@/api/flower'
 import type { FlowerIdentifyResult } from '@/api/flower'
+import { addRecord } from '@/utils/history'
+import type { RecognitionRecord } from '@/types/recognition'
 
 const fileInput = ref<HTMLInputElement>()
 const previewUrl = ref('')
@@ -100,6 +102,17 @@ async function identify() {
 
   try {
     result.value = await identifyFlower(selectedFile.value)
+
+    // 保存识别记录到 localStorage
+    const record: RecognitionRecord = {
+      id: crypto.randomUUID(),
+      imageUrl: previewUrl.value,
+      flowerName: result.value.name,
+      confidence: result.value.confidence / 100, // 后端 0-100 → 归一化 0-1
+      createdAt: new Date().toISOString(),
+    }
+    addRecord(record)
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     alert(err?.message || '网络请求失败，请检查后端服务是否启动')

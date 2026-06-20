@@ -22,17 +22,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
-interface RecognitionRecord {
-  id: string
-  imageUrl: string
-  flowerName: string
-  confidence: number
-  createdAt: string
-}
+import { ref, onMounted } from 'vue'
+import type { RecognitionRecord } from '@/types/recognition'
+import { getHistory } from '@/utils/history'
 
 const records = ref<RecognitionRecord[]>([])
+
+onMounted(() => {
+  records.value = getHistory()
+})
 </script>
 
 <style scoped lang="scss">
