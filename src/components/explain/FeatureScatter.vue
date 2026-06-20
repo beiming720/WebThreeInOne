@@ -32,9 +32,8 @@
     </div>
 
     <!-- 提示 -->
-    <el-alert v-if="method === 'tsne' && !loading"
-              title="t-SNE 为随机算法，每次计算结果略有不同。增加 perplexity 可使聚类更紧凑。"
-              type="info" :closable="false" show-icon style="margin-bottom: 12px" />
+    <el-alert v-if="method === 'tsne' && !loading" title="t-SNE 为随机算法，每次计算结果略有不同。增加 perplexity 可使聚类更紧凑。" type="info"
+      :closable="false" show-icon style="margin-bottom: 8px" />
 
     <!-- 图表容器 -->
     <div ref="chartRef" class="chart-container" v-show="data"></div>
@@ -58,7 +57,9 @@
     <!-- 加载遮罩 -->
     <div class="loading-overlay" v-if="loading">
       <div class="loading-content">
-        <el-icon class="is-loading" :size="32"><Loading /></el-icon>
+        <el-icon class="is-loading" :size="32">
+          <Loading />
+        </el-icon>
         <p>正在计算 {{ method.toUpperCase() }} 降维，请稍候...</p>
         <p class="loading-hint">（首次计算可能需要 5~15 秒）</p>
       </div>
@@ -84,7 +85,7 @@ let chart: echarts.ECharts | null = null
 function groupByClass(points: FeaturePoint[]) {
   const groups: Record<number, FeaturePoint[]> = {}
   for (const p of points) {
-    ;(groups[p.class_id] ??= []).push(p)
+    ; (groups[p.class_id] ??= []).push(p)
   }
   return groups
 }
@@ -94,20 +95,21 @@ function buildOption(d: FeatureData) {
   const groups = groupByClass(d.points)
 
   const series = Object.entries(groups)
-    .filter(([_, pts]) => pts.length > 0)
-    .map(([cls, pts]) => ({
+    .filter(([, pts]) => pts.length > 0)
+    .map(([, pts]) => ({
       name: pts[0]!.class_name,
-    type: 'scatter' as const,
-    symbolSize: 8,
-    data: pts.map(p => [p.x, p.y, p.class_name, p.sample_index]),
-    emphasis: {
-      itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.3)' },
-    },
-  }))
+      type: 'scatter' as const,
+      symbolSize: 8,
+      data: pts.map(p => [p.x, p.y, p.class_name, p.sample_index]),
+      emphasis: {
+        itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.3)' },
+      },
+    }))
 
   return {
     tooltip: {
       trigger: 'item',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       formatter: (p: any) => {
         const [x, y, name, idx] = p.value
         return `<b>${name}</b><br/>x: ${x.toFixed(2)}<br/>y: ${y.toFixed(2)}<br/>样本 #${idx}`
@@ -119,18 +121,18 @@ function buildOption(d: FeatureData) {
       textStyle: { fontSize: 10 },
       pageTextStyle: { fontSize: 10 },
     },
-    grid: { left: 50, right: 20, top: 60, bottom: 50 },
+    grid: { left: 50, right: 20, top: 48, bottom: 40 },
     xAxis: {
       name: `${d.method.toUpperCase()} dim1`,
       type: 'value',
       nameLocation: 'center',
-      nameGap: 30,
+      nameGap: 24,
     },
     yAxis: {
       name: `${d.method.toUpperCase()} dim2`,
       type: 'value',
       nameLocation: 'center',
-      nameGap: 35,
+      nameGap: 28,
     },
     dataZoom: [
       { type: 'inside' },
@@ -196,7 +198,7 @@ onUnmounted(() => {
 
 <style scoped>
 .feature-scatter {
-  padding: 16px 0;
+  padding: 4px 0;
   position: relative;
 }
 
@@ -204,23 +206,26 @@ onUnmounted(() => {
 .control-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 12px;
   align-items: center;
-  margin-bottom: 16px;
-  padding: 12px 16px;
+  margin-bottom: 12px;
+  padding: 8px 12px;
   background: #f9f9f9;
   border-radius: 8px;
 }
+
 .control-group {
   display: flex;
   align-items: center;
   gap: 6px;
 }
+
 .control-label {
   font-size: 13px;
   color: #666;
   white-space: nowrap;
 }
+
 .control-value {
   font-size: 13px;
   color: #7F00FF;
@@ -231,7 +236,7 @@ onUnmounted(() => {
 /* 图表容器 */
 .chart-container {
   width: 100%;
-  height: 480px;
+  height: 400px;
   border-radius: 8px;
   border: 1px solid #eee;
 }
@@ -241,27 +246,33 @@ onUnmounted(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  margin-top: 16px;
-  padding: 12px 16px;
+  margin-top: 12px;
+  padding: 8px 12px;
   background: linear-gradient(135deg, #f8f6ff, #fff0f8);
   border-radius: 8px;
 }
+
 .summary-item {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
+
 .summary-label {
   font-size: 11px;
   color: #999;
   text-transform: uppercase;
 }
+
 .summary-value {
   font-size: 16px;
   font-weight: 700;
   color: #333;
 }
-.summary-value.highlight { color: #7F00FF; }
+
+.summary-value.highlight {
+  color: #7F00FF;
+}
 
 /* 加载遮罩 */
 .loading-overlay {
@@ -274,16 +285,19 @@ onUnmounted(() => {
   border-radius: 8px;
   z-index: 10;
 }
+
 .loading-content {
   text-align: center;
   color: #555;
 }
+
 .loading-content p {
-  margin: 8px 0 0;
-  font-size: 14px;
+  margin: 4px 0 0;
+  font-size: 13px;
 }
+
 .loading-hint {
-  font-size: 12px;
+  font-size: 11px;
   color: #999;
 }
 </style>

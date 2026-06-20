@@ -2,7 +2,9 @@
   <div class="structure-view">
     <!-- 加载状态 -->
     <div v-if="loading" class="loading-state">
-      <el-icon class="is-loading" :size="24"><Loading /></el-icon>
+      <el-icon class="is-loading" :size="24">
+        <Loading />
+      </el-icon>
       <span>正在加载模型结构...</span>
     </div>
 
@@ -34,7 +36,7 @@
       <!-- 主体：左侧流程图 + 右侧详情 -->
       <div class="structure-body">
         <!-- 左侧流程图 -->
-        <div class="flow-chart">
+        <div class="flow-chart" ref="flowChartRef" @wheel="handleFlowChartWheel">
           <!-- 输入节点 -->
           <div class="flow-node input-node">
             <span class="node-icon">📥</span>
@@ -45,19 +47,19 @@
 
           <!-- 模型层节点 -->
           <template v-for="(layer, idx) in structure.layers" :key="layer.name">
-            <div class="flow-node"
-                 :class="{
-                   selected: selectedLayer && selectedLayer.name === layer.name,
-                   frozen: !layer.trainable,
-                   'has-children': layer.children && layer.children.length > 0
-                 }"
-                 @click="selectLayer(layer)">
+            <div class="flow-node" :class="{
+              selected: selectedLayer && selectedLayer.name === layer.name,
+              frozen: !layer.trainable,
+              'has-children': layer.children && layer.children.length > 0
+            }" @click="selectLayer(layer)">
               <span class="node-icon">{{ getLayerIcon(layer.type) }}</span>
               <span class="node-name">{{ layer.name }}</span>
               <span class="node-type">{{ layer.type }}</span>
-              <span class="node-shape" v-if="layer.out_shape && layer.out_shape.length">{{ layer.out_shape.join('×') }}</span>
+              <span class="node-shape" v-if="layer.out_shape && layer.out_shape.length">{{ layer.out_shape.join('×')
+                }}</span>
               <span class="node-params">{{ formatParams(layer.params) }}</span>
-              <span class="node-badge" v-if="layer.children && layer.children.length">{{ layer.children.length }} 子层</span>
+              <span class="node-badge" v-if="layer.children && layer.children.length">{{ layer.children.length }}
+                子层</span>
             </div>
             <div class="flow-arrow" v-if="idx < structure.layers.length - 1">↓</div>
           </template>
@@ -103,10 +105,8 @@
           <div v-if="selectedLayer.children && selectedLayer.children.length" class="children-section">
             <h5>子层结构</h5>
             <div class="children-list">
-              <div v-for="child in selectedLayer.children" :key="child.name"
-                   class="child-item"
-                   :class="{ frozen: !child.trainable }"
-                   @click="selectLayer(child)">
+              <div v-for="child in selectedLayer.children" :key="child.name" class="child-item"
+                :class="{ frozen: !child.trainable }" @click="selectLayer(child)">
                 <span class="child-name">{{ child.name }}</span>
                 <span class="child-type">{{ child.type }}</span>
                 <span class="child-params">{{ formatParams(child.params) }}</span>
@@ -140,6 +140,22 @@ import { getModelStructure, type ModelLayer, type ModelStructure as MS } from '@
 const structure = ref<MS>()
 const selectedLayer = ref<ModelLayer>()
 const loading = ref(true)
+const flowChartRef = ref<HTMLElement>()
+
+/** 阻止滚轮事件冒泡到外层滚动容器，消除嵌套滚动冲突 */
+function handleFlowChartWheel(e: WheelEvent) {
+  const el = flowChartRef.value
+  if (!el) return
+
+  const { scrollTop, scrollHeight, clientHeight } = el
+  const atTop = scrollTop <= 0
+  const atBottom = scrollTop + clientHeight >= scrollHeight - 1
+
+  // 在可滚动区域内滚动时阻止冒泡，到达边界后放行让页面继续滚动
+  if ((e.deltaY < 0 && !atTop) || (e.deltaY > 0 && !atBottom)) {
+    e.stopPropagation()
+  }
+}
 
 function formatParams(n: number): string {
   if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M'
@@ -177,10 +193,12 @@ onMounted(async () => {
 <style scoped>
 .structure-view {
   padding: 16px 0;
+  height: 55vh;
 }
 
 /* 加载 / 错误状态 */
-.loading-state, .error-state {
+.loading-state,
+.error-state {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -200,41 +218,74 @@ onMounted(async () => {
   border-radius: 10px;
   margin-bottom: 20px;
 }
+
 .stat-item {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
+
 .stat-label {
   font-size: 11px;
   color: #999;
   text-transform: uppercase;
 }
+
 .stat-value {
   font-size: 16px;
   font-weight: 700;
   color: #333;
 }
-.stat-value.highlight { color: #7F00FF; }
-.stat-value.green { color: #27ae60; }
+
+.stat-value.highlight {
+  color: #7F00FF;
+}
+
+.stat-value.green {
+  color: #27ae60;
+}
 
 /* 主体布局 */
 .structure-body {
   display: flex;
   gap: 20px;
   min-height: 400px;
+  overflow: hidden;
 }
 
 /* 左侧流程图 */
 .flow-chart {
   flex: 0 0 280px;
+  min-height: 0;
+  /* flex 子元素必须设置，否则 overflow 不生效 */
   max-height: 600px;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  /* 阻止滚动链传播 */
   padding-right: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0;
+}
+
+/* 流程图滚动条样式 */
+.flow-chart::-webkit-scrollbar {
+  width: 6px;
+}
+
+.flow-chart::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+
+.flow-chart::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 3px;
+}
+
+.flow-chart::-webkit-scrollbar-thumb:hover {
+  background: #b0b0b0;
 }
 
 .flow-arrow {
@@ -257,35 +308,45 @@ onMounted(async () => {
   align-items: center;
   gap: 6px;
 }
+
 .flow-node:hover {
   border-color: #7F00FF;
   box-shadow: 0 2px 12px rgba(127, 0, 255, 0.15);
 }
+
 .flow-node.selected {
   border-color: #7F00FF;
   background: linear-gradient(135deg, #f8f0ff, #fff0f8);
   box-shadow: 0 4px 16px rgba(127, 0, 255, 0.2);
 }
+
 .flow-node.frozen {
   border-color: #e0e0e0;
   background: #f9f9f9;
   opacity: 0.7;
 }
+
 .flow-node.has-children {
   border-left: 4px solid #7F00FF;
 }
-.flow-node.input-node, .flow-node.output-node {
+
+.flow-node.input-node,
+.flow-node.output-node {
   background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
   border-color: #4caf50;
   justify-content: center;
 }
 
-.node-icon { font-size: 16px; }
+.node-icon {
+  font-size: 16px;
+}
+
 .node-name {
   font-weight: 600;
   font-size: 13px;
   color: #333;
 }
+
 .node-type {
   font-size: 11px;
   color: #888;
@@ -293,16 +354,19 @@ onMounted(async () => {
   padding: 1px 6px;
   border-radius: 4px;
 }
+
 .node-shape {
   font-size: 11px;
   color: #666;
   font-family: monospace;
 }
+
 .node-params {
   font-size: 11px;
   color: #7F00FF;
   margin-left: auto;
 }
+
 .node-badge {
   font-size: 10px;
   background: #7F00FF;
@@ -319,6 +383,7 @@ onMounted(async () => {
   padding: 20px;
   border: 1px solid #eee;
 }
+
 .detail-panel.empty {
   display: flex;
   align-items: center;
@@ -331,6 +396,7 @@ onMounted(async () => {
   justify-content: space-between;
   margin-bottom: 16px;
 }
+
 .detail-header h4 {
   margin: 0;
   font-size: 18px;
@@ -343,20 +409,24 @@ onMounted(async () => {
   gap: 12px;
   margin-bottom: 16px;
 }
+
 .detail-item {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
+
 .detail-item .label {
   font-size: 11px;
   color: #999;
   text-transform: uppercase;
 }
+
 .detail-item .value {
   font-size: 14px;
   color: #333;
 }
+
 .detail-item .value.highlight {
   color: #7F00FF;
   font-weight: 700;
@@ -368,11 +438,13 @@ onMounted(async () => {
   border-top: 1px solid #eee;
   padding-top: 12px;
 }
+
 .children-section h5 {
   margin: 0 0 8px;
   font-size: 14px;
   color: #555;
 }
+
 .children-list {
   max-height: 200px;
   overflow-y: auto;
@@ -380,6 +452,7 @@ onMounted(async () => {
   flex-direction: column;
   gap: 4px;
 }
+
 .child-item {
   display: flex;
   align-items: center;
@@ -390,16 +463,38 @@ onMounted(async () => {
   transition: background 0.15s;
   font-size: 12px;
 }
-.child-item:hover { background: #f0f0f0; }
-.child-item.frozen { opacity: 0.5; }
-.child-name { font-weight: 600; color: #333; }
-.child-type { color: #888; }
-.child-params { margin-left: auto; color: #7F00FF; }
+
+.child-item:hover {
+  background: #f0f0f0;
+}
+
+.child-item.frozen {
+  opacity: 0.5;
+}
+
+.child-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.child-type {
+  color: #888;
+}
+
+.child-params {
+  margin-left: auto;
+  color: #7F00FF;
+}
 
 /* 空状态提示 */
 .empty-hint {
   text-align: center;
   color: #bbb;
 }
-.empty-icon { font-size: 48px; display: block; margin-bottom: 8px; }
+
+.empty-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 8px;
+}
 </style>
