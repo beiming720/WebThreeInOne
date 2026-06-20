@@ -74,7 +74,9 @@ export async function apiRequest<T = unknown>(
     throw new RequestError(body.message || '请求失败', body.code)
   }
 
-  return (body.data ?? body) as unknown as T
+  return ('data' in (body as unknown as Record<string, unknown>))
+    ? (body.data as unknown as T)
+    : (body as unknown as T)
 }
 
 export default http

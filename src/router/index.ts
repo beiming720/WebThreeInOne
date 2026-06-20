@@ -59,4 +59,9 @@ const router = createRouter({
   ],
 })
 
+// 捕获懒加载组件加载失败等导航级错误，避免被全局 unhandledrejection 静默吞掉
+router.onError((err) => {
+  console.error('[路由错误]', err)
+})
+
 export default router

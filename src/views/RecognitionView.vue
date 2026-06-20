@@ -84,6 +84,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { ElMessage } from 'element-plus'
 import { identifyFlower } from '@/api/flower'
 import type { FlowerIdentifyResult } from '@/api/flower'
 import { addRecord } from '@/utils/history'
@@ -97,6 +98,10 @@ const selectedFile = ref<File | null>(null)
 const loading = ref(false)
 const dragging = ref(false)
 const result = ref<FlowerIdentifyResult | null>(null)
+const isMounted = ref(false)
+
+/** AbortController：组件卸载时取消进行中的 API 请求 */
+let identifyAbortController: AbortController | null = null
 
 function onFileChange(e: Event) {
   const file = (e.target as HTMLInputElement).files?.[0]
@@ -129,8 +134,14 @@ async function identify() {
   loading.value = true
   result.value = null
 
+  // 取消前一次请求（防御性：正常不会同时存在）
+  if (identifyAbortController) {
+    identifyAbortController.abort()
+  }
+  identifyAbortController = new AbortController()
+
   try {
-    result.value = await identifyFlower(selectedFile.value)
+    result.value = await identifyFlower(selectedFile.value, identifyAbortController.signal)
 
     const record: RecognitionRecord = {
       id: crypto.randomUUID(),
@@ -140,11 +151,25 @@ async function identify() {
       createdAt: new Date().toISOString(),
     }
     addRecord(record)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    alert(err?.message || '网络请求失败，请检查后端服务是否启动')
+    // 导航离开导致的请求取消 → 静默返回，不弹出错误提示
+    if (
+      identifyAbortController?.signal.aborted &&
+      (err?.code === 0 || err?.name === 'CanceledError' || err?.message?.includes('取消'))
+    ) {
+      return
+    }
+
+    // 使用非阻塞 ElMessage 替代 alert()，避免冻结事件循环损坏路由 Transition
+    try {
+      ElMessage.error(err?.message || '网络请求失败，请检查后端服务是否启动')
+    } catch {
+      console.error('[识别失败]', err?.message || err)
+    }
   } finally {
     loading.value = false
+    identifyAbortController = null
   }
 }
 
@@ -177,6 +202,8 @@ function onScroll() {
 }
 
 function onWheel(e: WheelEvent) {
+  // 组件已卸载 → 不处理滚轮事件
+  if (!isMounted.value) return
   // 只在触控板/鼠标滚轮明确上下滚动时拦截
   if (Math.abs(e.deltaY) < 10) return
   e.preventDefault()
@@ -192,12 +219,20 @@ function onWheel(e: WheelEvent) {
 }
 
 onMounted(() => {
+  isMounted.value = true
   scrollContainer.value?.addEventListener('scroll', onScroll, { passive: true })
   scrollContainer.value?.addEventListener('wheel', onWheel, { passive: false })
 })
 onUnmounted(() => {
+  isMounted.value = false
+  // 取消进行中的 API 请求，防止回调在卸载后执行
+  if (identifyAbortController) {
+    identifyAbortController.abort()
+  }
+  // 中断进行中的 smooth-scroll，避免离开时滚动动画抢占导致 Transition 失步
   scrollContainer.value?.removeEventListener('scroll', onScroll)
   scrollContainer.value?.removeEventListener('wheel', onWheel)
+  scrollContainer.value?.scrollTo({ top: 0, behavior: 'auto' })
 })
 </script>
 

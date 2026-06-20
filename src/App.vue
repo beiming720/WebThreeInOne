@@ -33,8 +33,8 @@
     <div class="main-wrapper">
       <main class="content-area">
         <RouterView v-slot="{ Component }">
-          <Transition name="fade" mode="out-in">
-            <component :is="Component" />
+          <Transition name="fade">
+            <component :is="Component" :key="$route.fullPath" />
           </Transition>
         </RouterView>
       </main>

@@ -90,6 +90,12 @@ export interface FeatureData {
  */
 async function apiGet<T>(url: string): Promise<T> {
   const res = await get<ApiResponse<T>>(url)
+
+  // 防御：校验响应体存在且为对象
+  if (!res || typeof res !== 'object') {
+    throw new Error('接口返回数据格式异常')
+  }
+
   if (res.code !== undefined && res.code !== 0) {
     throw new Error(res.message || '请求失败')
   }
@@ -125,6 +131,9 @@ export async function getGradCAM(params: {
   const res = await get<ApiResponse<GradCAMResult>>(`${MODEL_API_BASE}/api/model/gradcam?${q.toString()}`, {
     timeout: 30000,
   })
+  if (!res || typeof res !== 'object') {
+    throw new Error('Grad-CAM 接口返回数据格式异常')
+  }
   if (res.code !== undefined && res.code !== 0) {
     throw new Error(res.message || 'Grad-CAM 请求失败')
   }

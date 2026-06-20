@@ -19,14 +19,17 @@ const FLOWER_API_BASE = 'http://localhost:5000'
  * 识别花卉图片
  * @param file 用户上传的花卉图片文件
  */
-export async function identifyFlower(file: File): Promise<FlowerIdentifyResult> {
+export async function identifyFlower(
+  file: File,
+  signal?: AbortSignal
+): Promise<FlowerIdentifyResult> {
   const formData = new FormData()
   formData.append('image', file)
 
   return apiRequest<FlowerIdentifyResult>(
     `${FLOWER_API_BASE}/api/flower/identify`,
     formData,
-    { timeout: 30000 }
+    { timeout: 30000, signal }
   )
 }
 
