@@ -48,6 +48,7 @@
                   <span class="meta-item">📍 {{ spot.location }}</span>
                   <span class="meta-item">🏷 {{ spot.tag }}</span>
                 </div>
+                <button class="map-link-btn" @click.stop="openBaiduMap(spot)">🗺️ 查看地图</button>
               </div>
             </div>
           </div>
@@ -70,6 +71,8 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 import * as echarts from 'echarts';
 import { fetchMapData } from '@/api/map';
+import type { ScenicSpot } from '@/types/scenic'
+import { openBaiduMap } from '@/utils/baiduMap'
 
 // 导入商丘风景图片
 import shangqiuImg from '@/assets/images/cheng/商丘/商丘.jpg';
@@ -78,15 +81,6 @@ import suihuangling from '@/assets/images/cheng/商丘/燧皇陵.jpg';
 import yingtianshuyuan from '@/assets/images/cheng/商丘/应天书院.jpg';
 import huoshentai from '@/assets/images/cheng/商丘/火神台.jpg';
 
-// 风景点数据
-interface ScenicSpot {
-  name: string
-  image: string
-  description: string
-  location: string
-  tag: string
-}
-
 const scenicSpots: ScenicSpot[] = [
   {
     name: '商丘古城',
@@ -94,6 +88,8 @@ const scenicSpots: ScenicSpot[] = [
     description: '中国保存最为完好的府城之一，始建于明正德六年（1511年），城墙、城湖、城郭三位一体，外圆内方，呈古铜钱币造型，寓意天圆地方、招财进宝。城内街巷纵横，古建林立，漫步其中仿佛穿越回明清时期的繁华府城。',
     location: '睢阳区古城街道',
     tag: '全国重点文保',
+    lat: 34.381254,
+    lng: 115.616263,
   },
   {
     name: '燧皇陵',
@@ -101,6 +97,8 @@ const scenicSpots: ScenicSpot[] = [
     description: '华夏文明之火发源地，燧人氏钻木取火的传说就发生于此。陵区内有燧人氏雕像、取火台、火文化博物馆等景点。每年一度的火神祭祀大典在这里隆重举行，是探寻中华火文化起源的必游之地。',
     location: '睢阳区古宋路',
     tag: 'AAAA级景区',
+    lat: 34.375,
+    lng: 115.618,
   },
   {
     name: '应天书院',
@@ -108,6 +106,8 @@ const scenicSpots: ScenicSpot[] = [
     description: '北宋四大书院之首，始建于后晋，兴盛于北宋，范仲淹曾在此求学并任教。书院培养了众多杰出人才，是当时全国最高学府之一。如今复建后的应天书院再现了当年的恢宏气势，书香气息浓郁。',
     location: '睢阳区书院路',
     tag: '全国重点文保',
+    lat: 34.383,
+    lng: 115.620,
   },
   {
     name: '阏伯台',
@@ -115,6 +115,8 @@ const scenicSpots: ScenicSpot[] = [
     description: '又称火神台、观星台，是中国现存最早的观星台遗址。帝喾之子阏伯在此观测火星运行，制定了中国最早的火历，被后人尊为"火神"。登上阏伯台可俯瞰整个商丘古城，感受上古先贤的智慧与气魄。',
     location: '睢阳区火神台街',
     tag: '全国重点文保',
+    lat: 34.369,
+    lng: 115.606,
   },
 ]
 
@@ -399,6 +401,24 @@ const renderShangqiuMap = () => {
 
 .page-back-btn:hover {
   background-color: #1e293b;
+  transform: translateY(-1px);
+}
+
+.map-link-btn {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #853e3e, #db01c9);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 1px;
+  transition: all 0.25s;
+}
+
+.map-link-btn:hover {
+  opacity: 0.85;
   transform: translateY(-1px);
 }
 

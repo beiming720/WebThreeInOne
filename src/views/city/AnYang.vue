@@ -48,6 +48,7 @@
                   <span class="meta-item">📍 {{ spot.location }}</span>
                   <span class="meta-item">🏷 {{ spot.tag }}</span>
                 </div>
+                <button class="map-link-btn" @click.stop="openBaiduMap(spot)">🗺️ 查看地图</button>
               </div>
             </div>
           </div>
@@ -70,6 +71,8 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 import * as echarts from 'echarts';
 import { fetchMapData } from '@/api/map';
+import type { ScenicSpot } from '@/types/scenic'
+import { openBaiduMap } from '@/utils/baiduMap'
 
 // 导入安阳风景图片
 import anyangImg from '@/assets/images/cheng/安阳/安阳.png';
@@ -78,15 +81,6 @@ import hongqiqu from '@/assets/images/cheng/安阳/红旗渠.jpg';
 import daxiagu from '@/assets/images/cheng/安阳/太行大峡谷.jpg';
 import xianlicheng from '@/assets/images/cheng/安阳/羑里城.jpg';
 
-// 风景点数据
-interface ScenicSpot {
-  name: string
-  image: string
-  description: string
-  location: string
-  tag: string
-}
-
 const scenicSpots: ScenicSpot[] = [
   {
     name: '殷墟',
@@ -94,6 +88,8 @@ const scenicSpots: ScenicSpot[] = [
     description: '世界文化遗产，中国商代后期都城遗址，距今已有3300多年历史。这里出土了数量惊人的甲骨文、青铜器，其中司母戊鼎（后母戊鼎）是世界最大的青铜器。殷墟的发掘证实了中国商代的存在，被誉为中国考古学的摇篮。',
     location: '殷都区殷墟路1号',
     tag: '世界文化遗产',
+    lat: 36.12667,
+    lng: 114.31389,
   },
   {
     name: '红旗渠',
@@ -101,6 +97,8 @@ const scenicSpots: ScenicSpot[] = [
     description: '被誉为"人工天河""世界第八大奇迹"。20世纪60年代，林县人民在极其艰难的条件下，历时近十年，削平1250座山头，架设151座渡槽，开凿211个隧洞，在太行山悬崖峭壁上修建了全长1500公里的红旗渠。',
     location: '林州市红旗渠大道',
     tag: '全国重点文保',
+    lat: 36.227576,
+    lng: 113.81536,
   },
   {
     name: '太行大峡谷',
@@ -108,6 +106,8 @@ const scenicSpots: ScenicSpot[] = [
     description: '国家级风景名胜区，位于太行山南麓，峡谷内断崖高起，群峰峥嵘，苍溪水湍，流瀑四挂。桃花谷、王相岩、太极冰山等景点各具特色，四季景色分明，是北方山水的典型代表。',
     location: '林州市石板岩乡',
     tag: 'AAAAA级景区',
+    lat: 36.180534,
+    lng: 113.74899,
   },
   {
     name: '羑里城',
@@ -115,6 +115,8 @@ const scenicSpots: ScenicSpot[] = [
     description: '中国历史上第一座有文字记载的国家监狱，也是《周易》的发祥地。"文王拘而演周易"的历史典故就发生于此。景区内有文王庙、演易台、八卦阵迷宫等景点，是探索中华文化源头的重要遗址。',
     location: '汤阴县城北4公里',
     tag: '全国重点文保',
+    lat: 35.954892,
+    lng: 114.35535,
   },
 ]
 
@@ -377,10 +379,6 @@ const renderAnyangMap = () => {
 }
 
 .page-back-btn {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 10;
   padding: 8px 14px;
   background-color: #0f172a;
   color: white;
@@ -394,6 +392,24 @@ const renderAnyangMap = () => {
 
 .page-back-btn:hover {
   background-color: #1e293b;
+  transform: translateY(-1px);
+}
+
+.map-link-btn {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #853e3e, #db01c9);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 1px;
+  transition: all 0.25s;
+}
+
+.map-link-btn:hover {
+  opacity: 0.85;
   transform: translateY(-1px);
 }
 

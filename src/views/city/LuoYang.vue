@@ -54,6 +54,7 @@
                   <span class="meta-item">📍 {{ spot.location }}</span>
                   <span class="meta-item">🏷 {{ spot.tag }}</span>
                 </div>
+                <button class="map-link-btn" @click.stop="openBaiduMap(spot)">🗺️ 查看地图</button>
               </div>
             </div>
           </div>
@@ -78,6 +79,8 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 import * as echarts from 'echarts';
 import { fetchMapData } from '@/api/map';
+import type { ScenicSpot } from '@/types/scenic'
+import { openBaiduMap } from '@/utils/baiduMap'
 
 // 导入洛阳风景图片
 import luoyangImg from '@/assets/images/cheng/洛阳/洛阳.png';
@@ -86,15 +89,6 @@ import baimasi from '@/assets/images/cheng/洛阳/白马寺.jpg';
 import mudanhuayuan from '@/assets/images/cheng/洛阳/洛阳牡丹园.jpg';
 import donglameiImg from '@/assets/images/cheng/洛阳/老君山.jpg';
 
-// 风景点数据
-interface ScenicSpot {
-  name: string
-  image: string
-  description: string
-  location: string
-  tag: string
-}
-
 const scenicSpots: ScenicSpot[] = [
   {
     name: '龙门石窟',
@@ -102,6 +96,8 @@ const scenicSpots: ScenicSpot[] = [
     description: '世界文化遗产，中国石刻艺术的最高峰。始凿于北魏孝文帝年间，历经东魏、西魏、北齐、隋、唐、五代、宋等朝代连续大规模营造达400余年之久，现存洞窟像龛2345个，造像10万余尊，碑刻题记2800余品。',
     location: '洛龙区龙门中街13号',
     tag: '世界文化遗产',
+    lat: 34.5516,
+    lng: 112.4758,
   },
   {
     name: '白马寺',
@@ -109,6 +105,8 @@ const scenicSpots: ScenicSpot[] = [
     description: '中国第一古刹，佛教传入中国后兴建的第一座官办寺院。始建于东汉永平十一年（公元68年），距今已有1900余年的历史。寺内古木参天，殿宇庄严，钟声悠远，是中外佛教文化交流的重要圣地。',
     location: '瀍河回族区白马寺镇',
     tag: '全国重点文保',
+    lat: 34.7239,
+    lng: 112.5997,
   },
   {
     name: '洛阳牡丹园',
@@ -116,6 +114,8 @@ const scenicSpots: ScenicSpot[] = [
     description: '"洛阳牡丹甲天下"，洛阳牡丹园拥有九大色系、十大花型、千余品种的牡丹，每逢四月花开时节，满城锦绣，游人如织。园中以"姚黄""魏紫"为代表的珍稀品种更是稀世之珍，被誉为"国色天香"。',
     location: '洛龙区龙门大道1号',
     tag: 'AAAA级景区',
+    lat: 34.663173,
+    lng: 112.467879,
   },
   {
     name: '老君山',
@@ -123,6 +123,8 @@ const scenicSpots: ScenicSpot[] = [
     description: '道教名山，相传为老子李耳归隐修炼之地。海拔2217米，山势雄伟，云海日出蔚为壮观。金顶道观群气势恢宏，玻璃观景台惊险刺激。每年冬季的雾凇奇观更是让人如入仙境，被誉为"人间天上"。',
     location: '栾川县城东南3公里',
     tag: 'AAAAA级景区',
+    lat: 33.7205,
+    lng: 111.6437,
   },
 ]
 
@@ -412,6 +414,24 @@ const renderLuoyangMap = () => {
 
 .page-back-btn:hover {
   background-color: #1e293b;
+  transform: translateY(-1px);
+}
+
+.map-link-btn {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #853e3e, #db01c9);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 1px;
+  transition: all 0.25s;
+}
+
+.map-link-btn:hover {
+  opacity: 0.85;
   transform: translateY(-1px);
 }
 

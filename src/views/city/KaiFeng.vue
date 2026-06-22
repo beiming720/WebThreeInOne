@@ -54,6 +54,7 @@
                   <span class="meta-item">📍 {{ spot.location }}</span>
                   <span class="meta-item">🏷 {{ spot.tag }}</span>
                 </div>
+                <button class="map-link-btn" @click.stop="openBaiduMap(spot)">🗺️ 查看地图</button>
               </div>
             </div>
           </div>
@@ -78,6 +79,8 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 import * as echarts from 'echarts';
 import { fetchMapData } from '@/api/map';
+import type { ScenicSpot } from '@/types/scenic'
+import { openBaiduMap } from '@/utils/baiduMap'
 
 // 导入开封风景图片
 import kaifengImg from '@/assets/images/cheng/开封.png';
@@ -86,15 +89,6 @@ import longtinggongyuan from '@/assets/images/cheng/开封/龙亭公园.jpg';
 import daxiangguoshi from '@/assets/images/cheng/开封/大相国寺.jpg';
 import tietagongyuan from '@/assets/images/cheng/开封/铁塔公园.jpg';
 
-// 风景点数据
-interface ScenicSpot {
-  name: string
-  image: string
-  description: string
-  location: string
-  tag: string
-}
-
 const scenicSpots: ScenicSpot[] = [
   {
     name: '清明上河园',
@@ -102,6 +96,8 @@ const scenicSpots: ScenicSpot[] = [
     description: '以《清明上河图》为蓝本复原的大型宋代文化主题公园，再现了北宋东京开封的繁华景象。园内古建筑鳞次栉比，汴河蜿蜒穿园而过，虹桥卧波，舟楫往来，置身其中仿佛穿越千年，回到了那个"汴京富丽天下无"的盛世时代。',
     location: '龙亭区龙亭西路5号',
     tag: 'AAAAA级景区',
+    lat: 34.813559,
+    lng: 114.346501,
   },
   {
     name: '龙亭公园',
@@ -109,6 +105,8 @@ const scenicSpots: ScenicSpot[] = [
     description: '位于开封古城中轴线上的皇家园林，曾是北宋皇宫所在地，也是历代帝王祭祀的场所。高台耸立，碧波环绕，每逢金秋时节，园内万菊竞放，游人如织。登龙亭而望，整个开封古城尽收眼底。',
     location: '龙亭区宋都御街北端',
     tag: 'AAAA级景区',
+    lat: 34.811187,
+    lng: 114.351130,
   },
   {
     name: '大相国寺',
@@ -116,6 +114,8 @@ const scenicSpots: ScenicSpot[] = [
     description: '始建于北齐天保六年（公元555年），是中国佛教禅宗祖庭之一。寺内梵音缭绕，古木参天，八角琉璃殿、藏经楼等建筑气势恢宏。千手千眼观音像更是国宝级文物，令人叹为观止。',
     location: '鼓楼区自由路西段36号',
     tag: '全国重点文保',
+    lat: 34.791793,
+    lng: 114.354687,
   },
   {
     name: '铁塔公园',
@@ -123,6 +123,8 @@ const scenicSpots: ScenicSpot[] = [
     description: '以开宝寺塔（俗称"铁塔"）为核心的景区，该塔始建于北宋皇祐元年，高55.88米，八角十三层，通体以褐色琉璃砖砌成，远望如铁铸，历经千年风雨地震仍巍然屹立，被誉为"天下第一塔"。',
     location: '顺河回族区北门大街210号',
     tag: '全国重点文保',
+    lat: 34.816352,
+    lng: 114.370299,
   },
 ]
 
@@ -412,6 +414,24 @@ const renderKaifengMap = () => {
 
 .page-back-btn:hover {
   background-color: #1e293b;
+  transform: translateY(-1px);
+}
+
+.map-link-btn {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #853e3e, #db01c9);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 1px;
+  transition: all 0.25s;
+}
+
+.map-link-btn:hover {
+  opacity: 0.85;
   transform: translateY(-1px);
 }
 
